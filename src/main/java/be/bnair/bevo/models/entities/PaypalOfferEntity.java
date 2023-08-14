@@ -18,6 +18,6 @@ public class PaypalOfferEntity {
 
     private String title;
     private String description;
-    private String price;
-    private String credit;
+    private double price;
+    private double credit;
 }

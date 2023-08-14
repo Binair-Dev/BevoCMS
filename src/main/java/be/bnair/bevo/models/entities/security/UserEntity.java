@@ -37,8 +37,6 @@ public class UserEntity extends AuditingBaseEntity implements UserDetails {
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private Set<ShopTransactionEntity> shopTransactions = new LinkedHashSet<>();
 
-
-
     @Transient
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

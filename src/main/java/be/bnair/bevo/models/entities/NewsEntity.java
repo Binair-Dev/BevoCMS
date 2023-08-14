@@ -1,9 +1,6 @@
 package be.bnair.bevo.models.entities;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import be.bnair.bevo.models.entities.security.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
