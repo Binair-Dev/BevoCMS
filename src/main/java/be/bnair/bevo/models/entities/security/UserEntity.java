@@ -1,20 +1,13 @@
 package be.bnair.bevo.models.entities.security;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import be.bnair.bevo.models.entities.*;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import be.bnair.bevo.models.entities.AuditingBaseEntity;
-import be.bnair.bevo.models.entities.RankEntity;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity(name = "User")
 @Table(name = "bevo_users")
@@ -24,10 +17,27 @@ public class UserEntity extends AuditingBaseEntity implements UserDetails {
     private String email;
     private String password;
 
-    @OneToOne
-    private RankEntity rank;
     private boolean isConfirmed;
     private boolean isEnabled;
+
+    @OneToMany(mappedBy = "author", orphanRemoval = true)
+    private Set<NewsEntity> news = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private Set<TransactionEntity> transactions = new LinkedHashSet<>();
+
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "user_entity_id")
+    private List<VoteRewardEntity> voteRewards = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "rank_id")
+    private RankEntity rank;
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private Set<ShopTransactionEntity> shopTransactions = new LinkedHashSet<>();
+
+
 
     @Transient
     @Override

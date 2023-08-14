@@ -1,12 +1,7 @@
 package be.bnair.bevo.models.entities;
 
 import be.bnair.bevo.models.entities.security.UserEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -16,12 +11,14 @@ public class ShopTransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne
-    private UserEntity user;
     
     @OneToOne
     private ShopItemEntity item;
 
     private double credit;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
 }

@@ -1,11 +1,6 @@
 package be.bnair.bevo.models.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -19,8 +14,14 @@ public class ShopItemEntity {
     private String description;
     private String image;
 
-    @OneToOne
-    private ServerEntity server;
     private String price;
     private String command;
+
+    @ManyToOne
+    @JoinColumn(name = "shop_category_id")
+    private ShopCategoryEntity shopCategory;
+
+    @ManyToOne
+    @JoinColumn(name = "server_id")
+    private ServerEntity server;
 }

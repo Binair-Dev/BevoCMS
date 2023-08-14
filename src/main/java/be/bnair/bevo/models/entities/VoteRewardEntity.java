@@ -1,15 +1,12 @@
 package be.bnair.bevo.models.entities;
 
+import be.bnair.bevo.models.entities.security.UserEntity;
 import be.bnair.bevo.utils.EnumRewardType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "bevo_vote_rewards")
@@ -21,12 +18,14 @@ public class VoteRewardEntity {
     private String title;
     private double percent;
 
-    @OneToOne
-    private ServerEntity server;
-
     @Enumerated(EnumType.STRING)
     private EnumRewardType rewardType;
 
     private String command;
     private double credit;
+
+    @ManyToOne
+    @JoinColumn(name = "server_id")
+    private ServerEntity server;
+
 }

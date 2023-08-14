@@ -1,14 +1,11 @@
 package be.bnair.bevo.models.entities;
 
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import be.bnair.bevo.models.entities.security.UserEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -22,7 +19,9 @@ public class NewsEntity {
     private String description;
     private String image;
     private LocalDate date;
-    @OneToOne
-    private UserEntity author;
     private boolean isPublished;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private UserEntity author;
 }

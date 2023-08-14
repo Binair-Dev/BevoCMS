@@ -47,7 +47,7 @@ public class SecurityController {
         entity.setNickname(form.username);
         entity.setPassword(passwordEncoder.encode(form.password));
 
-        UserDetails user = this.securityService.insert(entity);
+        UserDetails user = this.securityService.create(entity);
         return ResponseEntity.ok(new AuthResponse(utils.generateToken(user)));
     }
 }

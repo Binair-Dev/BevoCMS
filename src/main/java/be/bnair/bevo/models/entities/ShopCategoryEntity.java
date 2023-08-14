@@ -1,11 +1,10 @@
 package be.bnair.bevo.models.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "bevo_shop_categories")
@@ -16,4 +15,8 @@ public class ShopCategoryEntity {
     private Long id;
     private String title;
     private int displayOrder;
+
+    @OneToMany(mappedBy = "shopCategory", orphanRemoval = true)
+    private Set<ShopItemEntity> shopItems = new LinkedHashSet<>();
+
 }
