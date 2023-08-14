@@ -11,7 +11,7 @@
     <groupId>be.bstorm.bevo</groupId>
     <artifactId>BevoCMS</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>bf2023-mobile_SpringAeroport</name>
+    <name>BevoCMS</name>
     <description>CMS pour serveur de jeux</description>
     <properties>
         <java.version>17</java.version>

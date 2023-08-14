@@ -1,12 +1,8 @@
 package be.bnair.bevo.models.entities;
 
-import be.bnair.bevo.models.entities.security.UserEntity;
-import be.bnair.bevo.utils.EnumRewardType;
+import be.bnair.bevo.models.enums.EnumRewardType;
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "bevo_vote_rewards")

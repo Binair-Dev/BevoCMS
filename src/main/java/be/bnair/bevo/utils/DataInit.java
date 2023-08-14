@@ -14,6 +14,7 @@ import be.bnair.bevo.repository.WikiRepository;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import be.bnair.bevo.models.entities.security.UserEntity;
@@ -28,15 +29,18 @@ public class DataInit implements InitializingBean {
     private final NewsRepository newsRepository;
     private final PaypalOfferRepository paypalOfferRepository;
     private final RuleRepository ruleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public DataInit(UserRepository userRepository, RankRepository rankRepository, WikiRepository wikiRepository,
-    NewsRepository newsRepository, PaypalOfferRepository paypalOfferRepository, RuleRepository ruleRepository) {
+    NewsRepository newsRepository, PaypalOfferRepository paypalOfferRepository, RuleRepository ruleRepository,
+                    PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.rankRepository = rankRepository;
         this.wikiRepository = wikiRepository;
         this.newsRepository = newsRepository;
         this.paypalOfferRepository = paypalOfferRepository;
         this.ruleRepository = ruleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -56,7 +60,7 @@ public class DataInit implements InitializingBean {
         UserEntity b_nair = new UserEntity();
         b_nair.setNickname("b_nair");
         b_nair.setEmail("van.bellinghen.brian@gmail.com");
-        b_nair.setPassword("test1234");
+        b_nair.setPassword(passwordEncoder.encode("test1234"));
         b_nair.setConfirmed(true);
         b_nair.setEnabled(true);
         b_nair.setRank(admin);
@@ -65,7 +69,7 @@ public class DataInit implements InitializingBean {
         UserEntity julie = new UserEntity();
         julie.setNickname("Julie");
         julie.setEmail("frazelle.julie@gmail.com");
-        julie.setPassword("disneycafe");
+        julie.setPassword(passwordEncoder.encode("disneytapeur"));
         julie.setConfirmed(true);
         julie.setEnabled(true);
         julie.setRank(member);
@@ -115,6 +119,5 @@ public class DataInit implements InitializingBean {
         rule1.setDescription("Une attaque DDoS, ou par d\u00E9ni de service distribu\u00E9, est un type de cyberattaque qui tente de rendre un site Web ou une ressource r\u00E9seau indisponible en l'inondant de trafic malveillant afin de l'emp\u00EAcher de fonctionner.");
         ruleRepository.save(rule1);
         //endregion
-        
     }
 }

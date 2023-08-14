@@ -1,4 +1,4 @@
-package be.bnair.bevo.models;
+package be.bnair.bevo.models.responses;
 
 import lombok.RequiredArgsConstructor;
 
