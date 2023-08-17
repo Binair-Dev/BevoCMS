@@ -1,12 +1,12 @@
 package be.bnair.bevo.models.forms;
 
-import be.bnair.bevo.models.entities.NewsEntity;
+import be.bnair.bevo.models.entities.WikiEntity;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class NewsForm {
+public class WikiForm {
     @NotEmpty(message = "Le titre ne peut pas être vide.")
     @Size(min = 3, message = "Le titre doit contenir au moins 3 caractères")
     private String title;
@@ -17,8 +17,8 @@ public class NewsForm {
     @Size(min = 3, message = "L'url de l'image doit contenir au moins 3 caractères")
     private String image;
 
-    public NewsEntity toEntity() {
-        NewsEntity entity = new NewsEntity();
+    public WikiEntity toEntity() {
+        WikiEntity entity = new WikiEntity();
         entity.setTitle(title);
         entity.setDescription(description);
         entity.setImage(image);

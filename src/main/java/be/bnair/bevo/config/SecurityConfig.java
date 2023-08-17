@@ -63,12 +63,19 @@ public class SecurityConfig {
                         .requestMatchers("/server/update/{id}").hasRole(adminRank)
                         .requestMatchers("/server/create").hasRole(adminRank)
 
-                        //Sécurités concernant les serveurs
+                        //Sécurités concernant les catégories shop
                         .requestMatchers("/shop-categories/list").permitAll()
                         .requestMatchers("/shop-categories/{id}").permitAll()
                         .requestMatchers("/shop-categories/delete/{id}").hasRole(adminRank)
                         .requestMatchers("/shop-categories/update/{id}").hasRole(adminRank)
                         .requestMatchers("/shop-categories/create").hasRole(adminRank)
+
+                        //Sécurités concernant les wiki
+                        .requestMatchers("/wiki/list").permitAll()
+                        .requestMatchers("/wiki/{id}").permitAll()
+                        .requestMatchers("/wiki/delete/{id}").hasRole(adminRank)
+                        .requestMatchers("/wiki/update/{id}").hasRole(adminRank)
+                        .requestMatchers("/wiki/create").hasRole(adminRank)
 
                         //Sécurités concernant l'access au panel d'administration
                         .requestMatchers("/admin/**").hasRole(adminRank)
