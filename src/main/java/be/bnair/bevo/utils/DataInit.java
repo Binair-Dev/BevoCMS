@@ -60,7 +60,7 @@ public class DataInit implements InitializingBean {
         UserEntity b_nair = new UserEntity();
         b_nair.setNickname("b_nair");
         b_nair.setEmail("van.bellinghen.brian@gmail.com");
-        b_nair.setPassword(passwordEncoder.encode("test1234"));
+        b_nair.setPassword(passwordEncoder.encode("test1234@"));
         b_nair.setConfirmed(true);
         b_nair.setEnabled(true);
         b_nair.setRank(admin);

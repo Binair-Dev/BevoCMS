@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import be.bnair.bevo.models.entities.NewsEntity;
 import be.bnair.bevo.models.entities.security.UserEntity;
 import be.bnair.bevo.repository.UserRepository;
 import be.bnair.bevo.services.UserService;
@@ -68,5 +67,10 @@ public class UserServiceImpl implements UserService {
             return this.userRepository.save(userEntity);
         }
         throw new Exception("Could not find the user with id: " + id);
+    }
+
+    @Override
+    public Optional<UserEntity> getOneByUsername(String username) {
+        return this.userRepository.findByUsername(username);
     }
 }

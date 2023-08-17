@@ -14,4 +14,5 @@ public interface UserService extends UserDetailsService {
     default UserEntity update(Long id, UserEntity updater) throws Exception { throw new Exception(); }
     List<UserEntity> getAll();
     Optional<UserEntity> getOneById(Long id);
+    Optional<UserEntity> getOneByUsername(String username);
 }
