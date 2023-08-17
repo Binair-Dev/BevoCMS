@@ -1,5 +1,6 @@
 package be.bnair.bevo.models.forms;
 
+import be.bnair.bevo.models.entities.security.UserEntity;
 import be.bnair.bevo.utils.constraints.PasswordMatchConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -20,4 +21,13 @@ public class RegisterForm {
     private String password;
     @NotEmpty(message = "La confirmation du mot de passe ne peut pas être vide.")
     private String confirmPassword;
+
+    public UserEntity toEntity() {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setNickname(username);
+        userEntity.setEmail(email);
+        userEntity.setPassword(password);
+        userEntity.setEnabled(true);
+        return userEntity;
+    }
 }

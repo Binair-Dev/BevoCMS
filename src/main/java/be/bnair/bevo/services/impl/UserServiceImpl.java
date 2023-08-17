@@ -7,16 +7,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import be.bnair.bevo.models.entities.RankEntity;
 import be.bnair.bevo.models.entities.security.UserEntity;
+import be.bnair.bevo.repository.RankRepository;
 import be.bnair.bevo.repository.UserRepository;
 import be.bnair.bevo.services.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final RankRepository rankRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, RankRepository rankRepository) {
         this.userRepository = userRepository;
+        this.rankRepository = rankRepository;
     }
 
     @Override
@@ -27,6 +31,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails create(UserEntity entity) {
+        Optional<RankEntity> rankEntity = rankRepository.findById(1L);
+        if(entity.getRank() != null && rankEntity.isPresent()) {
+            entity.setRank(rankEntity.get());
+        }
         return this.userRepository.save(entity);
     }
 

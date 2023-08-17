@@ -51,6 +51,9 @@ public class SecurityController {
         }
 
         UserDetails user = this.securityService.loadUserByUsername(form.getUsername());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.NOT_FOUND.value(), "Utilisateur introuvable."));
+        }
 
         if (passwordEncoder.matches(form.getPassword(), user.getPassword())) {
             return ResponseEntity.ok(new AuthResponse(utils.generateToken(user)));
@@ -77,15 +80,8 @@ public class SecurityController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Le nom d'utilisateur est déjà utilisé."));
         }
 
-        UserEntity entity = new UserEntity();
-        entity.setNickname(form.getUsername());
-        if(form.getPassword() != null && form.getConfirmPassword() != null && form.getPassword().equals(form.getConfirmPassword())) {
-            entity.setPassword(passwordEncoder.encode(form.getPassword()));
-            
-            UserDetails user = this.securityService.create(entity);
-            return ResponseEntity.ok(new AuthResponse(utils.generateToken(user)));
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Les mots de passes ne correspondent pas."));
-        }
+        UserEntity entity = form.toEntity();   
+        UserDetails user = this.securityService.create(entity);
+        return ResponseEntity.ok(new AuthResponse(utils.generateToken(user)));
     }
 }

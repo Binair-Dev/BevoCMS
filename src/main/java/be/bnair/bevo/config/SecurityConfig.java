@@ -26,13 +26,24 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain httpSecurity(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
+        final String adminRank = "ADMINISTRATEUR";
         http
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((registry) -> {
                     registry
+                        //Enregistrement et Connexion
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMINISTRATEUR")
+
+                        //Sécurités concernant les news
+                        .requestMatchers("/news/list").permitAll()
+                        .requestMatchers("/news/{id}").permitAll()
+                        .requestMatchers("/news/delete/{id}").hasRole(adminRank)
+                        .requestMatchers("/news/update/{id}").hasRole(adminRank)
+                        .requestMatchers("/news/create").hasRole(adminRank)
+
+                        //Sécurités concernant l'access au panel d'administration
+                        .requestMatchers("/admin/**").hasRole(adminRank)
                         .anyRequest().authenticated();
                 })
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
