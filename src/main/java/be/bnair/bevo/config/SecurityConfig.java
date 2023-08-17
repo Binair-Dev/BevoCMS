@@ -42,6 +42,13 @@ public class SecurityConfig {
                         .requestMatchers("/news/update/{id}").hasRole(adminRank)
                         .requestMatchers("/news/create").hasRole(adminRank)
 
+                         //Sécurités concernant les offres paypal
+                        .requestMatchers("/paypal-offer/list").permitAll()
+                        .requestMatchers("/paypal-offer/{id}").permitAll()
+                        .requestMatchers("/paypal-offer/delete/{id}").hasRole(adminRank)
+                        .requestMatchers("/paypal-offer/update/{id}").hasRole(adminRank)
+                        .requestMatchers("/paypal-offer/create").hasRole(adminRank)
+
                         //Sécurités concernant l'access au panel d'administration
                         .requestMatchers("/admin/**").hasRole(adminRank)
                         .anyRequest().authenticated();

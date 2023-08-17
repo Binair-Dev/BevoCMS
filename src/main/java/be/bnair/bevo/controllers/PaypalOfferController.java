@@ -1,5 +1,8 @@
 package be.bnair.bevo.controllers;
 
+import be.bnair.bevo.models.entities.PaypalOfferEntity;
+import be.bnair.bevo.models.forms.PaypalOfferForm;
+import be.bnair.bevo.services.PaypalOfferService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,21 +33,19 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = {"/news"})
-public class NewsController {
-    private final NewsService newsService;
-    private final UserService userService;
+@RequestMapping(path = {"/paypal-offer"})
+public class PaypalOfferController {
+    private final PaypalOfferService paypalOfferService;
 
-    public NewsController(NewsService newsService, UserService userService) {
-        this.newsService = newsService;
-        this.userService = userService;
+    public PaypalOfferController(PaypalOfferService paypalOfferService) {
+        this.paypalOfferService = paypalOfferService;
     }
 
     @PatchMapping(path = {"/update/{id}"})
     public ResponseEntity<Object> patchAction(
-        @PathVariable Long id,
-        @RequestBody @Valid NewsForm newsForm,
-        BindingResult bindingResult
+            @PathVariable Long id,
+            @RequestBody @Valid PaypalOfferForm paypalOfferForm,
+            BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
             List<String> errorList = new ArrayList<>();
@@ -55,18 +56,19 @@ public class NewsController {
         }
 
         UserDetails userDetails = AuthUtils.getUserDetailsFromToken();
-        Optional<NewsEntity> optionalNewsEntity = this.newsService.getOneById(id);
+        Optional<PaypalOfferEntity> optionalNewsEntity = this.paypalOfferService.getOneById(id);
         if(optionalNewsEntity.isPresent()) {
             if(userDetails != null) {
-                NewsEntity newsEntity = optionalNewsEntity.get();
-                newsEntity.setTitle(newsForm.getTitle());
-                newsEntity.setDescription(newsForm.getDescription());
-                newsEntity.setImage(newsForm.getImage());
+                PaypalOfferEntity paypalOfferEntity = optionalNewsEntity.get();
+                paypalOfferEntity.setTitle(paypalOfferForm.getTitle());
+                paypalOfferEntity.setDescription(paypalOfferForm.getDescription());
+                paypalOfferEntity.setPrice(paypalOfferForm.getPrice());
+                paypalOfferEntity.setCredit(paypalOfferForm.getCredit());
                 try {
-                    this.newsService.update(id, newsEntity);
-                    return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "La news a bien été mise a jour."));
+                    this.paypalOfferService.update(id, paypalOfferEntity);
+                    return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "L'offre paypal a bien été mise a jour."));
                 } catch (Exception e) {
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Impossible de mettre la News a jours, veuillez contacter un administrateur."));
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Impossible de mettre l'offre paypal a jours, veuillez contacter un administrateur."));
                 }
             }
         }
@@ -75,8 +77,8 @@ public class NewsController {
 
     @PostMapping(path = {"/create"})
     public ResponseEntity<Object> createAction(
-        @RequestBody @Valid NewsForm newsForm,
-        BindingResult bindingResult
+            @RequestBody @Valid PaypalOfferForm paypalOfferForm,
+            BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
             List<String> errorList = new ArrayList<>();
@@ -85,45 +87,42 @@ public class NewsController {
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FieldErrorResponse(HttpStatus.BAD_REQUEST.value(), errorList));
         }
-        
+
         UserDetails userDetails = AuthUtils.getUserDetailsFromToken();
         if(userDetails != null) {
-            Optional<UserEntity> userEntity = this.userService.getOneByUsername(userDetails.getUsername());
-            if(userEntity.isPresent()) {
-                NewsEntity newsEntity = newsForm.toEntity();
-                newsEntity.setDate(LocalDate.now());
-                newsEntity.setAuthor(userEntity.get());
-                newsEntity.setPublished(false);
-                this.newsService.create(newsEntity);
-                return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "La news a bien été créée."));
-            } 
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse(HttpStatus.UNAUTHORIZED.value(), "Impossible de trouver l'utilisateur."));
+            PaypalOfferEntity paypalOfferEntity = paypalOfferForm.toEntity();
+            paypalOfferEntity.setTitle(paypalOfferEntity.getTitle());
+            paypalOfferEntity.setDescription(paypalOfferEntity.getDescription());
+            paypalOfferEntity.setPrice(paypalOfferEntity.getPrice());
+            paypalOfferEntity.setCredit(paypalOfferEntity.getCredit());
+            this.paypalOfferService.create(paypalOfferEntity);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "L'offre paypal a bien été créée."));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse(HttpStatus.UNAUTHORIZED.value(), "Impossible de trouver l'utilisateur."));
     }
 
     @GetMapping(path = {"/list"})
-    public List<NewsDTO> findAllAction() {
-        return this.newsService.getAll().stream().map(e -> NewsDTO.toDTO(e)).toList();
+    public List<PaypalOfferEntity> findAllAction() {
+        return this.paypalOfferService.getAll();
     }
 
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Object> findByIdAction(@PathVariable Long id) {
-        Optional<NewsEntity> newsEntity = this.newsService.getOneById(id);
+        Optional<PaypalOfferEntity> newsEntity = this.paypalOfferService.getOneById(id);
         if(newsEntity.isPresent()) {
-            return ResponseEntity.ok().body(NewsDTO.toDTO(newsEntity.get()));
+            return ResponseEntity.ok().body(newsEntity.get());
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "La news avec l'id " + id + " n'existe pas."));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "L'offre paypal avec l'id " + id + " n'existe pas."));
     }
 
     @DeleteMapping(path = {"/delete/{id}"})
     public ResponseEntity<Object> deleteByIdAction(@PathVariable Long id) {
         try {
-            Optional<NewsEntity> newsEntity = this.newsService.getOneById(id);
-            if(newsEntity.isPresent()) {
-                this.newsService.remove(id);
-            return ResponseEntity.ok().body(new MessageResponse(HttpStatus.OK.value(), "La news avec l'id " + id + " a bien été supprimée."));
-            } else return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.NOT_FOUND.value(), "La news avec l'id " + id + "' n'existe pas."));
+            Optional<PaypalOfferEntity> paypalOfferEntity = this.paypalOfferService.getOneById(id);
+            if(paypalOfferEntity.isPresent()) {
+                this.paypalOfferService.remove(id);
+                return ResponseEntity.ok().body(new MessageResponse(HttpStatus.OK.value(), "L'offre paypal avec l'id " + id + " a bien été supprimée."));
+            } else return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.NOT_FOUND.value(), "L'offre paypal avec l'id " + id + "' n'existe pas."));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.NOT_FOUND.value(), "Une erreur est survenue, veuillez contacter un administrateur. (Erreur: " + e.getMessage() + ")"));
         }
