@@ -17,6 +17,6 @@ public class ServerEntity {
     private String title;
     private String serverIp;
     private int serverPort;
-    private String rconPort;
+    private int rconPort;
     private String rconPassword;
 }
