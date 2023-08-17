@@ -63,6 +63,13 @@ public class SecurityConfig {
                         .requestMatchers("/server/update/{id}").hasRole(adminRank)
                         .requestMatchers("/server/create").hasRole(adminRank)
 
+                        //Sécurités concernant les serveurs
+                        .requestMatchers("/shop-categories/list").permitAll()
+                        .requestMatchers("/shop-categories/{id}").permitAll()
+                        .requestMatchers("/shop-categories/delete/{id}").hasRole(adminRank)
+                        .requestMatchers("/shop-categories/update/{id}").hasRole(adminRank)
+                        .requestMatchers("/shop-categories/create").hasRole(adminRank)
+
                         //Sécurités concernant l'access au panel d'administration
                         .requestMatchers("/admin/**").hasRole(adminRank)
                         .anyRequest().authenticated();
