@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = {"/paypal-offer"})
+@RequestMapping(path = {"/paypal-offers"})
 public class PaypalOfferController {
     private final PaypalOfferService paypalOfferService;
 
@@ -48,25 +48,21 @@ public class PaypalOfferController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FieldErrorResponse(HttpStatus.BAD_REQUEST.value(), errorList));
         }
 
-        UserDetails userDetails = AuthUtils.getUserDetailsFromToken();
         Optional<PaypalOfferEntity> optionalNewsEntity = this.paypalOfferService.getOneById(id);
         if(optionalNewsEntity.isPresent()) {
-            if(userDetails != null) {
-                PaypalOfferEntity paypalOfferEntity = optionalNewsEntity.get();
-                paypalOfferEntity.setTitle(paypalOfferForm.getTitle());
-                paypalOfferEntity.setDescription(paypalOfferForm.getDescription());
-                paypalOfferEntity.setPrice(paypalOfferForm.getPrice());
-                paypalOfferEntity.setCredit(paypalOfferForm.getCredit());
-                try {
-                    this.paypalOfferService.update(id, paypalOfferEntity);
-                    return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "L'offre paypal a bien été mise a jour."));
-                } catch (Exception e) {
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Impossible de mettre l'offre paypal a jours, veuillez contacter un administrateur."));
-                }
+            PaypalOfferEntity paypalOfferEntity = optionalNewsEntity.get();
+            paypalOfferEntity.setTitle(paypalOfferForm.getTitle());
+            paypalOfferEntity.setDescription(paypalOfferForm.getDescription());
+            paypalOfferEntity.setPrice(paypalOfferForm.getPrice());
+            paypalOfferEntity.setCredit(paypalOfferForm.getCredit());
+            try {
+                this.paypalOfferService.update(id, paypalOfferEntity);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(new MessageResponse(HttpStatus.ACCEPTED.value(), "L'offre paypal a bien été mise a jour."));
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre l'offre paypal a jours, veuillez contacter un administrateur."));
             }
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse(HttpStatus.UNAUTHORIZED.value(), "Impossible de trouver l'utilisateur."));
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Impossible de mettre l'offre paypal a jours, veuillez contacter un administrateur."));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre l'offre paypal a jours, veuillez contacter un administrateur."));
     }
 
     @PostMapping(path = {"/create"})
@@ -82,17 +78,13 @@ public class PaypalOfferController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FieldErrorResponse(HttpStatus.BAD_REQUEST.value(), errorList));
         }
 
-        UserDetails userDetails = AuthUtils.getUserDetailsFromToken();
-        if(userDetails != null) {
-            PaypalOfferEntity paypalOfferEntity = paypalOfferForm.toEntity();
-            paypalOfferEntity.setTitle(paypalOfferEntity.getTitle());
-            paypalOfferEntity.setDescription(paypalOfferEntity.getDescription());
-            paypalOfferEntity.setPrice(paypalOfferEntity.getPrice());
-            paypalOfferEntity.setCredit(paypalOfferEntity.getCredit());
-            this.paypalOfferService.create(paypalOfferEntity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "L'offre paypal a bien été créée."));
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse(HttpStatus.UNAUTHORIZED.value(), "Impossible de trouver l'utilisateur."));
+        PaypalOfferEntity paypalOfferEntity = paypalOfferForm.toEntity();
+        paypalOfferEntity.setTitle(paypalOfferEntity.getTitle());
+        paypalOfferEntity.setDescription(paypalOfferEntity.getDescription());
+        paypalOfferEntity.setPrice(paypalOfferEntity.getPrice());
+        paypalOfferEntity.setCredit(paypalOfferEntity.getCredit());
+        this.paypalOfferService.create(paypalOfferEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "L'offre paypal a bien été créée."));
     }
 
     @GetMapping(path = {"/list"})

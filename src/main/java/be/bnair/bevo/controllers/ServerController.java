@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = {"/server"})
+@RequestMapping(path = {"/servers"})
 public class ServerController {
     private final ServerService serverService;
 
@@ -49,22 +49,18 @@ public class ServerController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FieldErrorResponse(HttpStatus.BAD_REQUEST.value(), errorList));
         }
 
-        UserDetails userDetails = AuthUtils.getUserDetailsFromToken();
         Optional<ServerEntity> optionalNewsEntity = this.serverService.getOneById(id);
         if(optionalNewsEntity.isPresent()) {
-            if(userDetails != null) {
-                ServerEntity serverEntity = serverForm.toEntity();
-                serverEntity.setId(id);
-                try {
-                    this.serverService.update(id, serverEntity);
-                    return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "Le serveur a bien été mise a jour."));
-                } catch (Exception e) {
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Impossible de mettre le serveur a jours, veuillez contacter un administrateur."));
-                }
-            }        
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse(HttpStatus.UNAUTHORIZED.value(), "Impossible de trouver l'utilisateur."));
+            ServerEntity serverEntity = serverForm.toEntity();
+            serverEntity.setId(id);
+            try {
+                this.serverService.update(id, serverEntity);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(new MessageResponse(HttpStatus.ACCEPTED.value(), "Le serveur a bien été mise a jour."));
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre le serveur a jours, veuillez contacter un administrateur."));
+            }
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Impossible de mettre le serveur a jours, veuillez contacter un administrateur."));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre le serveur a jours, veuillez contacter un administrateur."));
     }
 
     @PostMapping(path = {"/create"})
@@ -80,13 +76,9 @@ public class ServerController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FieldErrorResponse(HttpStatus.BAD_REQUEST.value(), errorList));
         }
 
-        UserDetails userDetails = AuthUtils.getUserDetailsFromToken();
-        if(userDetails != null) {
-            ServerEntity serverEntity = serverForm.toEntity();
-            this.serverService.create(serverEntity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "Le serveur a bien été créée."));
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse(HttpStatus.UNAUTHORIZED.value(), "Impossible de trouver l'utilisateur."));
+        ServerEntity serverEntity = serverForm.toEntity();
+        this.serverService.create(serverEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "Le serveur a bien été créée."));
     }
 
     @GetMapping(path = {"/list"})

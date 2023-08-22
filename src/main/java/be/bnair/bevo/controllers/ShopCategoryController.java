@@ -49,23 +49,19 @@ public class ShopCategoryController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FieldErrorResponse(HttpStatus.BAD_REQUEST.value(), errorList));
         }
 
-        UserDetails userDetails = AuthUtils.getUserDetailsFromToken();
         Optional<ShopCategoryEntity> optionalShopCategory = this.shopCategoryService.getOneById(id);
         if(optionalShopCategory.isPresent()) {
-            if(userDetails != null) {
-                ShopCategoryEntity serverEntity = shopCategoryForm.toEntity();
-                serverEntity.setShopItems(optionalShopCategory.get().getShopItems());
-                serverEntity.setId(id);
-                try {
-                    this.shopCategoryService.update(id, serverEntity);
-                    return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "La catégorie shop a bien été mise a jour."));
-                } catch (Exception e) {
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Impossible de mettre la catégorie du shop a jours, veuillez contacter un administrateur."));
-                }
+            ShopCategoryEntity serverEntity = shopCategoryForm.toEntity();
+            serverEntity.setShopItems(optionalShopCategory.get().getShopItems());
+            serverEntity.setId(id);
+            try {
+                this.shopCategoryService.update(id, serverEntity);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(new MessageResponse(HttpStatus.ACCEPTED.value(), "La catégorie shop a bien été mise a jour."));
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre la catégorie du shop a jours, veuillez contacter un administrateur."));
             }
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse(HttpStatus.UNAUTHORIZED.value(), "Impossible de trouver l'utilisateur."));
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Impossible de mettre la catégorie du shop a jours, veuillez contacter un administrateur."));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre la catégorie du shop a jours, veuillez contacter un administrateur."));
     }
 
     @PostMapping(path = {"/create"})
@@ -81,13 +77,9 @@ public class ShopCategoryController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FieldErrorResponse(HttpStatus.BAD_REQUEST.value(), errorList));
         }
 
-        UserDetails userDetails = AuthUtils.getUserDetailsFromToken();
-        if(userDetails != null) {
-            ShopCategoryEntity serverEntity = shopCategoryForm.toEntity();
-            this.shopCategoryService.create(serverEntity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "La catégorie shop a bien été créée."));
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse(HttpStatus.UNAUTHORIZED.value(), "Impossible de trouver l'utilisateur."));
+        ShopCategoryEntity serverEntity = shopCategoryForm.toEntity();
+        this.shopCategoryService.create(serverEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "La catégorie shop a bien été créée."));
     }
 
     @GetMapping(path = {"/list"})

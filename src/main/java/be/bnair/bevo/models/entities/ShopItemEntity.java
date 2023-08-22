@@ -14,7 +14,7 @@ public class ShopItemEntity {
     private String description;
     private String image;
 
-    private String price;
+    private double price;
     private String command;
 
     @ManyToOne

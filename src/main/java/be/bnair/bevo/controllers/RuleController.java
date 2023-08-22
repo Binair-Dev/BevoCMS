@@ -48,23 +48,19 @@ public class RuleController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FieldErrorResponse(HttpStatus.BAD_REQUEST.value(), errorList));
         }
 
-        UserDetails userDetails = AuthUtils.getUserDetailsFromToken();
         Optional<RuleEntity> optionalRuleEntity = this.ruleService.getOneById(id);
         if(optionalRuleEntity.isPresent()) {
-            if(userDetails != null) {
-                RuleEntity ruleEntity = optionalRuleEntity.get();
-                ruleEntity.setTitle(ruleForm.getTitle());
-                ruleEntity.setDescription(ruleForm.getDescription());
-                try {
-                    this.ruleService.update(id, ruleEntity);
-                    return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "La règle a bien été mise a jour."));
-                } catch (Exception e) {
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Impossible de mettre la règle a jours, veuillez contacter un administrateur."));
-                }
+            RuleEntity ruleEntity = optionalRuleEntity.get();
+            ruleEntity.setTitle(ruleForm.getTitle());
+            ruleEntity.setDescription(ruleForm.getDescription());
+            try {
+                this.ruleService.update(id, ruleEntity);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(new MessageResponse(HttpStatus.ACCEPTED.value(), "La règle a bien été mise a jour."));
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre la règle a jours, veuillez contacter un administrateur."));
             }
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse(HttpStatus.UNAUTHORIZED.value(), "Impossible de trouver l'utilisateur."));
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Impossible de mettre la règle a jours, veuillez contacter un administrateur."));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre la règle a jours, veuillez contacter un administrateur."));
     }
 
     @PostMapping(path = {"/create"})
@@ -80,15 +76,11 @@ public class RuleController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FieldErrorResponse(HttpStatus.BAD_REQUEST.value(), errorList));
         }
 
-        UserDetails userDetails = AuthUtils.getUserDetailsFromToken();
-        if(userDetails != null) {
-            RuleEntity ruleEntity = ruleForm.toEntity();
-            ruleEntity.setTitle(ruleForm.getTitle());
-            ruleEntity.setDescription(ruleForm.getDescription());
-            this.ruleService.create(ruleEntity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "La règle a bien été créée."));
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse(HttpStatus.UNAUTHORIZED.value(), "Impossible de trouver l'utilisateur."));
+        RuleEntity ruleEntity = ruleForm.toEntity();
+        ruleEntity.setTitle(ruleForm.getTitle());
+        ruleEntity.setDescription(ruleForm.getDescription());
+        this.ruleService.create(ruleEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "La règle a bien été créée."));
     }
 
     @GetMapping(path = {"/list"})

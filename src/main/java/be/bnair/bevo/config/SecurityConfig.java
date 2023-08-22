@@ -43,11 +43,11 @@ public class SecurityConfig {
                         .requestMatchers("/news/create").hasRole(adminRank)
 
                          //Sécurités concernant les offres paypal
-                        .requestMatchers("/paypal-offer/list").permitAll()
-                        .requestMatchers("/paypal-offer/{id}").permitAll()
-                        .requestMatchers("/paypal-offer/delete/{id}").hasRole(adminRank)
-                        .requestMatchers("/paypal-offer/update/{id}").hasRole(adminRank)
-                        .requestMatchers("/paypal-offer/create").hasRole(adminRank)
+                        .requestMatchers("/paypal-offerslist").permitAll()
+                        .requestMatchers("/paypal-offers/{id}").permitAll()
+                        .requestMatchers("/paypal-offers/delete/{id}").hasRole(adminRank)
+                        .requestMatchers("/paypal-offers/update/{id}").hasRole(adminRank)
+                        .requestMatchers("/paypal-offers/create").hasRole(adminRank)
 
                         //Sécurités concernant les règles
                         .requestMatchers("/rules/list").permitAll()
@@ -57,11 +57,11 @@ public class SecurityConfig {
                         .requestMatchers("/rules/create").hasRole(adminRank)
 
                          //Sécurités concernant les serveurs
-                        .requestMatchers("/server/list").hasRole(adminRank)
-                        .requestMatchers("/server/{id}").hasRole(adminRank)
-                        .requestMatchers("/server/delete/{id}").hasRole(adminRank)
-                        .requestMatchers("/server/update/{id}").hasRole(adminRank)
-                        .requestMatchers("/server/create").hasRole(adminRank)
+                        .requestMatchers("/servers/list").hasRole(adminRank)
+                        .requestMatchers("/servers/{id}").hasRole(adminRank)
+                        .requestMatchers("/servers/delete/{id}").hasRole(adminRank)
+                        .requestMatchers("/servers/update/{id}").hasRole(adminRank)
+                        .requestMatchers("/servers/create").hasRole(adminRank)
 
                         //Sécurités concernant les catégories shop
                         .requestMatchers("/shop-categories/list").permitAll()
@@ -71,11 +71,11 @@ public class SecurityConfig {
                         .requestMatchers("/shop-categories/create").hasRole(adminRank)
 
                         //Sécurités concernant les wiki
-                        .requestMatchers("/wiki/list").permitAll()
-                        .requestMatchers("/wiki/{id}").permitAll()
-                        .requestMatchers("/wiki/delete/{id}").hasRole(adminRank)
-                        .requestMatchers("/wiki/update/{id}").hasRole(adminRank)
-                        .requestMatchers("/wiki/create").hasRole(adminRank)
+                        .requestMatchers("/wikis/list").permitAll()
+                        .requestMatchers("/wikis/{id}").permitAll()
+                        .requestMatchers("/wikis/delete/{id}").hasRole(adminRank)
+                        .requestMatchers("/wikis/update/{id}").hasRole(adminRank)
+                        .requestMatchers("/wikis/create").hasRole(adminRank)
 
                         //Sécurités concernant l'access au panel d'administration
                         .requestMatchers("/admin/**").hasRole(adminRank)

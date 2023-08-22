@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = {"/wiki"})
+@RequestMapping(path = {"/wikis"})
 public class WikiController {
     private final WikiService wikiService;
 
