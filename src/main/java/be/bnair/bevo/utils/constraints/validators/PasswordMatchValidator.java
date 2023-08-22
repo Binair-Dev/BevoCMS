@@ -13,7 +13,7 @@ public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch
     @Override
     public boolean isValid(RegisterForm string, ConstraintValidatorContext context) {
         if (string == null) {
-            return true;
+            return false;
         }
 
         String password = string.getPassword();

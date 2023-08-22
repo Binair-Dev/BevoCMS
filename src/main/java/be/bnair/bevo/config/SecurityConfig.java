@@ -77,6 +77,19 @@ public class SecurityConfig {
                         .requestMatchers("/wikis/update/{id}").hasRole(adminRank)
                         .requestMatchers("/wikis/create").hasRole(adminRank)
 
+                        //Sécurités concernant les ShopItem
+                        .requestMatchers("/shop-items/list").permitAll()
+                        .requestMatchers("/shop-items/{id}").permitAll()
+                        .requestMatchers("/shop-items/delete/{id}").hasRole(adminRank)
+                        .requestMatchers("/shop-items/update/{id}").hasRole(adminRank)
+                        .requestMatchers("/shop-items/create").hasRole(adminRank)
+
+                        //Sécurités concernant les ShopTransactions
+                        .requestMatchers("/shop-transactions/create").hasRole(adminRank)
+
+                        //Sécurités concernant les Transactions
+                        .requestMatchers("/transactions/create").hasRole(adminRank)
+
                         //Sécurités concernant l'access au panel d'administration
                         .requestMatchers("/admin/**").hasRole(adminRank)
                         .anyRequest().permitAll();

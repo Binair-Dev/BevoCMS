@@ -4,21 +4,27 @@ import be.bnair.bevo.models.entities.NewsEntity;
 import be.bnair.bevo.models.entities.PaypalOfferEntity;
 import be.bnair.bevo.models.entities.RankEntity;
 import be.bnair.bevo.models.entities.RuleEntity;
+import be.bnair.bevo.models.entities.ServerEntity;
+import be.bnair.bevo.models.entities.VoteRewardEntity;
 import be.bnair.bevo.models.entities.WikiEntity;
 import be.bnair.bevo.repository.NewsRepository;
 import be.bnair.bevo.repository.PaypalOfferRepository;
 import be.bnair.bevo.repository.RankRepository;
 import be.bnair.bevo.repository.RuleRepository;
+import be.bnair.bevo.repository.ServerRepository;
 import be.bnair.bevo.repository.WikiRepository;
 
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.server.ServerRedirectStrategy;
 import org.springframework.stereotype.Component;
 
 import be.bnair.bevo.models.entities.security.UserEntity;
+import be.bnair.bevo.models.enums.EnumRewardType;
 import be.bnair.bevo.repository.UserRepository;
+import be.bnair.bevo.repository.VoteRewardRepository;
 
 @Component
 public class DataInit implements InitializingBean {
@@ -29,17 +35,21 @@ public class DataInit implements InitializingBean {
     private final NewsRepository newsRepository;
     private final PaypalOfferRepository paypalOfferRepository;
     private final RuleRepository ruleRepository;
+    private final VoteRewardRepository voteRewardRepository;
+    private final ServerRepository serverRepository;
     private final PasswordEncoder passwordEncoder;
 
     public DataInit(UserRepository userRepository, RankRepository rankRepository, WikiRepository wikiRepository,
-    NewsRepository newsRepository, PaypalOfferRepository paypalOfferRepository, RuleRepository ruleRepository,
-                    PasswordEncoder passwordEncoder) {
+    NewsRepository newsRepository, PaypalOfferRepository paypalOfferRepository, RuleRepository ruleRepository, VoteRewardRepository voteRewardRepository,
+                   ServerRepository serverRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.rankRepository = rankRepository;
         this.wikiRepository = wikiRepository;
         this.newsRepository = newsRepository;
         this.paypalOfferRepository = paypalOfferRepository;
         this.ruleRepository = ruleRepository;
+        this.voteRewardRepository = voteRewardRepository;
+        this.serverRepository = serverRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -118,6 +128,25 @@ public class DataInit implements InitializingBean {
         rule1.setTitle("Ne pas faire d'attaque DDOS envers notre infrastructure");
         rule1.setDescription("Une attaque DDoS, ou par d\u00E9ni de service distribu\u00E9, est un type de cyberattaque qui tente de rendre un site Web ou une ressource r\u00E9seau indisponible en l'inondant de trafic malveillant afin de l'emp\u00EAcher de fonctionner.");
         ruleRepository.save(rule1);
+        //endregion
+        //region Creations des serveurs
+        ServerEntity server1 = new ServerEntity();
+        server1.setTitle("Serveur 1");
+        server1.setServerIp("127.0.0.1");
+        server1.setServerPort(25565);
+        server1.setRconPassword("test1234@");
+        server1.setRconPort(25566);
+        serverRepository.save(server1);
+        //endregion
+        //region Creations des récompenses de votes
+        VoteRewardEntity voteRewardEntity = new VoteRewardEntity();
+        voteRewardEntity.setTitle("R\u00E9compense de votes 1");
+        voteRewardEntity.setPercent(100);
+        voteRewardEntity.setRewardType(EnumRewardType.COMMAND);
+        voteRewardEntity.setCommand("/give %player% apple 1");
+        voteRewardEntity.setCredit(0);
+        voteRewardEntity.setServer(server1);
+        voteRewardRepository.save(voteRewardEntity);
         //endregion
     }
 }
