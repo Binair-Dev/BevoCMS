@@ -19,4 +19,8 @@ public class ShopCategoryEntity {
     @OneToMany(mappedBy = "shopCategory", orphanRemoval = true)
     private Set<ShopItemEntity> shopItems = new LinkedHashSet<>();
 
+    public void addShopItem(ShopItemEntity item) {
+        if(!shopItems.contains(item))
+            this.shopItems.add(item);
+    }
 }

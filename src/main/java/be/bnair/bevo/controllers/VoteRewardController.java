@@ -1,17 +1,14 @@
 package be.bnair.bevo.controllers;
 
-import be.bnair.bevo.models.entities.RuleEntity;
+import be.bnair.bevo.models.dto.VoteRewardDTO;
 import be.bnair.bevo.models.entities.ServerEntity;
 import be.bnair.bevo.models.entities.VoteRewardEntity;
-import be.bnair.bevo.models.forms.RuleForm;
 import be.bnair.bevo.models.forms.VoteRewardForm;
-import be.bnair.bevo.services.RuleService;
 import be.bnair.bevo.services.ServerService;
 import be.bnair.bevo.services.VoteRewardService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,8 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import be.bnair.bevo.models.responses.FieldErrorResponse;
 import be.bnair.bevo.models.responses.MessageResponse;
-import be.bnair.bevo.utils.AuthUtils;
-import io.swagger.v3.oas.annotations.servers.Servers;
 import jakarta.validation.Valid;
 
 import java.util.ArrayList;
@@ -95,15 +90,15 @@ public class VoteRewardController {
     }
 
     @GetMapping(path = {"/list"})
-    public List<VoteRewardEntity> findAllAction() {
-        return this.voteRewardService.getAll();
+    public List<VoteRewardDTO> findAllAction() {
+        return this.voteRewardService.getAll().stream().map(VoteRewardDTO::toDTO).toList();
     }
 
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Object> findByIdAction(@PathVariable Long id) {
         Optional<VoteRewardEntity> newsEntity = this.voteRewardService.getOneById(id);
         if(newsEntity.isPresent()) {
-            return ResponseEntity.ok().body(newsEntity.get());
+            return ResponseEntity.ok().body(VoteRewardDTO.toDTO(newsEntity.get()));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "La récompense de vote avec l'id " + id + " n'existe pas."));
     }

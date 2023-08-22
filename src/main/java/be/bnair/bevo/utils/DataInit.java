@@ -5,6 +5,9 @@ import be.bnair.bevo.models.entities.PaypalOfferEntity;
 import be.bnair.bevo.models.entities.RankEntity;
 import be.bnair.bevo.models.entities.RuleEntity;
 import be.bnair.bevo.models.entities.ServerEntity;
+import be.bnair.bevo.models.entities.ShopCategoryEntity;
+import be.bnair.bevo.models.entities.ShopItemEntity;
+import be.bnair.bevo.models.entities.VoteEntity;
 import be.bnair.bevo.models.entities.VoteRewardEntity;
 import be.bnair.bevo.models.entities.WikiEntity;
 import be.bnair.bevo.repository.NewsRepository;
@@ -12,6 +15,8 @@ import be.bnair.bevo.repository.PaypalOfferRepository;
 import be.bnair.bevo.repository.RankRepository;
 import be.bnair.bevo.repository.RuleRepository;
 import be.bnair.bevo.repository.ServerRepository;
+import be.bnair.bevo.repository.ShopCategoryRepository;
+import be.bnair.bevo.repository.ShopItemRepository;
 import be.bnair.bevo.repository.WikiRepository;
 
 import java.time.LocalDate;
@@ -24,6 +29,7 @@ import org.springframework.stereotype.Component;
 import be.bnair.bevo.models.entities.security.UserEntity;
 import be.bnair.bevo.models.enums.EnumRewardType;
 import be.bnair.bevo.repository.UserRepository;
+import be.bnair.bevo.repository.VoteRepository;
 import be.bnair.bevo.repository.VoteRewardRepository;
 
 @Component
@@ -38,10 +44,14 @@ public class DataInit implements InitializingBean {
     private final VoteRewardRepository voteRewardRepository;
     private final ServerRepository serverRepository;
     private final PasswordEncoder passwordEncoder;
+    private final VoteRepository voteRepository;
+    private final ShopCategoryRepository shopCategoryRepository;
+    private final ShopItemRepository shopItemRepository;
 
     public DataInit(UserRepository userRepository, RankRepository rankRepository, WikiRepository wikiRepository,
     NewsRepository newsRepository, PaypalOfferRepository paypalOfferRepository, RuleRepository ruleRepository, VoteRewardRepository voteRewardRepository,
-                   ServerRepository serverRepository, PasswordEncoder passwordEncoder) {
+                   ServerRepository serverRepository, PasswordEncoder passwordEncoder, VoteRepository voteRepository, ShopCategoryRepository shopCategoryRepository,
+                   ShopItemRepository shopItemRepository) {
         this.userRepository = userRepository;
         this.rankRepository = rankRepository;
         this.wikiRepository = wikiRepository;
@@ -51,6 +61,9 @@ public class DataInit implements InitializingBean {
         this.voteRewardRepository = voteRewardRepository;
         this.serverRepository = serverRepository;
         this.passwordEncoder = passwordEncoder;
+        this.voteRepository = voteRepository;
+        this.shopCategoryRepository = shopCategoryRepository;
+        this.shopItemRepository = shopItemRepository;
     }
 
     @Override
@@ -147,6 +160,29 @@ public class DataInit implements InitializingBean {
         voteRewardEntity.setCredit(0);
         voteRewardEntity.setServer(server1);
         voteRewardRepository.save(voteRewardEntity);
+        //endregion
+        //region Creations votes
+        VoteEntity vote = new VoteEntity();
+        vote.setDate(LocalDate.now());
+        vote.setUser(julie);
+        voteRepository.save(vote);
+        //endregion
+        //region Creations ShopCategory
+        ShopCategoryEntity shopCategoryEntity = new ShopCategoryEntity();
+        shopCategoryEntity.setTitle("Shop Category");
+        shopCategoryEntity.setDisplayOrder(1);
+        shopCategoryRepository.save(shopCategoryEntity);
+        //endregion
+        //region Creations ShopItem
+        ShopItemEntity shopItemEntity = new ShopItemEntity();
+        shopItemEntity.setTitle("Shop item test");
+        shopItemEntity.setDescription("Description banale");
+        shopItemEntity.setImage("https://geo.img.pmdstatic.net/scale/https.3A.2F.2Fi.2Epmdstatic.2Enet.2Fgeo.2F2022.2F08.2F29.2F78a8d08d-5002-46e1-bc28-5e4a7bdb9ded.2Ejpeg/autox450/quality/65/nasique-2-2.jpg");
+        shopItemEntity.setPrice(20.0);
+        shopItemEntity.setCommand("/give %player% apple 1");
+        shopItemEntity.setShopCategory(shopCategoryEntity);
+        shopItemEntity.setServer(server1);
+        shopItemRepository.save(shopItemEntity);
         //endregion
     }
 }

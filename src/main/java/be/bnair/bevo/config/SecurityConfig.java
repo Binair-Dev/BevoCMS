@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((registry) -> {
                     registry
-                        //Enregistrement et Connexion
+                        //Enregistrement et Connexion 
                         .requestMatchers("/auth/**").permitAll()
 
                         //Sécurités concernant les news
@@ -89,6 +89,19 @@ public class SecurityConfig {
 
                         //Sécurités concernant les Transactions
                         .requestMatchers("/transactions/create").hasRole(adminRank)
+
+                        .requestMatchers("/vote-rewards/list").permitAll()
+                        .requestMatchers("/vote-rewards/{id}").permitAll()
+                        .requestMatchers("/vote-rewards/delete/{id}").hasRole(adminRank)
+                        .requestMatchers("/vote-rewards/update/{id}").hasRole(adminRank)
+                        .requestMatchers("/vote-rewards/create").hasRole(adminRank)
+
+                        //Sécurités concernant les utilisateurs
+                        .requestMatchers("/users/list").hasRole(adminRank)
+                        .requestMatchers("/users/{id}").hasRole(adminRank)
+                        .requestMatchers("/users/delete/{id}").hasRole(adminRank)
+                        .requestMatchers("/users/update/{id}").hasRole(adminRank)
+                        .requestMatchers("/users/create").hasRole(adminRank)
 
                         //Sécurités concernant l'access au panel d'administration
                         .requestMatchers("/admin/**").hasRole(adminRank)

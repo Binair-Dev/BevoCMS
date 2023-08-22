@@ -2,7 +2,6 @@ package be.bnair.bevo.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,25 +12,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import be.bnair.bevo.models.dto.NewsDTO;
-import be.bnair.bevo.models.entities.NewsEntity;
+import be.bnair.bevo.models.dto.ShopItemDTO;
 import be.bnair.bevo.models.entities.ServerEntity;
 import be.bnair.bevo.models.entities.ShopCategoryEntity;
 import be.bnair.bevo.models.entities.ShopItemEntity;
-import be.bnair.bevo.models.entities.security.UserEntity;
-import be.bnair.bevo.models.forms.NewsForm;
 import be.bnair.bevo.models.forms.ShopItemForm;
 import be.bnair.bevo.models.responses.FieldErrorResponse;
 import be.bnair.bevo.models.responses.MessageResponse;
-import be.bnair.bevo.services.NewsService;
 import be.bnair.bevo.services.ServerService;
 import be.bnair.bevo.services.ShopCategoryService;
 import be.bnair.bevo.services.ShopItemService;
-import be.bnair.bevo.services.UserService;
-import be.bnair.bevo.utils.AuthUtils;
 import jakarta.validation.Valid;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -107,15 +99,15 @@ public class ShopItemController {
     }
 
     @GetMapping(path = {"/list"})
-    public List<ShopItemEntity> findAllAction() {
-        return this.shopItemService.getAll();
+    public List<ShopItemDTO> findAllAction() {
+        return this.shopItemService.getAll().stream().map(ShopItemDTO::toDTO).toList();
     }
 
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Object> findByIdAction(@PathVariable Long id) {
         Optional<ShopItemEntity> newsEntity = this.shopItemService.getOneById(id);
         if(newsEntity.isPresent()) {
-            return ResponseEntity.ok().body(newsEntity.get());
+            return ResponseEntity.ok().body(ShopItemDTO.toDTO(newsEntity.get()));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "L'item du shop avec l'id " + id + " n'existe pas."));
     }

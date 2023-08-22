@@ -3,11 +3,6 @@ package be.bnair.bevo.models.dto;
 import java.time.LocalDate;
 
 import be.bnair.bevo.models.entities.NewsEntity;
-import be.bnair.bevo.models.entities.security.UserEntity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Data;
 
@@ -19,7 +14,7 @@ public class NewsDTO {
     private String description;
     private String image;
     private LocalDate date;
-    private String author;
+    private Long user_id;
 
     public static NewsDTO toDTO(NewsEntity entity){
         if(entity == null)
@@ -31,7 +26,7 @@ public class NewsDTO {
                 .description(entity.getDescription())
                 .image(entity.getImage())
                 .date(entity.getDate())
-                .author(entity.getAuthor().getUsername())
+                .user_id(entity.getAuthor().getId())
                 .build();
     }
 }

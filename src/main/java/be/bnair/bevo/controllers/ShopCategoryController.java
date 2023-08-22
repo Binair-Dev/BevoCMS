@@ -1,5 +1,6 @@
 package be.bnair.bevo.controllers;
 
+import be.bnair.bevo.models.dto.ShopCategoryDTO;
 import be.bnair.bevo.models.entities.ShopCategoryEntity;
 import be.bnair.bevo.models.forms.ShopCategoryForm;
 import be.bnair.bevo.services.ShopCategoryService;
@@ -83,15 +84,15 @@ public class ShopCategoryController {
     }
 
     @GetMapping(path = {"/list"})
-    public List<ShopCategoryEntity> findAllAction() {
-        return this.shopCategoryService.getAll();
+    public List<ShopCategoryDTO> findAllAction() {
+        return this.shopCategoryService.getAll().stream().map(ShopCategoryDTO::toDTO).toList();
     }
 
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Object> findByIdAction(@PathVariable Long id) {
         Optional<ShopCategoryEntity> newsEntity = this.shopCategoryService.getOneById(id);
         if(newsEntity.isPresent()) {
-            return ResponseEntity.ok().body(newsEntity.get());
+            return ResponseEntity.ok().body(ShopCategoryDTO.toDTO(newsEntity.get()));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "La catégorie shop avec l'id " + id + " n'existe pas."));
     }

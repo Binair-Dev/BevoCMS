@@ -11,7 +11,7 @@ import lombok.Data;
 public class VoteDTO {
     private Long id;
     private LocalDate date;
-    private String user;
+    private Long user_id;
 
     public static VoteDTO toDTO(VoteEntity entity){
         if(entity == null)
@@ -20,7 +20,7 @@ public class VoteDTO {
         return VoteDTO.builder()
                 .id(entity.getId())
                 .date(entity.getDate())
-                .user(entity.getUser().getUsername())
+                .user_id(entity.getUser().getId())
                 .build();
     }
 }
