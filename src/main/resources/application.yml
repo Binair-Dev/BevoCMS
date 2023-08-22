@@ -7,3 +7,8 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
+springfox:
+  documentation:
+    swagger-ui:
+      enabled: true
+      path: /swagger-ui.html

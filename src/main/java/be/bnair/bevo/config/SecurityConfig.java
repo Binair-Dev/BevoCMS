@@ -79,7 +79,7 @@ public class SecurityConfig {
 
                         //Sécurités concernant l'access au panel d'administration
                         .requestMatchers("/admin/**").hasRole(adminRank)
-                        .anyRequest().authenticated();
+                        .anyRequest().permitAll();
                 })
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
