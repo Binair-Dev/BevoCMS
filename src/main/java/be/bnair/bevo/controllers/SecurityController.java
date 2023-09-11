@@ -11,6 +11,7 @@ import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -48,18 +49,22 @@ public class SecurityController {
                 errorList.add(bindingResult.getAllErrors().get(i).getDefaultMessage());
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FieldErrorResponse(HttpStatus.BAD_REQUEST.value(), errorList));
+        } else {
+            try {
+                UserDetails user = this.securityService.loadUserByUsername(form.getUsername());
+                if (user == null) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.NOT_FOUND.value(), "Utilisateur introuvable."));
+                } else {
+                    if (passwordEncoder.matches(form.getPassword(), user.getPassword())) {
+                        return ResponseEntity.ok(new AuthResponse(utils.generateToken(user)));
+                    } else {
+                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse(HttpStatus.UNAUTHORIZED.value(), "Le mot de passe ne correspond pas."));
+                    }
+                }
+            } catch (UsernameNotFoundException e) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.NOT_FOUND.value(), "L'utilisateur n'existe pas."));
+            }
         }
-
-        UserDetails user = this.securityService.loadUserByUsername(form.getUsername());
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.NOT_FOUND.value(), "Utilisateur introuvable."));
-        }
-
-        if (passwordEncoder.matches(form.getPassword(), user.getPassword())) {
-            return ResponseEntity.ok(new AuthResponse(utils.generateToken(user)));
-        }
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @PostMapping(path = {"/register"})

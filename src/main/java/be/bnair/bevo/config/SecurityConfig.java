@@ -37,6 +37,7 @@ public class SecurityConfig {
 
                         //Sécurités concernant les news
                         .requestMatchers("/news/list").permitAll()
+                        .requestMatchers("/news/list/{limit}").permitAll()
                         .requestMatchers("/news/{id}").permitAll()
                         .requestMatchers("/news/delete/{id}").hasRole(adminRank)
                         .requestMatchers("/news/update/{id}").hasRole(adminRank)
