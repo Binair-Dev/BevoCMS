@@ -14,7 +14,7 @@ public class NewsDTO {
     private String description;
     private String image;
     private LocalDate date;
-    private Long user_id;
+    private String userName;
 
     public static NewsDTO toDTO(NewsEntity entity){
         if(entity == null)
@@ -26,7 +26,7 @@ public class NewsDTO {
                 .description(entity.getDescription())
                 .image(entity.getImage())
                 .date(entity.getDate())
-                .user_id(entity.getAuthor().getId())
+                .userName(entity.getAuthor().getNickname())
                 .build();
     }
 }

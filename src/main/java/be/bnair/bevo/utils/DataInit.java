@@ -107,6 +107,33 @@ public class DataInit implements InitializingBean {
         news1.setPublished(true);
         news1.setAuthor(b_nair);
         newsRepository.save(news1);
+
+        NewsEntity news2 = new NewsEntity();
+        news2.setTitle("News 2");
+        news2.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid");
+        news2.setImage("https://geo.img.pmdstatic.net/scale/https.3A.2F.2Fi.2Epmdstatic.2Enet.2Fgeo.2F2022.2F08.2F29.2F78a8d08d-5002-46e1-bc28-5e4a7bdb9ded.2Ejpeg/autox450/quality/65/nasique-2-2.jpg");
+        news2.setDate(LocalDate.now());
+        news2.setPublished(true);
+        news2.setAuthor(b_nair);
+        newsRepository.save(news2);
+
+        NewsEntity news3 = new NewsEntity();
+        news3.setTitle("News 3");
+        news3.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid");
+        news3.setImage("https://geo.img.pmdstatic.net/scale/https.3A.2F.2Fi.2Epmdstatic.2Enet.2Fgeo.2F2022.2F08.2F29.2F78a8d08d-5002-46e1-bc28-5e4a7bdb9ded.2Ejpeg/autox450/quality/65/nasique-2-2.jpg");
+        news3.setDate(LocalDate.now());
+        news3.setPublished(true);
+        news3.setAuthor(b_nair);
+        newsRepository.save(news3);
+
+        NewsEntity news4 = new NewsEntity();
+        news4.setTitle("News 4");
+        news4.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid");
+        news4.setImage("https://geo.img.pmdstatic.net/scale/https.3A.2F.2Fi.2Epmdstatic.2Enet.2Fgeo.2F2022.2F08.2F29.2F78a8d08d-5002-46e1-bc28-5e4a7bdb9ded.2Ejpeg/autox450/quality/65/nasique-2-2.jpg");
+        news4.setDate(LocalDate.now());
+        news4.setPublished(true);
+        news4.setAuthor(b_nair);
+        newsRepository.save(news4);
         //endregion
         //region Création des Wiki
         WikiEntity wiki1 = new WikiEntity();

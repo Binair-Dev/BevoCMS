@@ -26,8 +26,10 @@ import jakarta.validation.Valid;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = {"/news"})
@@ -106,6 +108,18 @@ public class NewsController {
     @GetMapping(path = {"/list"})
     public List<NewsDTO> findAllAction() {
         return this.newsService.getAll().stream().map(e -> NewsDTO.toDTO(e)).toList();
+    }
+
+    @GetMapping(path = {"/list/{limit}"})
+    public List<NewsDTO> findLastThreeNews(@PathVariable int limit) {
+        List<NewsDTO> list = this.newsService.getAll()
+                .stream()
+                .sorted(Comparator.comparing(NewsEntity::getDate).reversed())
+                .limit(limit)
+                .map(e -> NewsDTO.toDTO(e))
+                .collect(Collectors.toList());
+
+        return list;
     }
 
     @GetMapping(path = {"/{id}"})
