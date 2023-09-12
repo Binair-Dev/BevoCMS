@@ -34,6 +34,7 @@ public class SecurityConfig {
                     registry
                         //Enregistrement et Connexion 
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/informations").permitAll()
 
                         //Sécurités concernant les news
                         .requestMatchers("/news/list").permitAll()
