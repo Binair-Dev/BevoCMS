@@ -41,8 +41,9 @@ public class ShopCategoryServiceImpl implements ShopCategoryService {
         Optional<ShopCategoryEntity> entity = repository.findById(id);
         if (entity.isPresent()) {
             ShopCategoryEntity shopCategoryEntity = entity.get();
-            for (ShopItemEntity shopItemEntity : shopCategoryEntity.getShopItems()) {
-                shopItemRepository.deleteById(shopItemEntity.getId());
+            for (ShopItemEntity shopItemEntity : shopItemRepository.findAll()) {
+                if(shopItemEntity.getShopCategory().getId() == id)
+                    shopItemRepository.deleteById(shopItemEntity.getId());
             }
         }
         repository.deleteById(id);
@@ -55,7 +56,6 @@ public class ShopCategoryServiceImpl implements ShopCategoryService {
             ShopCategoryEntity shopCategoryEntity = entity.get();
             shopCategoryEntity.setTitle(updater.getTitle());
             shopCategoryEntity.setDisplayOrder(updater.getDisplayOrder());
-            shopCategoryEntity.setShopItems(updater.getShopItems());
             return repository.save(shopCategoryEntity);
         }
         throw new Exception("Could not find the shop category with id: " + id);

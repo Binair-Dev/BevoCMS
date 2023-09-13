@@ -63,7 +63,6 @@ public class JwtUtil {
 
     public boolean validateToken(String token, UserDetails userDetails) {
         boolean hasSameSubject = getUsernameFromToken(token).equals(userDetails.getUsername());
-
         return hasSameSubject && !isExpire(token);
     }
 

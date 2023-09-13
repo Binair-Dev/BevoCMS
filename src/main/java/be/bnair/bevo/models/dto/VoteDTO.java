@@ -12,6 +12,7 @@ public class VoteDTO {
     private Long id;
     private LocalDate date;
     private Long user_id;
+    private String user_name;
 
     public static VoteDTO toDTO(VoteEntity entity){
         if(entity == null)
@@ -21,6 +22,7 @@ public class VoteDTO {
                 .id(entity.getId())
                 .date(entity.getDate())
                 .user_id(entity.getUser().getId())
+                .user_name(entity.getUser().getNickname())
                 .build();
     }
 }

@@ -1,6 +1,8 @@
 package be.bnair.bevo.controllers;
 
 import be.bnair.bevo.models.Information;
+import be.bnair.bevo.models.dto.UserDTO;
+import be.bnair.bevo.utils.BevoUtils;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +46,11 @@ public class InformationController {
 
     @GetMapping(path = {"/stats"})
     public ResponseEntity<Information> getInformations() {
-        return ResponseEntity.ok(new Information(this.userService.getAll().stream().count()));
+        long staff = this.userService.getAll().stream()
+                .filter(user -> !user.getRank().getTitle().equals("Membre"))
+                .map(UserDTO::toDTO).count();
+        BevoUtils.view_count++;
+        //TODO: use api to get acutal connected players from server
+        return ResponseEntity.ok(new Information(this.userService.getAll().stream().count(), BevoUtils.view_count, 0, (int) staff));
     }
 }

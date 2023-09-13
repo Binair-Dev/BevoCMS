@@ -14,7 +14,7 @@ public class ShopCategoryDTO {
     private int displayOrder;
     private List<ShopItemDTO> shopItems;
 
-    public static ShopCategoryDTO toDTO(ShopCategoryEntity entity){
+    public static ShopCategoryDTO toDTO(ShopCategoryEntity entity, List<ShopItemDTO> items) {
         if(entity == null)
             throw  new IllegalArgumentException("Ne peut etre null");
 
@@ -22,7 +22,7 @@ public class ShopCategoryDTO {
                 .id(entity.getId())
                 .title(entity.getTitle())
                 .displayOrder(entity.getDisplayOrder())
-                .shopItems(entity.getShopItems().stream().map(ShopItemDTO::toDTO).toList())
+                .shopItems(items)
                 .build();
     }
 }

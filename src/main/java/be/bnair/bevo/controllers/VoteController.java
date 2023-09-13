@@ -1,5 +1,6 @@
 package be.bnair.bevo.controllers;
 
+import be.bnair.bevo.models.VoteTop;
 import be.bnair.bevo.models.dto.VoteDTO;
 import be.bnair.bevo.models.entities.VoteEntity;
 import be.bnair.bevo.models.entities.security.UserEntity;
@@ -9,6 +10,7 @@ import be.bnair.bevo.services.VoteService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,9 +25,8 @@ import be.bnair.bevo.models.responses.FieldErrorResponse;
 import be.bnair.bevo.models.responses.MessageResponse;
 import jakarta.validation.Valid;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = {"/votes"})
@@ -89,6 +90,28 @@ public class VoteController {
     @GetMapping(path = {"/list"})
     public List<VoteDTO> findAllAction() {
         return this.voteService.getAll().stream().map(VoteDTO::toDTO).toList();
+    }
+
+    @GetMapping(path = {"/list/top"})
+    public List<VoteTop> findTopAction() {
+        Map<Long, Integer> voteCounts = new HashMap<>();
+        List<VoteEntity> allVotes = this.voteService.getAll();
+        for (VoteEntity vote : allVotes) {
+            Long userId = vote.getUser().getId();
+            voteCounts.put(userId, voteCounts.getOrDefault(userId, 0) + 1);
+        }
+
+        List<VoteTop> topUserVotes = voteCounts.entrySet()
+                .stream()
+                .sorted(Map.Entry.<Long, Integer>comparingByValue().reversed())
+                .limit(10)
+                .map(entry -> VoteTop.builder()
+                        .user_name(this.userService.getOneById(entry.getKey()).isPresent() ? this.userService.getOneById(entry.getKey()).get().getNickname() : null)
+                        .vote_amount(entry.getValue())
+                        .build())
+                .collect(Collectors.toList());
+
+        return topUserVotes;
     }
 
     @GetMapping(path = {"/{id}"})

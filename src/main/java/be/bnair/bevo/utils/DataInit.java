@@ -189,27 +189,57 @@ public class DataInit implements InitializingBean {
         voteRewardRepository.save(voteRewardEntity);
         //endregion
         //region Creations votes
-        VoteEntity vote = new VoteEntity();
-        vote.setDate(LocalDate.now());
-        vote.setUser(julie);
-        voteRepository.save(vote);
+        VoteEntity vote1 = new VoteEntity();
+        vote1.setDate(LocalDate.now());
+        vote1.setUser(julie);
+        voteRepository.save(vote1);
+        VoteEntity vote2 = new VoteEntity();
+        vote2.setDate(LocalDate.now());
+        vote2.setUser(julie);
+        voteRepository.save(vote2);
+        VoteEntity vote3 = new VoteEntity();
+        vote3.setDate(LocalDate.now());
+        vote3.setUser(julie);
+        voteRepository.save(vote3);
+        VoteEntity vote4 = new VoteEntity();
+        vote4.setDate(LocalDate.now());
+        vote4.setUser(b_nair);
+        voteRepository.save(vote4);
+        VoteEntity vote5 = new VoteEntity();
+        vote5.setDate(LocalDate.now());
+        vote5.setUser(b_nair);
+        voteRepository.save(vote5);
         //endregion
         //region Creations ShopCategory
-        ShopCategoryEntity shopCategoryEntity = new ShopCategoryEntity();
-        shopCategoryEntity.setTitle("Shop Category");
-        shopCategoryEntity.setDisplayOrder(1);
-        shopCategoryRepository.save(shopCategoryEntity);
+        ShopCategoryEntity shopCategoryGrade = new ShopCategoryEntity();
+        shopCategoryGrade.setTitle("Grades");
+        shopCategoryGrade.setDisplayOrder(2);
+        shopCategoryRepository.save(shopCategoryGrade);
+        ShopCategoryEntity shopCategoryKits = new ShopCategoryEntity();
+        shopCategoryKits.setTitle("Kit");
+        shopCategoryKits.setDisplayOrder(1);
+        shopCategoryRepository.save(shopCategoryKits);
         //endregion
         //region Creations ShopItem
         ShopItemEntity shopItemEntity = new ShopItemEntity();
-        shopItemEntity.setTitle("Shop item test");
+        shopItemEntity.setTitle("Kit alchimiste");
         shopItemEntity.setDescription("Description banale");
         shopItemEntity.setImage("https://geo.img.pmdstatic.net/scale/https.3A.2F.2Fi.2Epmdstatic.2Enet.2Fgeo.2F2022.2F08.2F29.2F78a8d08d-5002-46e1-bc28-5e4a7bdb9ded.2Ejpeg/autox450/quality/65/nasique-2-2.jpg");
         shopItemEntity.setPrice(20.0);
         shopItemEntity.setCommand("/give %player% apple 1");
-        shopItemEntity.setShopCategory(shopCategoryEntity);
+        shopItemEntity.setShopCategory(shopCategoryKits);
         shopItemEntity.setServer(server1);
         shopItemRepository.save(shopItemEntity);
+
+        ShopItemEntity shopItemGradeEmpereur = new ShopItemEntity();
+        shopItemGradeEmpereur.setTitle("Grade Empereur");
+        shopItemGradeEmpereur.setDescription("Description banale");
+        shopItemGradeEmpereur.setImage("https://geo.img.pmdstatic.net/scale/https.3A.2F.2Fi.2Epmdstatic.2Enet.2Fgeo.2F2022.2F08.2F29.2F78a8d08d-5002-46e1-bc28-5e4a7bdb9ded.2Ejpeg/autox450/quality/65/nasique-2-2.jpg");
+        shopItemGradeEmpereur.setPrice(20.0);
+        shopItemGradeEmpereur.setCommand("/give %player% apple 1");
+        shopItemGradeEmpereur.setShopCategory(shopCategoryGrade);
+        shopItemGradeEmpereur.setServer(server1);
+        shopItemRepository.save(shopItemGradeEmpereur);
         //endregion
     }
 }

@@ -89,4 +89,9 @@ public class SecurityController {
         UserDetails user = this.securityService.create(entity);
         return ResponseEntity.ok(new AuthResponse(utils.generateToken(user)));
     }
+
+    @GetMapping(path = "/token-test")
+    public ResponseEntity<MessageResponse> checkTokenAction() {
+        return ResponseEntity.ok().body(new MessageResponse(HttpStatus.OK.value(), "success"));
+    }
 }

@@ -31,6 +31,10 @@ public class JwtFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
+        System.out.println(request.getMethod());
+        System.out.println(request.getCookies());
+        System.out.println(request.getParameterNames());
+        System.out.println(request.getHeader("Authorization"));
         String authorization = request.getHeader("Authorization");
         if (authorization != null) {
             String[] authorizations = authorization.split(" ");
@@ -40,15 +44,12 @@ public class JwtFilter extends OncePerRequestFilter {
             if (type.equals("Bearer") && !token.equals("")) {
                 String username = this.utils.getUsernameFromToken(token);
                 UserDetails user = this.userDetailsService.loadUserByUsername(username);
-
                 if (this.utils.validateToken(token, user)) {
                     UsernamePasswordAuthenticationToken upt = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-
                     SecurityContextHolder.getContext().setAuthentication(upt);
                 }
             }
         }
-
         filterChain.doFilter(request, response);
     }
 }

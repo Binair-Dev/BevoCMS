@@ -1,10 +1,12 @@
 package be.bnair.bevo.controllers;
 
 import be.bnair.bevo.models.dto.ShopCategoryDTO;
+import be.bnair.bevo.models.dto.ShopItemDTO;
 import be.bnair.bevo.models.entities.ShopCategoryEntity;
 import be.bnair.bevo.models.forms.ShopCategoryForm;
 import be.bnair.bevo.services.ShopCategoryService;
 
+import be.bnair.bevo.services.ShopItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,14 +28,17 @@ import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = {"/shop-categories"})
 public class ShopCategoryController {
     private final ShopCategoryService shopCategoryService;
+    private final ShopItemService shopItemService;
 
-    public ShopCategoryController(ShopCategoryService shopCategoryService) {
+    public ShopCategoryController(ShopCategoryService shopCategoryService, ShopItemService shopItemService) {
         this.shopCategoryService = shopCategoryService;
+        this.shopItemService = shopItemService;
     }
 
     @PatchMapping(path = {"/update/{id}"})
@@ -53,7 +58,6 @@ public class ShopCategoryController {
         Optional<ShopCategoryEntity> optionalShopCategory = this.shopCategoryService.getOneById(id);
         if(optionalShopCategory.isPresent()) {
             ShopCategoryEntity serverEntity = shopCategoryForm.toEntity();
-            serverEntity.setShopItems(optionalShopCategory.get().getShopItems());
             serverEntity.setId(id);
             try {
                 this.shopCategoryService.update(id, serverEntity);
@@ -85,14 +89,24 @@ public class ShopCategoryController {
 
     @GetMapping(path = {"/list"})
     public List<ShopCategoryDTO> findAllAction() {
-        return this.shopCategoryService.getAll().stream().map(ShopCategoryDTO::toDTO).toList();
+        return this.shopCategoryService.getAll().stream()
+                .map(cat -> ShopCategoryDTO.toDTO(cat, this.shopItemService.getAll().stream()
+                        .filter(si -> si.getShopCategory().getId() == cat.getId())
+                        .map(ShopItemDTO::toDTO)
+                        .toList()))
+                .toList();
     }
 
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Object> findByIdAction(@PathVariable Long id) {
         Optional<ShopCategoryEntity> newsEntity = this.shopCategoryService.getOneById(id);
         if(newsEntity.isPresent()) {
-            return ResponseEntity.ok().body(ShopCategoryDTO.toDTO(newsEntity.get()));
+            ShopCategoryEntity entity = newsEntity.get();
+            return ResponseEntity.ok().body(ShopCategoryDTO.toDTO(entity,
+                            this.shopItemService.getAll().stream()
+                                    .filter(si -> si.getShopCategory().getId() == entity.getId())
+                                    .map(ShopItemDTO::toDTO)
+                                    .toList()));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "La catégorie shop avec l'id " + id + " n'existe pas."));
     }
