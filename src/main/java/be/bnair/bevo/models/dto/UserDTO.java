@@ -20,13 +20,10 @@ public class UserDTO {
     private String nickname;
     private String email;
     private boolean isConfirmed;
-    private List<NewsEntity> news;
-    private List<TransactionEntity> transactions;
-    private List<VoteRewardEntity> voteRewards = new ArrayList<>();
     private RankEntity rank;
-    private List<ShopTransactionEntity> shopTransactions;
     private LocalDate createdAt;
     private LocalDate updatedAt;
+    private double credit;
 
     public static UserDTO toDTO(UserEntity entity){
         if(entity == null)
@@ -37,13 +34,10 @@ public class UserDTO {
                 .nickname(entity.getNickname())
                 .email(entity.getEmail())
                 .isConfirmed(entity.isConfirmed())
-                .news(entity.getNews().stream().toList())
-                .transactions(entity.getTransactions().stream().toList())
-                .voteRewards(entity.getVoteRewards())
                 .rank(entity.getRank())
-                .shopTransactions(entity.getShopTransactions().stream().toList())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
+                .credit(entity.getCredit())
                 .build();
     }
 }

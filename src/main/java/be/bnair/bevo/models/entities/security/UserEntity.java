@@ -16,26 +16,13 @@ public class UserEntity extends AuditingBaseEntity implements UserDetails {
     private String nickname;
     private String email;
     private String password;
-
     private boolean isConfirmed;
     private boolean isEnabled;
-
-    @OneToMany(mappedBy = "author", orphanRemoval = true)
-    private Set<NewsEntity> news = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
-    private Set<TransactionEntity> transactions = new LinkedHashSet<>();
-
-    @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "user_entity_id")
-    private List<VoteRewardEntity> voteRewards = new ArrayList<>();
+    private double credit;
 
     @ManyToOne
     @JoinColumn(name = "rank_id")
     private RankEntity rank;
-
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
-    private Set<ShopTransactionEntity> shopTransactions = new LinkedHashSet<>();
 
     @Transient
     @Override

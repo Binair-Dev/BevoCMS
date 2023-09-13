@@ -67,11 +67,8 @@ public class UserServiceImpl implements UserService {
             userEntity.setPassword(updater.getPassword());
             userEntity.setConfirmed(updater.isConfirmed());
             userEntity.setEnabled(updater.isEnabled());
-            userEntity.setNews(updater.getNews());
-            userEntity.setTransactions(updater.getTransactions());
-            userEntity.setVoteRewards(updater.getVoteRewards());
             userEntity.setRank(updater.getRank());
-            userEntity.setShopTransactions(updater.getShopTransactions());
+            userEntity.setCredit(updater.getCredit());
             return this.userRepository.save(userEntity);
         }
         throw new Exception("Could not find the user with id: " + id);

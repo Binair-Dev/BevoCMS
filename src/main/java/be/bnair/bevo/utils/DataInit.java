@@ -87,6 +87,7 @@ public class DataInit implements InitializingBean {
         b_nair.setConfirmed(true);
         b_nair.setEnabled(true);
         b_nair.setRank(admin);
+        b_nair.setCredit(1500);
         userRepository.save(b_nair);
 
         UserEntity julie = new UserEntity();
@@ -96,6 +97,7 @@ public class DataInit implements InitializingBean {
         julie.setConfirmed(true);
         julie.setEnabled(true);
         julie.setRank(member);
+        julie.setCredit(50);
         userRepository.save(julie);
         //endregion
         //region Création des News
