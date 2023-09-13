@@ -128,7 +128,7 @@ public class NewsController {
         if(newsEntity.isPresent()) {
             return ResponseEntity.ok().body(NewsDTO.toDTO(newsEntity.get()));
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "La news avec l'id " + id + " n'existe pas."));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.NOT_FOUND.value(), "La news avec l'id " + id + " n'existe pas."));
     }
 
     @DeleteMapping(path = {"/delete/{id}"})

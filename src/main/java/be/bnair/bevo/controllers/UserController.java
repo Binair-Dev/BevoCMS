@@ -74,9 +74,16 @@ public class UserController {
 
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Object> findByIdAction(@PathVariable Long id) {
+        UserEntity userEntityFromToken = AuthUtils.getUserEntityFromToken();
         Optional<UserEntity> userEntity = this.userService.getOneById(id);
         if(userEntity.isPresent()) {
-            return ResponseEntity.ok().body(UserDTO.toDTO(userEntity.get()));
+            if(userEntityFromToken.getUsername().equals(userEntity.get().getUsername()))
+                return ResponseEntity.ok().body(UserDTO.toDTO(userEntity.get()));
+            else {
+                if(userEntityFromToken.getRank().getTitle().equals("ADMINISTRATEUR"))
+                    return ResponseEntity.ok().body(UserDTO.toDTO(userEntity.get()));
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse(HttpStatus.UNAUTHORIZED.value(), "Vous ne pouvez pas récupèrer un utilisateur autre que vous !"));
+            }
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "L'utilisateur avec l'id " + id + " n'existe pas."));
     }

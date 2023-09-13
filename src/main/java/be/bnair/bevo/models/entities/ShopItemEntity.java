@@ -13,6 +13,7 @@ public class ShopItemEntity {
     private String title;
     private String description;
     private String image;
+    private String contentImage;
 
     private double price;
     private String command;

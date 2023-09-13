@@ -18,10 +18,11 @@ public class ShopItemDTO {
     private String title;
     private String description;
     private String image;
+    private String content_image;
     private double price;
     private String command;
     private Long shop_category_id;
-    private Long server_id;
+    private String server_name;
 
     public static ShopItemDTO toDTO(ShopItemEntity entity){
         if(entity == null)
@@ -35,7 +36,8 @@ public class ShopItemDTO {
                 .price(entity.getPrice())
                 .command(entity.getCommand())
                 .shop_category_id(entity.getShopCategory().getId())
-                .server_id(entity.getServer().getId())
+                .server_name(entity.getServer().getTitle())
+                .content_image(entity.getContentImage())
                 .build();
     }
 }

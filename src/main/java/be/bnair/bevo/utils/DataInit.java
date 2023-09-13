@@ -225,6 +225,7 @@ public class DataInit implements InitializingBean {
         shopItemEntity.setTitle("Kit alchimiste");
         shopItemEntity.setDescription("Description banale");
         shopItemEntity.setImage("https://geo.img.pmdstatic.net/scale/https.3A.2F.2Fi.2Epmdstatic.2Enet.2Fgeo.2F2022.2F08.2F29.2F78a8d08d-5002-46e1-bc28-5e4a7bdb9ded.2Ejpeg/autox450/quality/65/nasique-2-2.jpg");
+        shopItemEntity.setContentImage("https://geo.img.pmdstatic.net/scale/https.3A.2F.2Fi.2Epmdstatic.2Enet.2Fgeo.2F2022.2F08.2F29.2F78a8d08d-5002-46e1-bc28-5e4a7bdb9ded.2Ejpeg/autox450/quality/65/nasique-2-2.jpg");
         shopItemEntity.setPrice(20.0);
         shopItemEntity.setCommand("/give %player% apple 1");
         shopItemEntity.setShopCategory(shopCategoryKits);
@@ -235,6 +236,7 @@ public class DataInit implements InitializingBean {
         shopItemGradeEmpereur.setTitle("Grade Empereur");
         shopItemGradeEmpereur.setDescription("Description banale");
         shopItemGradeEmpereur.setImage("https://geo.img.pmdstatic.net/scale/https.3A.2F.2Fi.2Epmdstatic.2Enet.2Fgeo.2F2022.2F08.2F29.2F78a8d08d-5002-46e1-bc28-5e4a7bdb9ded.2Ejpeg/autox450/quality/65/nasique-2-2.jpg");
+        shopItemGradeEmpereur.setContentImage("https://geo.img.pmdstatic.net/scale/https.3A.2F.2Fi.2Epmdstatic.2Enet.2Fgeo.2F2022.2F08.2F29.2F78a8d08d-5002-46e1-bc28-5e4a7bdb9ded.2Ejpeg/autox450/quality/65/nasique-2-2.jpg");
         shopItemGradeEmpereur.setPrice(20.0);
         shopItemGradeEmpereur.setCommand("/give %player% apple 1");
         shopItemGradeEmpereur.setShopCategory(shopCategoryGrade);
