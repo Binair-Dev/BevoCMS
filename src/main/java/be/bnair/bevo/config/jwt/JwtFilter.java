@@ -31,10 +31,6 @@ public class JwtFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-        System.out.println(request.getMethod());
-        System.out.println(request.getCookies());
-        System.out.println(request.getParameterNames());
-        System.out.println(request.getHeader("Authorization"));
         String authorization = request.getHeader("Authorization");
         if (authorization != null) {
             String[] authorizations = authorization.split(" ");
