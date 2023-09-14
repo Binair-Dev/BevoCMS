@@ -29,15 +29,15 @@ public class SecurityConfig {
     public SecurityFilterChain httpSecurity(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
         final String adminRank = "ADMINISTRATEUR";
         http
-                //.cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((registry) -> {
                     registry
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
+                        .requestMatchers("/dedipass/check").permitAll()
+
                         //Enregistrement et Connexion
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/auth/register").permitAll()
-                        .requestMatchers("/auth/token-test").hasRole(adminRank)
                         .requestMatchers("/infos/stats").permitAll()
 
                         //Sécurités concernant les news
@@ -64,6 +64,13 @@ public class SecurityConfig {
                         .requestMatchers("/servers/delete/{id}").hasRole(adminRank)
                         .requestMatchers("/servers/update/{id}").hasRole(adminRank)
                         .requestMatchers("/servers/create").hasRole(adminRank)
+
+                        //Sécurités concernant les ranks
+                        .requestMatchers("/ranks/list").hasRole(adminRank)
+                        .requestMatchers("/ranks/{id}").hasRole(adminRank)
+                        .requestMatchers("/ranks/delete/{id}").hasRole(adminRank)
+                        .requestMatchers("/ranks/update/{id}").hasRole(adminRank)
+                        .requestMatchers("/ranks/create").hasRole(adminRank)
 
                         //Sécurités concernant les catégories shop
                         .requestMatchers("/shop-categories/delete/{id}").hasRole(adminRank)
@@ -104,7 +111,7 @@ public class SecurityConfig {
                         .requestMatchers("/users/list").hasRole(adminRank)
                         .requestMatchers("/users/{id}").hasRole(adminRank)
                         .requestMatchers("/users/delete/{id}").hasRole(adminRank)
-                        .requestMatchers("/users/update/{id}").hasRole(adminRank)
+                        .requestMatchers("/users/update/{id}").authenticated()
                         .requestMatchers("/users/create").hasRole(adminRank)
 
                         //Sécurités concernant l'access au panel d'administration

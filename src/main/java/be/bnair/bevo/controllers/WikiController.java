@@ -1,5 +1,10 @@
 package be.bnair.bevo.controllers;
 
+import be.bnair.bevo.models.entities.security.UserEntity;
+import be.bnair.bevo.services.UserService;
+import be.bnair.bevo.utils.AuthUtils;
+import be.bnair.bevo.utils.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +23,6 @@ import be.bnair.bevo.models.forms.WikiForm;
 import be.bnair.bevo.models.responses.FieldErrorResponse;
 import be.bnair.bevo.models.responses.MessageResponse;
 import be.bnair.bevo.services.WikiService;
-import be.bnair.bevo.utils.AuthUtils;
 import jakarta.validation.Valid;
 
 import java.util.ArrayList;
@@ -29,13 +33,18 @@ import java.util.Optional;
 @RequestMapping(path = {"/wikis"})
 public class WikiController {
     private final WikiService wikiService;
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
 
-    public WikiController(WikiService wikiService) {
+    public WikiController(WikiService wikiService, UserService userService, JwtUtil jwtUtil) {
         this.wikiService = wikiService;
+        this.userService = userService;
+        this.jwtUtil = jwtUtil;
     }
 
     @PatchMapping(path = {"/update/{id}"})
     public ResponseEntity<Object> patchAction(
+            HttpServletRequest request,
         @PathVariable Long id,
         @RequestBody @Valid WikiForm wikiForm,
         BindingResult bindingResult
@@ -48,7 +57,9 @@ public class WikiController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FieldErrorResponse(HttpStatus.BAD_REQUEST.value(), errorList));
         }
 
-        UserDetails userDetails = AuthUtils.getUserDetailsFromToken();
+        UserEntity userDetails = AuthUtils.getUserDetailsFromToken(request, jwtUtil, userService);
+        if(userDetails == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de récupèrer l'utilisateur via le token."));
+
         Optional<WikiEntity> optionalWikiEntity = this.wikiService.getOneById(id);
         if(optionalWikiEntity.isPresent()) {
             if(userDetails != null) {
@@ -70,6 +81,7 @@ public class WikiController {
 
     @PostMapping(path = {"/create"})
     public ResponseEntity<Object> createAction(
+            HttpServletRequest request,
         @RequestBody @Valid WikiForm wikiForm,
         BindingResult bindingResult
     ) {
@@ -80,14 +92,14 @@ public class WikiController {
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FieldErrorResponse(HttpStatus.BAD_REQUEST.value(), errorList));
         }
-        
-        UserDetails userDetails = AuthUtils.getUserDetailsFromToken();
-        if(userDetails != null) {
+
+        UserEntity userDetails = AuthUtils.getUserDetailsFromToken(request, jwtUtil, userService);
+        if(userDetails == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de récupèrer l'utilisateur via le token."));
+        else {
             WikiEntity newsEntity = wikiForm.toEntity();
             this.wikiService.create(newsEntity);
             return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "Le Wiki a bien été créée."));
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse(HttpStatus.UNAUTHORIZED.value(), "Impossible de trouver l'utilisateur."));
     }
 
     @GetMapping(path = {"/list"})

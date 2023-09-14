@@ -90,7 +90,7 @@ public class SecurityController {
         return ResponseEntity.ok(new AuthResponse(utils.generateToken(user)));
     }
 
-    @GetMapping(path = "/token-test")
+    @GetMapping(path = "/authenticated")
     public ResponseEntity<MessageResponse> checkTokenAction() {
         return ResponseEntity.ok().body(new MessageResponse(HttpStatus.OK.value(), "success"));
     }

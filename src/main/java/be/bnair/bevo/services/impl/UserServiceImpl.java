@@ -59,16 +59,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity update(Long id, UserEntity updater) throws Exception {
+    public UserEntity update(Long id, UserEntity updater, boolean isAdmin) throws Exception {
         Optional<UserEntity> entity = this.userRepository.findById(id);
         if(entity.isPresent()) {
             UserEntity userEntity = entity.get();
+            if(isAdmin) {
+                userEntity.setConfirmed(updater.isConfirmed());
+                userEntity.setEnabled(updater.isEnabled());
+                userEntity.setRank(updater.getRank());
+                userEntity.setCredit(updater.getCredit());
+            }
             userEntity.setEmail(updater.getEmail());
             userEntity.setPassword(updater.getPassword());
-            userEntity.setConfirmed(updater.isConfirmed());
-            userEntity.setEnabled(updater.isEnabled());
-            userEntity.setRank(updater.getRank());
-            userEntity.setCredit(updater.getCredit());
             return this.userRepository.save(userEntity);
         }
         throw new Exception("Could not find the user with id: " + id);

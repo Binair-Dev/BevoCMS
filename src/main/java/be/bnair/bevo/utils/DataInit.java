@@ -69,15 +69,16 @@ public class DataInit implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         //region Création des Rangs
+        RankEntity admin = new RankEntity();
+        admin.setTitle("Administrateur");
+        admin.setPower(100L);
+        rankRepository.save(admin);
+
         RankEntity member = new RankEntity();
         member.setTitle("Membre");
         member.setPower(1L);
         rankRepository.save(member);
 
-        RankEntity admin = new RankEntity();
-        admin.setTitle("Administrateur");
-        admin.setPower(100L);
-        rankRepository.save(admin);
         //endregion
         //region Création des Utilisateurs
         UserEntity b_nair = new UserEntity();

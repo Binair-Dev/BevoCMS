@@ -9,7 +9,6 @@ import be.bnair.bevo.services.ShopCategoryService;
 import be.bnair.bevo.services.ShopItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,13 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import be.bnair.bevo.models.responses.FieldErrorResponse;
 import be.bnair.bevo.models.responses.MessageResponse;
-import be.bnair.bevo.utils.AuthUtils;
 import jakarta.validation.Valid;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = {"/shop-categories"})

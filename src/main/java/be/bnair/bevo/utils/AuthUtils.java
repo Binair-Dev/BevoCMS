@@ -1,25 +1,19 @@
 package be.bnair.bevo.utils;
 
 import be.bnair.bevo.models.entities.security.UserEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import be.bnair.bevo.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Optional;
 
 public class AuthUtils {
-
-    public static UserDetails getUserDetailsFromToken() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.getPrincipal() instanceof UserDetails) {
-            return (UserDetails) authentication.getPrincipal();
+    public static UserEntity getUserDetailsFromToken(HttpServletRequest request, JwtUtil jwtUtil, UserService userService) {
+        String token = request.getHeader("Authorization");
+        if (token != null && token.startsWith("Bearer ")) {
+            String jwtToken = token.substring(7);
+            Optional<UserEntity> optional = userService.getOneByUsername(jwtUtil.getUsernameFromToken(jwtToken));
+            if(optional.isPresent()) return optional.get();
         }
-        throw new RuntimeException("L'utilisateur n'existe pas ou n'est pas authentifié.");
-    }
-
-    public static UserEntity getUserEntityFromToken() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.getPrincipal() instanceof UserDetails) {
-            return (UserEntity) authentication.getPrincipal();
-        }
-        throw new RuntimeException("L'utilisateur n'existe pas ou n'est pas authentifié.");
+        return null;
     }
 }
