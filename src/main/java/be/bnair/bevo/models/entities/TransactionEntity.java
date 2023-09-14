@@ -21,5 +21,6 @@ public class TransactionEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
+    private String identifier;
 
 }

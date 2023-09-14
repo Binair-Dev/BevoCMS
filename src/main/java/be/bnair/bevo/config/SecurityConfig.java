@@ -33,12 +33,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests((registry) -> {
                     registry
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
-                        .requestMatchers("/dedipass/check").permitAll()
 
                         //Enregistrement et Connexion
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/auth/register").permitAll()
                         .requestMatchers("/infos/stats").permitAll()
+                        .requestMatchers("/dedipass/check").permitAll()
 
                         //Sécurités concernant les news
                         .requestMatchers("/news/list").permitAll()

@@ -1,5 +1,7 @@
 package be.bnair.bevo.controllers;
 
+import be.bnair.bevo.models.dto.TransactionDTO;
+import be.bnair.bevo.models.entities.RuleEntity;
 import be.bnair.bevo.models.entities.ShopItemEntity;
 import be.bnair.bevo.models.entities.ShopTransactionEntity;
 import be.bnair.bevo.models.entities.TransactionEntity;
@@ -14,10 +16,7 @@ import be.bnair.bevo.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import be.bnair.bevo.models.responses.FieldErrorResponse;
 import be.bnair.bevo.models.responses.MessageResponse;
@@ -59,5 +58,10 @@ public class TransactionController {
             return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "La transaction a bien été créée."));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de créer la transaction."));
+    }
+
+    @GetMapping(path = {"/list"})
+    public List<TransactionDTO> findAllAction() {
+        return this.transactionService.getAll().stream().map(TransactionDTO::toDTO).toList();
     }
 }
