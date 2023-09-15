@@ -39,6 +39,8 @@ public class SecurityConfig {
                         .requestMatchers("/auth/register").permitAll()
                         .requestMatchers("/infos/stats").permitAll()
                         .requestMatchers("/dedipass/check").permitAll()
+                        .requestMatchers("/skins/upload").authenticated()
+                        .requestMatchers("/skins/{fileName:.+}").permitAll()
 
                         //Sécurités concernant les news
                         .requestMatchers("/news/list").permitAll()

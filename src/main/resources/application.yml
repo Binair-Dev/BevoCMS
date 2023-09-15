@@ -15,3 +15,5 @@ springfox:
 dedipass:
   publicKey: a8978e7273a1dc358a8577766e66df3e
   privateKey: 289128c12d95714a3c43fb883bf435fe1bc84553
+upload:
+  dir: skins
