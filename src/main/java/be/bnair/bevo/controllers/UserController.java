@@ -1,10 +1,12 @@
 package be.bnair.bevo.controllers;
 
 import be.bnair.bevo.models.dto.UserDTO;
+import be.bnair.bevo.models.entities.ShopTransactionEntity;
 import be.bnair.bevo.models.entities.security.UserEntity;
 import be.bnair.bevo.models.forms.RegisterForm;
 import be.bnair.bevo.models.forms.UserUpdateEmailForm;
 import be.bnair.bevo.models.forms.UserUpdatePasswordForm;
+import be.bnair.bevo.services.ShopTransactionService;
 import be.bnair.bevo.services.UserService;
 
 import be.bnair.bevo.utils.AuthUtils;
@@ -37,11 +39,13 @@ public class UserController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+    private final ShopTransactionService shopTransactionService;
 
-    public UserController(JwtUtil jwtUtil, UserService userService, PasswordEncoder passwordEncoder) {
+    public UserController(JwtUtil jwtUtil, UserService userService, PasswordEncoder passwordEncoder, ShopTransactionService shopTransactionService) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
         this.passwordEncoder = passwordEncoder;
+        this.shopTransactionService = shopTransactionService;
     }
 
     @PatchMapping(path = {"/update/{id}"})
@@ -133,7 +137,7 @@ public class UserController {
 
     @GetMapping(path = {"/list"})
     public List<UserDTO> findAllAction() {
-        return this.userService.getAll().stream().map(UserDTO::toDTO).toList();
+        return this.userService.getAll().stream().map(user -> UserDTO.toDTO(user)).toList();
     }
 
     @GetMapping(path = {"/{id}"})

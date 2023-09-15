@@ -1,5 +1,7 @@
 package be.bnair.bevo.controllers;
 
+import be.bnair.bevo.models.dto.ShopItemDTO;
+import be.bnair.bevo.models.dto.ShopTransactionDTO;
 import be.bnair.bevo.models.entities.ShopItemEntity;
 import be.bnair.bevo.models.entities.ShopTransactionEntity;
 import be.bnair.bevo.models.entities.security.UserEntity;
@@ -8,13 +10,13 @@ import be.bnair.bevo.services.ShopItemService;
 import be.bnair.bevo.services.ShopTransactionService;
 import be.bnair.bevo.services.UserService;
 
+import be.bnair.bevo.utils.AuthUtils;
+import be.bnair.bevo.utils.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import be.bnair.bevo.models.responses.FieldErrorResponse;
 import be.bnair.bevo.models.responses.MessageResponse;
@@ -30,11 +32,13 @@ public class ShopTransactionController {
     private final ShopTransactionService shopTransactionService;
     private final UserService userService;
     private final ShopItemService shopItemService;
+    private final JwtUtil jwtUtil;
 
-    public ShopTransactionController(ShopTransactionService shopTransactionService, UserService userService, ShopItemService shopItemService) {
+    public ShopTransactionController(ShopTransactionService shopTransactionService, UserService userService, ShopItemService shopItemService, JwtUtil jwtUtil) {
         this.shopTransactionService = shopTransactionService;
         this.userService = userService;
         this.shopItemService = shopItemService;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping(path = {"/create"})
@@ -60,5 +64,14 @@ public class ShopTransactionController {
             return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "La transaction shop a bien été créée."));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de créer la transaction shop."));
+    }
+
+    @GetMapping(path = {"/history"})
+    public ResponseEntity<List<ShopTransactionDTO>> findByUserId(HttpServletRequest request) {
+        UserEntity userDetails = AuthUtils.getUserDetailsFromToken(request, jwtUtil, userService);
+        if(userDetails == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
+
+        List<ShopTransactionDTO> shopTransaction = this.shopTransactionService.getAll().stream().filter(t -> t.getUser().getId() == userDetails.getId()).map(ShopTransactionDTO::toDTO).toList();
+        return ResponseEntity.ok(shopTransaction);
     }
 }

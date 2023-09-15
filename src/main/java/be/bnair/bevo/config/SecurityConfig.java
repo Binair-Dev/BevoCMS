@@ -41,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers("/dedipass/check").permitAll()
                         .requestMatchers("/skins/upload").authenticated()
                         .requestMatchers("/skins/{fileName:.+}").permitAll()
+                        .requestMatchers("/shop-transactions/history").authenticated()
 
                         //Sécurités concernant les news
                         .requestMatchers("/news/list").permitAll()

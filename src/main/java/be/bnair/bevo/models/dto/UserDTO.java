@@ -10,6 +10,7 @@ import be.bnair.bevo.models.entities.ShopTransactionEntity;
 import be.bnair.bevo.models.entities.TransactionEntity;
 import be.bnair.bevo.models.entities.VoteRewardEntity;
 import be.bnair.bevo.models.entities.security.UserEntity;
+import be.bnair.bevo.services.ShopTransactionService;
 import lombok.Builder;
 import lombok.Data;
 
@@ -25,7 +26,7 @@ public class UserDTO {
     private LocalDate updatedAt;
     private double credit;
 
-    public static UserDTO toDTO(UserEntity entity){
+    public static UserDTO toDTO(UserEntity entity) {
         if(entity == null)
             throw  new IllegalArgumentException("Ne peut etre null");
 

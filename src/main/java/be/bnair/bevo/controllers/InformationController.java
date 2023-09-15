@@ -30,7 +30,7 @@ public class InformationController {
     public ResponseEntity<Information> getInformations() {
         long staff = this.userService.getAll().stream()
                 .filter(user -> !user.getRank().getTitle().equals("Membre"))
-                .map(UserDTO::toDTO).count();
+                .map(u -> UserDTO.toDTO(u)).count();
         BevoUtils.view_count++;
         String serverStatus = "";
         List<ServerEntity> servers = this.serverService.getAll();
