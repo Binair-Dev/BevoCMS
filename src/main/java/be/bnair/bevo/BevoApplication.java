@@ -18,5 +18,4 @@ public class BevoApplication {
     public static void main(String[] args) {
         SpringApplication.run(BevoApplication.class, args);
     }
-
 }

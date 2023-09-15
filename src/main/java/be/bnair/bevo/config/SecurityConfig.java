@@ -112,6 +112,8 @@ public class SecurityConfig {
                         .requestMatchers("/users/{id}").hasRole(adminRank)
                         .requestMatchers("/users/delete/{id}").hasRole(adminRank)
                         .requestMatchers("/users/update/{id}").authenticated()
+                        .requestMatchers("/users/update/email").authenticated()
+                        .requestMatchers("/users/update/password").authenticated()
                         .requestMatchers("/users/create").hasRole(adminRank)
 
                         //Sécurités concernant l'access au panel d'administration

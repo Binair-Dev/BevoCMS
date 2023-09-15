@@ -62,7 +62,7 @@ public class ShopItemBuyController {
                         shopTransactionService.create(shopTransactionEntity);
 
                         ue.setCredit(ue.getCredit() - shopItemEntity.getPrice());
-                        userService.update(ue.getId(), ue, true);
+                        userService.update(ue.getId(), ue);
 
                         RconUtils.sendCommandToServer(serverEntity, shopItemEntity.getCommand().replaceAll("%player%", ue.getUsername()));
                         return ResponseEntity.accepted().body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "L'article a bien été acheté !"));

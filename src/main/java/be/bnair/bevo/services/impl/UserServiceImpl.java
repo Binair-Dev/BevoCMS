@@ -59,16 +59,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity update(Long id, UserEntity updater, boolean isAdmin) throws Exception {
+    public UserEntity update(Long id, UserEntity updater) throws Exception {
         Optional<UserEntity> entity = this.userRepository.findById(id);
         if(entity.isPresent()) {
             UserEntity userEntity = entity.get();
-            if(isAdmin) {
-                userEntity.setConfirmed(updater.isConfirmed());
-                userEntity.setEnabled(updater.isEnabled());
-                userEntity.setRank(updater.getRank());
-                userEntity.setCredit(updater.getCredit());
-            }
+            userEntity.setConfirmed(updater.isConfirmed());
+            userEntity.setEnabled(updater.isEnabled());
+            userEntity.setRank(updater.getRank());
+            userEntity.setCredit(updater.getCredit());
             userEntity.setEmail(updater.getEmail());
             userEntity.setPassword(updater.getPassword());
             return this.userRepository.save(userEntity);

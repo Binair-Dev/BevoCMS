@@ -59,7 +59,7 @@ public class DedipassController {
             if(status.equals("success")) {
                 ue.setCredit(ue.getCredit() + virtual_currency);
                 try {
-                    this.userService.update(ue.getId(), ue, true);
+                    this.userService.update(ue.getId(), ue);
                     TransactionEntity transactionEntity = new TransactionEntity();
                     transactionEntity.setCredit(virtual_currency);
                     transactionEntity.setPrice(payout);

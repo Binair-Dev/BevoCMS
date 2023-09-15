@@ -3,6 +3,8 @@ package be.bnair.bevo.controllers;
 import be.bnair.bevo.models.dto.UserDTO;
 import be.bnair.bevo.models.entities.security.UserEntity;
 import be.bnair.bevo.models.forms.RegisterForm;
+import be.bnair.bevo.models.forms.UserUpdateEmailForm;
+import be.bnair.bevo.models.forms.UserUpdatePasswordForm;
 import be.bnair.bevo.services.UserService;
 
 import be.bnair.bevo.utils.AuthUtils;
@@ -11,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,10 +36,12 @@ import java.util.Optional;
 public class UserController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(JwtUtil jwtUtil, UserService userService) {
+    public UserController(JwtUtil jwtUtil, UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PatchMapping(path = {"/update/{id}"})
@@ -54,23 +59,76 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FieldErrorResponse(HttpStatus.BAD_REQUEST.value(), errorList));
         }
 
-        UserEntity userDetails = AuthUtils.getUserDetailsFromToken(request, jwtUtil, userService);
-        if(userDetails == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de récupèrer l'utilisateur via le token."));
-
         Optional<UserEntity> optionUserEntity = this.userService.getOneById(id);
         if(optionUserEntity.isPresent()) {
             UserEntity userEntity = registerForm.toEntity();
             userEntity.setId(id);
             try {
-                if(userDetails.getRank().getId() == 1L)
-                    this.userService.update(id, userEntity, true);
-                this.userService.update(id, userEntity, false);
+                this.userService.update(id, userEntity);
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(new MessageResponse(HttpStatus.ACCEPTED.value(), "L'utilisateur a bien été mise a jour."));
             } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre le serveur a jours, veuillez contacter un administrateur."));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre l'utilisateur a jours, veuillez contacter un administrateur."));
             }
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre le serveur a jours, veuillez contacter un administrateur."));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre l'utilisateur a jours, veuillez contacter un administrateur."));
+    }
+
+    @PatchMapping(path = {"/update/email"})
+    public ResponseEntity<Object> updateEmailAction(
+            HttpServletRequest request,
+            @RequestBody @Valid UserUpdateEmailForm userUpdateEmailForm,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            List<String> errorList = new ArrayList<>();
+            for(int i = 0; i < bindingResult.getAllErrors().size(); i++) {
+                errorList.add(bindingResult.getAllErrors().get(i).getDefaultMessage());
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FieldErrorResponse(HttpStatus.BAD_REQUEST.value(), errorList));
+        }
+
+        UserEntity userDetails = AuthUtils.getUserDetailsFromToken(request, jwtUtil, userService);
+        if(userDetails == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de récupèrer l'utilisateur via le token."));
+
+        if(userUpdateEmailForm.getEmail().equals(userDetails.getEmail())) {
+            userDetails.setEmail(userUpdateEmailForm.getNew_email());
+            try {
+                this.userService.update(userDetails.getId(), userDetails);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(new MessageResponse(HttpStatus.ACCEPTED.value(), "L'utilisateur a bien été mise a jour."));
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre l'utilisateur a jours, veuillez contacter un administrateur."));
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "L'email actuel spécifié n'est pas bon."));
+    }
+
+    @PatchMapping(path = {"/update/password"})
+    public ResponseEntity<Object> updatePasswordAction(
+            HttpServletRequest request,
+            @RequestBody @Valid UserUpdatePasswordForm userUpdatePasswordForm,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            List<String> errorList = new ArrayList<>();
+            for(int i = 0; i < bindingResult.getAllErrors().size(); i++) {
+                errorList.add(bindingResult.getAllErrors().get(i).getDefaultMessage());
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FieldErrorResponse(HttpStatus.BAD_REQUEST.value(), errorList));
+        }
+
+        UserEntity userDetails = AuthUtils.getUserDetailsFromToken(request, jwtUtil, userService);
+        if(userDetails == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de récupèrer l'utilisateur via le token."));
+
+        if (passwordEncoder.matches(userUpdatePasswordForm.getPassword(), userDetails.getPassword())) {
+            userDetails.setPassword(passwordEncoder.encode(userUpdatePasswordForm.getNew_password()));
+            try {
+                this.userService.update(userDetails.getId(), userDetails);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(new MessageResponse(HttpStatus.ACCEPTED.value(), "L'utilisateur a bien été mise a jour."));
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre l'utilisateur a jours, veuillez contacter un administrateur."));
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Le mot de passe actuel spécifié n'est pas bon."));
     }
 
     @GetMapping(path = {"/list"})
@@ -99,16 +157,11 @@ public class UserController {
     @DeleteMapping(path = {"/delete/{id}"})
     public ResponseEntity<Object> deleteByIdAction(HttpServletRequest request, @PathVariable Long id) {
         try {
-            UserEntity userDetails = AuthUtils.getUserDetailsFromToken(request, jwtUtil, userService);
-            if(userDetails == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de récupèrer l'utilisateur via le token."));
-
             Optional<UserEntity> optionalUserEntity = this.userService.getOneById(id);
             if(optionalUserEntity.isPresent()) {
                 UserEntity userEntity = optionalUserEntity.get();
                 userEntity.setEnabled(false);
-                if(userDetails.getRank().getId() == 1L)
-                    userService.update(id, userEntity, true);
-                userService.update(id, userEntity, false);
+                userService.update(id, userEntity);
                 return ResponseEntity.ok().body(new MessageResponse(HttpStatus.OK.value(), "L'utilisateur avec l'id " + id + " a bien été supprimée."));
             } else return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.NOT_FOUND.value(), "L'utilisateur avec l'id " + id + "' n'existe pas."));
         } catch (Exception e) {
