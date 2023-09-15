@@ -12,7 +12,7 @@ public class ShopTransactionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @OneToOne
+    @ManyToOne
     private ShopItemEntity item;
 
     private double credit;

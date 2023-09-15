@@ -174,11 +174,11 @@ public class DataInit implements InitializingBean {
         //endregion
         //region Creations des serveurs
         ServerEntity server1 = new ServerEntity();
-        server1.setTitle("Serveur 1");
-        server1.setServerIp("127.0.0.1");
+        server1.setTitle("Utopia - Local");
+        server1.setServerIp("localhost");
         server1.setServerPort(25565);
-        server1.setRconPassword("test1234@");
-        server1.setRconPort(25566);
+        server1.setRconPassword("test1234");
+        server1.setRconPort(25575);
         serverRepository.save(server1);
         //endregion
         //region Creations des récompenses de votes
@@ -214,16 +214,42 @@ public class DataInit implements InitializingBean {
         voteRepository.save(vote5);
         //endregion
         //region Creations ShopCategory
+        ShopCategoryEntity shopCategoryTest = new ShopCategoryEntity();
+        shopCategoryTest.setTitle("Test");
+        shopCategoryTest.setDisplayOrder(1);
+        shopCategoryRepository.save(shopCategoryTest);
         ShopCategoryEntity shopCategoryGrade = new ShopCategoryEntity();
         shopCategoryGrade.setTitle("Grades");
         shopCategoryGrade.setDisplayOrder(2);
         shopCategoryRepository.save(shopCategoryGrade);
         ShopCategoryEntity shopCategoryKits = new ShopCategoryEntity();
         shopCategoryKits.setTitle("Kit");
-        shopCategoryKits.setDisplayOrder(1);
+        shopCategoryKits.setDisplayOrder(3);
         shopCategoryRepository.save(shopCategoryKits);
         //endregion
         //region Creations ShopItem
+        ShopItemEntity shopItemTestDay = new ShopItemEntity();
+        shopItemTestDay.setTitle("Day");
+        shopItemTestDay.setDescription("Permet de mettre le jour");
+        shopItemTestDay.setImage("https://geo.img.pmdstatic.net/scale/https.3A.2F.2Fi.2Epmdstatic.2Enet.2Fgeo.2F2022.2F08.2F29.2F78a8d08d-5002-46e1-bc28-5e4a7bdb9ded.2Ejpeg/autox450/quality/65/nasique-2-2.jpg");
+        shopItemTestDay.setContentImage("https://geo.img.pmdstatic.net/scale/https.3A.2F.2Fi.2Epmdstatic.2Enet.2Fgeo.2F2022.2F08.2F29.2F78a8d08d-5002-46e1-bc28-5e4a7bdb9ded.2Ejpeg/autox450/quality/65/nasique-2-2.jpg");
+        shopItemTestDay.setPrice(10.0);
+        shopItemTestDay.setCommand("/time set 0");
+        shopItemTestDay.setShopCategory(shopCategoryTest);
+        shopItemTestDay.setServer(server1);
+        shopItemRepository.save(shopItemTestDay);
+
+        ShopItemEntity shopItemTestNight = new ShopItemEntity();
+        shopItemTestNight.setTitle("Night");
+        shopItemTestNight.setDescription("Permet de mettre la nuit");
+        shopItemTestNight.setImage("https://geo.img.pmdstatic.net/scale/https.3A.2F.2Fi.2Epmdstatic.2Enet.2Fgeo.2F2022.2F08.2F29.2F78a8d08d-5002-46e1-bc28-5e4a7bdb9ded.2Ejpeg/autox450/quality/65/nasique-2-2.jpg");
+        shopItemTestNight.setContentImage("https://geo.img.pmdstatic.net/scale/https.3A.2F.2Fi.2Epmdstatic.2Enet.2Fgeo.2F2022.2F08.2F29.2F78a8d08d-5002-46e1-bc28-5e4a7bdb9ded.2Ejpeg/autox450/quality/65/nasique-2-2.jpg");
+        shopItemTestNight.setPrice(10.0);
+        shopItemTestNight.setCommand("/time set 0");
+        shopItemTestNight.setShopCategory(shopCategoryTest);
+        shopItemTestNight.setServer(server1);
+        shopItemRepository.save(shopItemTestNight);
+
         ShopItemEntity shopItemEntity = new ShopItemEntity();
         shopItemEntity.setTitle("Kit alchimiste");
         shopItemEntity.setDescription("Description banale");

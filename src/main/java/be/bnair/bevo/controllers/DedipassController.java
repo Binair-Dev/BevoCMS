@@ -54,7 +54,6 @@ public class DedipassController {
         try {
             JSONObject object = new JSONObject(json);
             String status = object.getString("status");
-            String identifier = object.getString("identifier");
             double virtual_currency = object.getDouble("virtual_currency");
             double payout = object.getDouble("payout");
             if(status.equals("success")) {
@@ -66,7 +65,7 @@ public class DedipassController {
                     transactionEntity.setPrice(payout);
                     transactionEntity.setDate(LocalDate.now());
                     transactionEntity.setUser(ue);
-                    transactionEntity.setIdentifier(identifier);
+                    transactionEntity.setIdentifier(code);
                     this.transactionService.create(transactionEntity);
                     return ResponseEntity.ok(new MessageResponse(200, "Votre compte a été crédité de " + virtual_currency + " crédits!"));
                 } catch (Exception e) {
