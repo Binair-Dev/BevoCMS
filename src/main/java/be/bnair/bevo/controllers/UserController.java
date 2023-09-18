@@ -1,11 +1,14 @@
 package be.bnair.bevo.controllers;
 
 import be.bnair.bevo.models.dto.UserDTO;
+import be.bnair.bevo.models.entities.RankEntity;
 import be.bnair.bevo.models.entities.ShopTransactionEntity;
 import be.bnair.bevo.models.entities.security.UserEntity;
 import be.bnair.bevo.models.forms.RegisterForm;
+import be.bnair.bevo.models.forms.UserForm;
 import be.bnair.bevo.models.forms.UserUpdateEmailForm;
 import be.bnair.bevo.models.forms.UserUpdatePasswordForm;
+import be.bnair.bevo.services.RankService;
 import be.bnair.bevo.services.ShopTransactionService;
 import be.bnair.bevo.services.UserService;
 
@@ -17,13 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import be.bnair.bevo.models.responses.FieldErrorResponse;
 import be.bnair.bevo.models.responses.MessageResponse;
@@ -32,27 +29,30 @@ import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = {"/users"})
 public class UserController {
     private final UserService userService;
+    private final RankService rankService;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private final ShopTransactionService shopTransactionService;
 
-    public UserController(JwtUtil jwtUtil, UserService userService, PasswordEncoder passwordEncoder, ShopTransactionService shopTransactionService) {
+    public UserController(JwtUtil jwtUtil, UserService userService, PasswordEncoder passwordEncoder, ShopTransactionService shopTransactionService, RankService rankService) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
         this.passwordEncoder = passwordEncoder;
         this.shopTransactionService = shopTransactionService;
+        this.rankService = rankService;
     }
 
     @PatchMapping(path = {"/update/{id}"})
     public ResponseEntity<Object> patchAction(
             HttpServletRequest request,
             @PathVariable Long id,
-            @RequestBody @Valid RegisterForm registerForm,
+            @RequestBody @Valid UserForm userForm,
             BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
@@ -64,13 +64,18 @@ public class UserController {
         }
 
         Optional<UserEntity> optionUserEntity = this.userService.getOneById(id);
+        Optional<RankEntity> optionalRankEntity = this.rankService.getOneById(userForm.getRank());
         if(optionUserEntity.isPresent()) {
-            UserEntity userEntity = registerForm.toEntity();
+            UserEntity userEntity = userForm.toEntity();
+            if(optionalRankEntity.isPresent()) userEntity.setRank(optionalRankEntity.get());
+            System.out.println(userForm.toString());
+            if(userForm.getPassword() != null && userForm.getPassword().length() > 0) userEntity.setPassword(passwordEncoder.encode(userForm.getPassword()));
             userEntity.setId(id);
             try {
                 this.userService.update(id, userEntity);
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(new MessageResponse(HttpStatus.ACCEPTED.value(), "L'utilisateur a bien été mise a jour."));
             } catch (Exception e) {
+                e.printStackTrace();
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre l'utilisateur a jours, veuillez contacter un administrateur."));
             }
         }
@@ -135,9 +140,21 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Le mot de passe actuel spécifié n'est pas bon."));
     }
 
-    @GetMapping(path = {"/list"})
-    public List<UserDTO> findAllAction() {
-        return this.userService.getAll().stream().map(user -> UserDTO.toDTO(user)).toList();
+    @GetMapping("/list")
+    public ResponseEntity<Object> findAllAction(@RequestParam(defaultValue = "0", required = false) int page, @RequestParam(defaultValue = "20", required = false) int size) {
+        List<UserEntity> allUsers = userService.getAll();
+        int fromIndex = page * size;
+        int toIndex = Math.min(fromIndex + size, allUsers.size());
+
+        try {
+            return ResponseEntity.ok(allUsers
+                    .subList(fromIndex, toIndex)
+                    .stream()
+                    .map(UserDTO::toDTO)
+                    .collect(Collectors.toList()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @GetMapping(path = {"/{id}"})

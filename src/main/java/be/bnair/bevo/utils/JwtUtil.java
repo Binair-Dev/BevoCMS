@@ -1,5 +1,6 @@
 package be.bnair.bevo.utils;
 
+import be.bnair.bevo.models.entities.security.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtParser;
@@ -67,8 +68,10 @@ public class JwtUtil {
     }
 
     public String generateToken(UserDetails userDetails) {
+        UserEntity entity = (UserEntity) userDetails;
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList().toArray());
+        claims.put("id", entity.getId());
         return generateToken(claims, userDetails.getUsername());
     }
 
