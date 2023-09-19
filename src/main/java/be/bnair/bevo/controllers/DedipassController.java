@@ -40,6 +40,7 @@ public class DedipassController {
 
     @PostMapping("/check")
     public void redirectToAngular(HttpServletResponse response, @RequestParam String code) throws IOException {
+        System.out.println("REIDRECTIND TO SQOPJDI UPQSHND FQSIKOD N?JKS");
         response.sendRedirect("http://localhost:4200/status-code?code=" + code);
     }
 

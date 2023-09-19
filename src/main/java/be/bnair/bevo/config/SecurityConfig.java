@@ -38,7 +38,6 @@ public class SecurityConfig {
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/auth/register").permitAll()
                         .requestMatchers("/infos/stats").permitAll()
-                        .requestMatchers("/dedipass/check").permitAll()
                         .requestMatchers("/skins/upload").authenticated()
                         .requestMatchers("/skins/{fileName:.+}").permitAll()
                         .requestMatchers("/shop-transactions/history").authenticated()
@@ -115,12 +114,14 @@ public class SecurityConfig {
 
                         //Sécurités concernant les utilisateurs
                         .requestMatchers("/users/list").hasRole(adminRank)
-                        .requestMatchers("/users/{id}").hasRole(adminRank)
+                        .requestMatchers("/users/{id}").permitAll()
                         .requestMatchers("/users/delete/{id}").hasRole(adminRank)
                         .requestMatchers("/users/update/{id}").authenticated()
                         .requestMatchers("/users/update/email").authenticated()
                         .requestMatchers("/users/update/password").authenticated()
                         .requestMatchers("/users/create").hasRole(adminRank)
+
+                        .requestMatchers("/dedipass/check").permitAll()
 
                         //Sécurités concernant l'access au panel d'administration
                         .requestMatchers("/admin/**").hasRole(adminRank)

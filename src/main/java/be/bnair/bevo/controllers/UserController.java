@@ -164,7 +164,7 @@ public class UserController {
 
         Optional<UserEntity> userEntity = this.userService.getOneById(id);
         if(userEntity.isPresent()) {
-            if(userDetails.getUsername().equals(userEntity.get().getUsername()))
+            if(userDetails.getId() == id)
                 return ResponseEntity.ok().body(UserDTO.toDTO(userEntity.get()));
             else {
                 if(userDetails.getRank().getId() == 1L)
