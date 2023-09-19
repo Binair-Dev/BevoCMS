@@ -63,14 +63,26 @@ public class ImageUploadController {
     public ResponseEntity<ByteArrayResource> getSkin(@PathVariable String fileName) {
         try {
             Path filePath = Paths.get(uploadDirectory, fileName);
-            byte[] fileContent = Files.readAllBytes(filePath);
+            if(filePath.toFile().exists()) {
+                byte[] fileContent = Files.readAllBytes(filePath);
 
-            ByteArrayResource resource = new ByteArrayResource(fileContent);
+                ByteArrayResource resource = new ByteArrayResource(fileContent);
 
-            return ResponseEntity.ok()
-                    .contentLength(fileContent.length)
-                    .contentType(MediaType.IMAGE_JPEG)
-                    .body(resource);
+                return ResponseEntity.ok()
+                        .contentLength(fileContent.length)
+                        .contentType(MediaType.IMAGE_JPEG)
+                        .body(resource);
+            } else {
+                filePath = Paths.get(uploadDirectory, "default.png");
+                byte[] fileContent = Files.readAllBytes(filePath);
+
+                ByteArrayResource resource = new ByteArrayResource(fileContent);
+
+                return ResponseEntity.ok()
+                        .contentLength(fileContent.length)
+                        .contentType(MediaType.IMAGE_JPEG)
+                        .body(resource);
+            }
         } catch (IOException e) {
             return ResponseEntity.notFound().build();
         }
