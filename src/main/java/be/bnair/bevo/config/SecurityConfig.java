@@ -42,6 +42,9 @@ public class SecurityConfig {
                         .requestMatchers("/skins/upload").authenticated()
                         .requestMatchers("/skins/{fileName:.+}").permitAll()
                         .requestMatchers("/shop-transactions/history").authenticated()
+                        .requestMatchers("/images/upload").hasRole(adminRank)
+                        .requestMatchers("/images/delete/{fileName:.+}").hasRole(adminRank)
+                        .requestMatchers("/images/get/**").permitAll()
 
                         //Sécurités concernant les news
                         .requestMatchers("/news/list").permitAll()
