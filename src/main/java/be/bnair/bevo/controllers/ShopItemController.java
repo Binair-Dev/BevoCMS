@@ -59,9 +59,10 @@ public class ShopItemController {
         Optional<ShopCategoryEntity> optionalShopCategory = this.shopCategoryService.getOneById(shopItemForm.getShopCategory());
         Optional<ServerEntity> optionalServer = this.serverService.getOneById(shopItemForm.getServer());
         if(optionalShopItemEntity.isPresent() && optionalShopCategory.isPresent() && optionalServer.isPresent()) {
-            ShopItemEntity shopItemEntity = optionalShopItemEntity.get();
+            ShopItemEntity shopItemEntity = shopItemForm.toEntity();
             shopItemEntity.setShopCategory(optionalShopCategory.get());
             shopItemEntity.setServer(optionalServer.get());
+            shopItemEntity.setId(optionalShopItemEntity.get().getId());
             try {
                 this.shopItemService.update(id, shopItemEntity);
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(new MessageResponse(HttpStatus.ACCEPTED.value(), "L'item du shop a bien été mise a jour."));

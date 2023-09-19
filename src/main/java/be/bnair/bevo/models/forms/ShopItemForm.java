@@ -24,6 +24,9 @@ public class ShopItemForm {
     @NotEmpty(message = "L'url de l'image ne peut pas être vide.")
     @Size(min = 3, message = "L'url de l'image doit contenir au moins 3 caractères")
     private String image;
+    @NotEmpty(message = "L'url de l'image du contenu ne peut pas être vide.")
+    @Size(min = 3, message = "L'url de l'image du contenu doit contenir au moins 3 caractères")
+    private String contentImage;
     @Min(value = 1, message = "Les crédits donnés ne peuvent pas être vide")
     private double price;
     @NotEmpty(message = "La commande ne peut pas être vide.")
@@ -39,6 +42,7 @@ public class ShopItemForm {
         shopItemEntity.setTitle(title);
         shopItemEntity.setDescription(description);
         shopItemEntity.setImage(image);
+        shopItemEntity.setContentImage(contentImage);
         shopItemEntity.setPrice(price);
         shopItemEntity.setCommand(command);        
         return shopItemEntity;
