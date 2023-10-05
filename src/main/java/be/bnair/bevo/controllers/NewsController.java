@@ -133,7 +133,7 @@ public class NewsController {
     public List<NewsDTO> findLastThreeNews(@PathVariable int limit) {
         List<NewsDTO> list = this.newsService.getAll()
                 .stream()
-                .sorted(Comparator.comparing(NewsEntity::getDate).reversed())
+                .sorted(Comparator.comparing(NewsEntity::getId).reversed())
                 .limit(limit)
                 .map(e -> NewsDTO.toDTO(e))
                 .collect(Collectors.toList());
