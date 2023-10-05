@@ -14,7 +14,7 @@ public class VoteRewardDTO {
     private EnumRewardType rewardType;
     private String command;
     private double credit;
-    private Long server_id;
+    private Long server;
 
     public static VoteRewardDTO toDTO(VoteRewardEntity entity){
         if(entity == null)
@@ -27,7 +27,7 @@ public class VoteRewardDTO {
                 .rewardType(entity.getRewardType())
                 .command(entity.getCommand())
                 .credit(entity.getCredit())
-                .server_id(entity.getServer().getId())
+                .server(entity.getServer().getId())
                 .build();
     }
 }

@@ -16,13 +16,12 @@ public class TypeCheckValidator implements ConstraintValidator<TypeCheckConstrai
         if (form == null) {
             return false;
         }
-        
-        if(form.getRewardType() == EnumRewardType.COMMAND.toString()) {
-            if(form.getCommand() != null && !form.getCommand().isEmpty() && form.getCommand().length() > 3 && form.getCredit() == 0) return true;
-            return false;
+
+        if(form.getRewardType().equalsIgnoreCase(EnumRewardType.COMMAND.toString())) {
+            if(form.getCommand() != null && !form.getCommand().isEmpty() && form.getCommand().length() >= 3) return true;
         } else {
-            if(form.getCredit() > 1 && form.getCommand() == null) return true;
-            return false;
+            if(form.getCredit() > 1 && (form.getCommand() == null || form.getCommand().isEmpty())) return true;
         }
+        return false;
     }
 }

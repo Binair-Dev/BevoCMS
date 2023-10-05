@@ -55,7 +55,7 @@ public class VoteRewardController {
         Optional<VoteRewardEntity> optionalVoteRewardEntity = this.voteRewardService.getOneById(id);
         Optional<ServerEntity> optionalServerEntity = this.serverService.getOneById(voteRewardForm.getServer());
         if(optionalVoteRewardEntity.isPresent() && optionalServerEntity.isPresent()) {
-            VoteRewardEntity voteRewardEntity = optionalVoteRewardEntity.get();
+            VoteRewardEntity voteRewardEntity = voteRewardForm.toEntity();
             voteRewardEntity.setServer(optionalServerEntity.get());
             try {
                 this.voteRewardService.update(id, voteRewardEntity);

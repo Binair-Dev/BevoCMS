@@ -13,7 +13,7 @@ public class ServerForm {
     @Size(min = 3, message = "Le titre doit contenir au moins 3 caractères")
     private String title;
     @NotEmpty(message = "L'IP ne peut pas être vide.")
-    @Pattern(regexp = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$", message = "Le format de l'IP n'est pas valide.")
+    @Size(min = 3, message = "L'IP doit contenir au moins 3 caractères")
     private String serverIp;
     @Min(value = 1, message = "Le port ne peut être vide ou négatif.")
     private int serverPort;
