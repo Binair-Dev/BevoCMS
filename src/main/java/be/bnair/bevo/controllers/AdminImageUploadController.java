@@ -26,12 +26,25 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Contrôleur pour gérer l'upload, la récupération et la suppression d'images par l'administrateur.
+ * Ce contrôleur gère les opérations liées aux images, y compris l'upload, la récupération et la suppression.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @RestController
 @RequestMapping(path = {"/images"})
 public class AdminImageUploadController {
 
     private final UserService userService;
     private final JwtUtil jwtUtil;
+
+    /**
+     * Constructeur du contrôleur AdminImageUploadController.
+     *
+     * @param jwtUtil     Utilitaire JWT pour la gestion des jetons.
+     * @param userService Service utilisateur pour la gestion des utilisateurs.
+     */
     public AdminImageUploadController(JwtUtil jwtUtil, UserService userService) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
@@ -41,6 +54,14 @@ public class AdminImageUploadController {
     private String uploadDirectory;
     @Value("${upload.url}")
     private String baseUrl;
+
+    /**
+     * Endpoint pour l'upload d'une image par l'administrateur.
+     *
+     * @param file    Le fichier image à télécharger.
+     * @param request La requête HTTP.
+     * @return Une réponse indiquant le succès ou l'échec de l'upload.
+     */
     @PostMapping("/upload")
     public ResponseEntity<MessageResponse> uploadImage(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         UserEntity user = AuthUtils.getUserDetailsFromToken(request, jwtUtil, userService);
@@ -69,6 +90,11 @@ public class AdminImageUploadController {
         }
     }
 
+    /**
+     * Endpoint pour récupérer toutes les images.
+     *
+     * @return Une réponse contenant la liste des URL des images disponibles.
+     */
     @GetMapping("/get")
     public ResponseEntity<ImageResponse> getAll() {
         try {
@@ -87,6 +113,12 @@ public class AdminImageUploadController {
         return ResponseEntity.ok(new ImageResponse(images));
     }
 
+    /**
+     * Endpoint pour récupérer une image par son nom de fichier.
+     *
+     * @param fileName Le nom du fichier image à récupérer.
+     * @return Une réponse contenant le contenu de l'image.
+     */
     @GetMapping("/get/{fileName:.+}")
     public ResponseEntity<ByteArrayResource> getImage(@PathVariable String fileName) {
         try {
@@ -104,6 +136,12 @@ public class AdminImageUploadController {
         }
     }
 
+    /**
+     * Endpoint pour supprimer une image par son nom de fichier.
+     *
+     * @param fileName Le nom du fichier image à supprimer.
+     * @return Une réponse indiquant le succès ou l'échec de la suppression de l'image.
+     */
     @DeleteMapping("/delete/{fileName}")
     public ResponseEntity<Object> deleteImage(@PathVariable String fileName) {
         try {

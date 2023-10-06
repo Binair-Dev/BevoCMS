@@ -32,6 +32,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Contrôleur pour la gestion des actualités (news).
+ * Ce contrôleur permet de gérer les actualités, y compris la création, la mise à jour, la suppression et la récupération des actualités.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @RestController
 @RequestMapping(path = {"/news"})
 public class NewsController {
@@ -39,12 +45,28 @@ public class NewsController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
+    /**
+     * Constructeur du contrôleur NewsController.
+     *
+     * @param jwtUtil     Utilitaire JWT pour la gestion des tokens.
+     * @param newsService Service d'actualités pour la gestion des actualités.
+     * @param userService Service utilisateur pour la gestion des utilisateurs.
+     */
     public NewsController(JwtUtil jwtUtil, NewsService newsService, UserService userService) {
         this.newsService = newsService;
         this.userService = userService;
         this.jwtUtil = jwtUtil;
     }
 
+    /**
+     * Met à jour une actualité existante avec les données fournies.
+     *
+     * @param request        Requête HTTP.
+     * @param id             L'ID de l'actualité à mettre à jour.
+     * @param newsForm       Les données de l'actualité à mettre à jour.
+     * @param bindingResult  Résultat de la validation des données.
+     * @return               Réponse HTTP indiquant le statut de la mise à jour.
+     */
     @PatchMapping(path = {"/update/{id}"})
     public ResponseEntity<Object> patchAction(
             HttpServletRequest request,
@@ -87,6 +109,14 @@ public class NewsController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre la News a jours, veuillez contacter un administrateur."));
     }
 
+    /**
+     * Crée une nouvelle actualité avec les données fournies.
+     *
+     * @param request        Requête HTTP.
+     * @param newsForm       Les données de la nouvelle actualité.
+     * @param bindingResult  Résultat de la validation des données.
+     * @return               Réponse HTTP indiquant le statut de la création.
+     */
     @PostMapping(path = {"/create"})
     public ResponseEntity<Object> createAction(
             HttpServletRequest request,
@@ -124,11 +154,22 @@ public class NewsController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de trouver l'utilisateur."));
     }
 
+    /**
+     * Récupère toutes les actualités.
+     *
+     * @return Liste des actualités sous forme de DTO.
+     */
     @GetMapping(path = {"/list"})
     public List<NewsDTO> findAllAction() {
         return this.newsService.getAll().stream().map(e -> NewsDTO.toDTO(e)).toList();
     }
 
+    /**
+     * Récupère les dernières actualités jusqu'à la limite spécifiée.
+     *
+     * @param limit  Limite du nombre d'actualités à récupérer.
+     * @return       Liste des dernières actualités sous forme de DTO.
+     */
     @GetMapping(path = {"/list/{limit}"})
     public List<NewsDTO> findLastThreeNews(@PathVariable int limit) {
         List<NewsDTO> list = this.newsService.getAll()
@@ -141,6 +182,12 @@ public class NewsController {
         return list;
     }
 
+    /**
+     * Récupère une actualité par son ID.
+     *
+     * @param id  L'ID de l'actualité à récupérer.
+     * @return    Réponse HTTP contenant l'actualité sous forme de DTO.
+     */
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Object> findByIdAction(@PathVariable Long id) {
         Optional<NewsEntity> newsEntity = this.newsService.getOneById(id);
@@ -150,6 +197,12 @@ public class NewsController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.NOT_FOUND.value(), "La news avec l'id " + id + " n'existe pas."));
     }
 
+    /**
+     * Supprime une actualité par son ID.
+     *
+     * @param id  L'ID de l'actualité à supprimer.
+     * @return    Réponse HTTP indiquant le statut de la suppression.
+     */
     @DeleteMapping(path = {"/delete/{id}"})
     public ResponseEntity<Object> deleteByIdAction(@PathVariable Long id) {
         try {

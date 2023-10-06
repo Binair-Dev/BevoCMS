@@ -26,6 +26,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Contrôleur pour la gestion des transactions de boutique.
+ * Ce contrôleur permet de gérer les opérations de création et de récupération
+ * des transactions de boutique ainsi que l'historique des transactions pour un utilisateur.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @RestController
 @RequestMapping(path = {"/shop-transactions"})
 public class ShopTransactionController {
@@ -34,6 +41,14 @@ public class ShopTransactionController {
     private final ShopItemService shopItemService;
     private final JwtUtil jwtUtil;
 
+    /**
+     * Constructeur du contrôleur des transactions de boutique.
+     *
+     * @param shopTransactionService Le service de gestion des transactions de boutique.
+     * @param userService            Le service de gestion des utilisateurs.
+     * @param shopItemService        Le service de gestion des articles de boutique.
+     * @param jwtUtil                Le service JWT pour l'authentification des utilisateurs.
+     */
     public ShopTransactionController(ShopTransactionService shopTransactionService, UserService userService, ShopItemService shopItemService, JwtUtil jwtUtil) {
         this.shopTransactionService = shopTransactionService;
         this.userService = userService;
@@ -41,6 +56,13 @@ public class ShopTransactionController {
         this.jwtUtil = jwtUtil;
     }
 
+    /**
+     * Crée une nouvelle transaction de boutique.
+     *
+     * @param shopTransactionForm Les données de la transaction de boutique à créer.
+     * @param bindingResult       Le résultat de la validation des données de la requête.
+     * @return Une réponse HTTP indiquant le résultat de la création de la transaction de boutique.
+     */
     @PostMapping(path = {"/create"})
     public ResponseEntity<Object> createAction(
             @RequestBody @Valid ShopTransactionForm shopTransactionForm,
@@ -66,6 +88,12 @@ public class ShopTransactionController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de créer la transaction shop."));
     }
 
+    /**
+     * Récupère l'historique des transactions de boutique pour un utilisateur donné.
+     *
+     * @param request La requête HTTP.
+     * @return Une réponse HTTP contenant l'historique des transactions de boutique de l'utilisateur.
+     */
     @GetMapping(path = {"/history"})
     public ResponseEntity<List<ShopTransactionDTO>> findByUserId(HttpServletRequest request) {
         UserEntity userDetails = AuthUtils.getUserDetailsFromToken(request, jwtUtil, userService);

@@ -29,6 +29,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Contrôleur pour la gestion des wikis.
+ * Ce contrôleur permet de gérer les opérations CRUD (Create, Read, Update, Delete)
+ * sur les wikis.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @RestController
 @RequestMapping(path = {"/wikis"})
 public class WikiController {
@@ -36,12 +43,28 @@ public class WikiController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
+    /**
+     * Constructeur de la classe WikiController.
+     *
+     * @param wikiService Le service de gestion des wikis.
+     * @param userService Le service de gestion des utilisateurs.
+     * @param jwtUtil     Le service JWT pour l'authentification des utilisateurs.
+     */
     public WikiController(WikiService wikiService, UserService userService, JwtUtil jwtUtil) {
         this.wikiService = wikiService;
         this.userService = userService;
         this.jwtUtil = jwtUtil;
     }
 
+    /**
+     * Met à jour un wiki existant.
+     *
+     * @param request     La requête HTTP.
+     * @param id          L'identifiant du wiki à mettre à jour.
+     * @param wikiForm    Le formulaire contenant les données du wiki à mettre à jour.
+     * @param bindingResult Le résultat de la validation des données.
+     * @return Une réponse HTTP indiquant le résultat de la mise à jour du wiki.
+     */
     @PatchMapping(path = {"/update/{id}"})
     public ResponseEntity<Object> patchAction(
             HttpServletRequest request,
@@ -79,6 +102,14 @@ public class WikiController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Impossible de mettre le Wiki a jours, veuillez contacter un administrateur."));
     }
 
+    /**
+     * Crée un nouveau wiki.
+     *
+     * @param request     La requête HTTP.
+     * @param wikiForm    Le formulaire contenant les données du nouveau wiki.
+     * @param bindingResult Le résultat de la validation des données.
+     * @return Une réponse HTTP indiquant le résultat de la création du wiki.
+     */
     @PostMapping(path = {"/create"})
     public ResponseEntity<Object> createAction(
             HttpServletRequest request,
@@ -102,11 +133,22 @@ public class WikiController {
         }
     }
 
+    /**
+     * Récupère la liste de tous les wikis.
+     *
+     * @return Une liste de wikis.
+     */
     @GetMapping(path = {"/list"})
     public List<WikiEntity> findAllAction() {
         return this.wikiService.getAll();
     }
 
+    /**
+     * Récupère un wiki par son identifiant.
+     *
+     * @param id L'identifiant du wiki à récupérer.
+     * @return Une réponse HTTP contenant le wiki recherché ou un message d'erreur.
+     */
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Object> findByIdAction(@PathVariable Long id) {
         Optional<WikiEntity> wOptional = this.wikiService.getOneById(id);
@@ -116,6 +158,12 @@ public class WikiController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Le Wiki avec l'id " + id + " n'existe pas."));
     }
 
+    /**
+     * Supprime un wiki existant par son identifiant.
+     *
+     * @param id L'identifiant du wiki à supprimer.
+     * @return Une réponse HTTP indiquant le résultat de la suppression du wiki.
+     */
     @DeleteMapping(path = {"/delete/{id}"})
     public ResponseEntity<Object> deleteByIdAction(@PathVariable Long id) {
         try {

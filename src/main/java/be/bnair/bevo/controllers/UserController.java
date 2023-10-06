@@ -31,6 +31,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Contrôleur pour la gestion des utilisateurs.
+ * Ce contrôleur permet de gérer les opérations liées aux utilisateurs, telles que la mise à jour
+ * des informations de l'utilisateur, la mise à jour du mot de passe, la récupération de la liste
+ * des utilisateurs, la récupération d'un utilisateur par ID, et la suppression d'un utilisateur.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @RestController
 @RequestMapping(path = {"/users"})
 public class UserController {
@@ -40,6 +48,15 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final ShopTransactionService shopTransactionService;
 
+    /**
+     * Constructeur du contrôleur des utilisateurs.
+     *
+     * @param jwtUtil               Le service JWT pour l'authentification des utilisateurs.
+     * @param userService           Le service de gestion des utilisateurs.
+     * @param passwordEncoder       Le service pour encoder les mots de passe.
+     * @param shopTransactionService Le service de gestion des transactions de boutique.
+     * @param rankService           Le service de gestion des niveaux d'utilisateur.
+     */
     public UserController(JwtUtil jwtUtil, UserService userService, PasswordEncoder passwordEncoder, ShopTransactionService shopTransactionService, RankService rankService) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
@@ -48,6 +65,15 @@ public class UserController {
         this.rankService = rankService;
     }
 
+    /**
+     * Met à jour les informations de l'utilisateur.
+     *
+     * @param request       La requête HTTP.
+     * @param id            L'identifiant de l'utilisateur à mettre à jour.
+     * @param userForm      Les données de l'utilisateur à mettre à jour.
+     * @param bindingResult Le résultat de la validation des données de la requête.
+     * @return Une réponse HTTP indiquant le résultat de la mise à jour de l'utilisateur.
+     */
     @PatchMapping(path = {"/update/{id}"})
     public ResponseEntity<Object> patchAction(
             HttpServletRequest request,
@@ -82,6 +108,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre l'utilisateur a jours, veuillez contacter un administrateur."));
     }
 
+    /**
+     * Met à jour l'adresse e-mail de l'utilisateur.
+     *
+     * @param request              La requête HTTP.
+     * @param userUpdateEmailForm  Les données de mise à jour de l'adresse e-mail de l'utilisateur.
+     * @param bindingResult        Le résultat de la validation des données de la requête.
+     * @return Une réponse HTTP indiquant le résultat de la mise à jour de l'adresse e-mail de l'utilisateur.
+     */
     @PatchMapping(path = {"/update/email"})
     public ResponseEntity<Object> updateEmailAction(
             HttpServletRequest request,
@@ -111,6 +145,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "L'email actuel spécifié n'est pas bon."));
     }
 
+    /**
+     * Met à jour le mot de passe de l'utilisateur.
+     *
+     * @param request                  La requête HTTP.
+     * @param userUpdatePasswordForm   Les données de mise à jour du mot de passe de l'utilisateur.
+     * @param bindingResult            Le résultat de la validation des données de la requête.
+     * @return Une réponse HTTP indiquant le résultat de la mise à jour du mot de passe de l'utilisateur.
+     */
     @PatchMapping(path = {"/update/password"})
     public ResponseEntity<Object> updatePasswordAction(
             HttpServletRequest request,
@@ -140,6 +182,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Le mot de passe actuel spécifié n'est pas bon."));
     }
 
+    /**
+     * Récupère la liste de tous les utilisateurs avec pagination.
+     *
+     * @param page Le numéro de la page de résultats (par défaut : 0).
+     * @param size Le nombre d'utilisateurs par page (par défaut : 20).
+     * @return Une réponse HTTP contenant la liste paginée de tous les utilisateurs.
+     */
     @GetMapping("/list")
     public ResponseEntity<Object> findAllAction(@RequestParam(defaultValue = "0", required = false) int page, @RequestParam(defaultValue = "20", required = false) int size) {
         List<UserEntity> allUsers = userService.getAll();
@@ -157,6 +206,14 @@ public class UserController {
         }
     }
 
+
+    /**
+     * Récupère un utilisateur par ID.
+     *
+     * @param request La requête HTTP.
+     * @param id      L'identifiant de l'utilisateur à récupérer.
+     * @return Une réponse HTTP contenant les informations de l'utilisateur.
+     */
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Object> findByIdAction(HttpServletRequest request, @PathVariable Long id) {
         UserEntity userDetails = AuthUtils.getUserDetailsFromToken(request, jwtUtil, userService);
@@ -175,6 +232,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "L'utilisateur avec l'id " + id + " n'existe pas."));
     }
 
+    /**
+     * Supprime un utilisateur par ID.
+     *
+     * @param request La requête HTTP.
+     * @param id      L'identifiant de l'utilisateur à supprimer.
+     * @return Une réponse HTTP indiquant le résultat de la suppression de l'utilisateur.
+     */
     @DeleteMapping(path = {"/delete/{id}"})
     public ResponseEntity<Object> deleteByIdAction(HttpServletRequest request, @PathVariable Long id) {
         try {

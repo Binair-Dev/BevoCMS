@@ -28,6 +28,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Contrôleur pour la gestion des articles de boutique.
+ * Ce contrôleur permet de gérer les opérations CRUD (Créer, Lire, Mettre à jour, Supprimer)
+ * sur les articles de boutique.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @RestController
 @RequestMapping(path = {"/shop-items"})
 public class ShopItemController {
@@ -35,12 +42,27 @@ public class ShopItemController {
     private final ShopCategoryService shopCategoryService;
     private final ServerService serverService;
 
+    /**
+     * Constructeur du contrôleur des articles de boutique.
+     *
+     * @param shopItemService    Le service de gestion des articles de boutique.
+     * @param shopCategoryService Le service de gestion des catégories de boutique.
+     * @param serverService      Le service de gestion des serveurs.
+     */
     public ShopItemController(ShopItemService shopItemService, ShopCategoryService shopCategoryService, ServerService serverService) {
         this.shopItemService = shopItemService;
         this.shopCategoryService = shopCategoryService;
         this.serverService = serverService;
     }
 
+    /**
+     * Met à jour un article de boutique existant.
+     *
+     * @param id           L'identifiant de l'article de boutique à mettre à jour.
+     * @param shopItemForm Les données de l'article de boutique à mettre à jour.
+     * @param bindingResult Le résultat de la validation des données de la requête.
+     * @return Une réponse HTTP indiquant le résultat de la mise à jour de l'article de boutique.
+     */
     @PatchMapping(path = {"/update/{id}"})
     public ResponseEntity<Object> patchAction(
         @PathVariable Long id,
@@ -73,6 +95,13 @@ public class ShopItemController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre l'item du shop a jours, veuillez contacter un administrateur."));
     }
 
+    /**
+     * Crée un nouvel article de boutique.
+     *
+     * @param shopItemForm Les données de l'article de boutique à créer.
+     * @param bindingResult Le résultat de la validation des données de la requête.
+     * @return Une réponse HTTP indiquant le résultat de la création de l'article de boutique.
+     */
     @PostMapping(path = {"/create"})
     public ResponseEntity<Object> createAction(
         @RequestBody @Valid ShopItemForm shopItemForm,
@@ -99,11 +128,22 @@ public class ShopItemController {
         }
     }
 
+    /**
+     * Récupère la liste de tous les articles de boutique.
+     *
+     * @return Une liste d'objets ShopItemDTO représentant les articles de boutique.
+     */
     @GetMapping(path = {"/list"})
     public List<ShopItemDTO> findAllAction() {
         return this.shopItemService.getAll().stream().map(ShopItemDTO::toDTO).toList();
     }
 
+    /**
+     * Récupère un article de boutique par son identifiant.
+     *
+     * @param id L'identifiant de l'article de boutique à récupérer.
+     * @return Une réponse HTTP contenant l'article de boutique ou un message d'erreur.
+     */
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Object> findByIdAction(@PathVariable Long id) {
         Optional<ShopItemEntity> newsEntity = this.shopItemService.getOneById(id);
@@ -113,6 +153,12 @@ public class ShopItemController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "L'item du shop avec l'id " + id + " n'existe pas."));
     }
 
+    /**
+     * Supprime un article de boutique par son identifiant.
+     *
+     * @param id L'identifiant de l'article de boutique à supprimer.
+     * @return Une réponse HTTP indiquant le résultat de la suppression de l'article de boutique.
+     */
     @DeleteMapping(path = {"/delete/{id}"})
     public ResponseEntity<Object> deleteByIdAction(@PathVariable Long id) {
         try {

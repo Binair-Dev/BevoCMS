@@ -26,17 +26,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Contrôleur pour la gestion des transactions.
+ * Ce contrôleur permet de gérer les opérations de création de transactions
+ * et de récupération de la liste de toutes les transactions.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @RestController
 @RequestMapping(path = {"/transactions"})
 public class TransactionController {
     private final TransactionService transactionService;
     private final UserService userService;
 
+    /**
+     * Constructeur du contrôleur des transactions.
+     *
+     * @param transactionService Le service de gestion des transactions.
+     * @param userService       Le service de gestion des utilisateurs.
+     */
     public TransactionController(TransactionService transactionService, UserService userService, ShopItemService shopItemService) {
         this.transactionService = transactionService;
         this.userService = userService;
     }
 
+    /**
+     * Crée une nouvelle transaction.
+     *
+     * @param transactionForm Les données de la transaction à créer.
+     * @param bindingResult   Le résultat de la validation des données de la requête.
+     * @return Une réponse HTTP indiquant le résultat de la création de la transaction.
+     */
     @PostMapping(path = {"/create"})
     public ResponseEntity<Object> createAction(
             @RequestBody @Valid TransactionForm transactionForm,
@@ -60,6 +80,11 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de créer la transaction."));
     }
 
+    /**
+     * Récupère la liste de toutes les transactions.
+     *
+     * @return Une réponse HTTP contenant la liste de toutes les transactions.
+     */
     @GetMapping(path = {"/list"})
     public List<TransactionDTO> findAllAction() {
         return this.transactionService.getAll().stream().map(TransactionDTO::toDTO).toList();

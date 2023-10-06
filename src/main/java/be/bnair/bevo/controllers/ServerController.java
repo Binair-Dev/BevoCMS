@@ -24,15 +24,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Contrôleur pour la gestion des serveurs.
+ * Ce contrôleur permet de gérer les serveurs, y compris la création, la mise à jour, la suppression et la récupération des informations sur les serveurs.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @RestController
 @RequestMapping(path = {"/servers"})
 public class ServerController {
     private final ServerService serverService;
 
+    /**
+     * Constructeur du contrôleur de serveurs.
+     *
+     * @param serverService Le service de gestion des serveurs.
+     */
     public ServerController(ServerService serverService) {
         this.serverService = serverService;
     }
 
+    /**
+     * Met à jour les informations d'un serveur.
+     *
+     * @param id            L'identifiant du serveur à mettre à jour.
+     * @param serverForm    Les données du formulaire de mise à jour du serveur.
+     * @param bindingResult Les résultats de la validation du formulaire.
+     * @return Une réponse HTTP indiquant le résultat de la mise à jour du serveur.
+     */
     @PatchMapping(path = {"/update/{id}"})
     public ResponseEntity<Object> patchAction(
             @PathVariable Long id,
@@ -61,6 +80,13 @@ public class ServerController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre le serveur a jours, veuillez contacter un administrateur."));
     }
 
+    /**
+     * Crée un nouveau serveur.
+     *
+     * @param serverForm    Les données du formulaire de création du serveur.
+     * @param bindingResult Les résultats de la validation du formulaire.
+     * @return Une réponse HTTP indiquant le résultat de la création du serveur.
+     */
     @PostMapping(path = {"/create"})
     public ResponseEntity<Object> createAction(
             @RequestBody @Valid ServerForm serverForm,
@@ -79,11 +105,22 @@ public class ServerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "Le serveur a bien été créée."));
     }
 
+    /**
+     * Récupère la liste de tous les serveurs.
+     *
+     * @return La liste de tous les serveurs.
+     */
     @GetMapping(path = {"/list"})
     public List<ServerEntity> findAllAction() {
         return this.serverService.getAll();
     }
 
+    /**
+     * Récupère les informations d'un serveur par son identifiant.
+     *
+     * @param id L'identifiant du serveur à récupérer.
+     * @return Une réponse HTTP contenant les informations du serveur ou un message d'erreur si le serveur n'existe pas.
+     */
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Object> findByIdAction(@PathVariable Long id) {
         Optional<ServerEntity> newsEntity = this.serverService.getOneById(id);
@@ -93,6 +130,12 @@ public class ServerController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Le serveur avec l'id " + id + " n'existe pas."));
     }
 
+    /**
+     * Supprime un serveur par son identifiant.
+     *
+     * @param id L'identifiant du serveur à supprimer.
+     * @return Une réponse HTTP indiquant le résultat de la suppression du serveur.
+     */
     @DeleteMapping(path = {"/delete/{id}"})
     public ResponseEntity<Object> deleteByIdAction(@PathVariable Long id) {
         try {

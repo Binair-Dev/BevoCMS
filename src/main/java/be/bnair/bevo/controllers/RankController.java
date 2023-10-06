@@ -30,6 +30,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Contrôleur pour la gestion des rangs des utilisateurs.
+ * Ce contrôleur permet de gérer les rangs, y compris la création, la mise à jour, la suppression et la récupération des rangs.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @RestController
 @RequestMapping(path = {"/ranks"})
 public class RankController {
@@ -37,6 +43,13 @@ public class RankController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
+    /**
+     * Constructeur du contrôleur des rangs.
+     *
+     * @param rankService Le service de gestion des rangs.
+     * @param userService Le service de gestion des utilisateurs.
+     * @param jwtUtil     L'utilitaire JWT pour l'authentification.
+     */
     public RankController(RankService rankService,
                           UserService userService, JwtUtil jwtUtil) {
         this.rankService = rankService;
@@ -44,6 +57,16 @@ public class RankController {
         this.jwtUtil = jwtUtil;
     }
 
+
+    /**
+     * Met à jour un rang existant.
+     *
+     * @param request      La requête HTTP.
+     * @param id           L'identifiant du rang à mettre à jour.
+     * @param rankForm     Les données du formulaire de mise à jour du rang.
+     * @param bindingResult Les résultats de la validation du formulaire.
+     * @return Une réponse HTTP indiquant le résultat de la mise à jour.
+     */
     @PatchMapping(path = {"/update/{id}"})
     public ResponseEntity<Object> patchAction(
             HttpServletRequest request,
@@ -79,6 +102,14 @@ public class RankController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Impossible de mettre le Rank a jours, veuillez contacter un administrateur."));
     }
 
+    /**
+     * Crée un nouveau rang.
+     *
+     * @param request      La requête HTTP.
+     * @param rankForm     Les données du formulaire de création du rang.
+     * @param bindingResult Les résultats de la validation du formulaire.
+     * @return Une réponse HTTP indiquant le résultat de la création du rang.
+     */
     @PostMapping(path = {"/create"})
     public ResponseEntity<Object> createAction(
             HttpServletRequest request,
@@ -104,11 +135,22 @@ public class RankController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse(HttpStatus.UNAUTHORIZED.value(), "Impossible de trouver l'utilisateur."));
     }
 
+    /**
+     * Récupère la liste de tous les rangs.
+     *
+     * @return La liste de tous les rangs.
+     */
     @GetMapping(path = {"/list"})
     public List<RankEntity> findAllAction() {
         return this.rankService.getAll();
     }
 
+    /**
+     * Récupère un rang par son identifiant.
+     *
+     * @param id L'identifiant du rang à récupérer.
+     * @return Une réponse HTTP contenant le rang récupéré.
+     */
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Object> findByIdAction(@PathVariable Long id) {
         Optional<RankEntity> rankEntityOptional = this.rankService.getOneById(id);
@@ -118,6 +160,12 @@ public class RankController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Le Rank avec l'id " + id + " n'existe pas."));
     }
 
+    /**
+     * Supprime un rang par son identifiant.
+     *
+     * @param id L'identifiant du rang à supprimer.
+     * @return Une réponse HTTP indiquant le résultat de la suppression du rang.
+     */
     @DeleteMapping(path = {"/delete/{id}"})
     public ResponseEntity<Object> deleteByIdAction(@PathVariable Long id) {
         try {

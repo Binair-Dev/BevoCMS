@@ -27,17 +27,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Contrôleur pour la gestion des récompenses de vote.
+ * Ce contrôleur permet de gérer les opérations CRUD (Create, Read, Update, Delete)
+ * sur les récompenses de vote.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @RestController
 @RequestMapping(path = {"/vote-rewards"})
 public class VoteRewardController {
     private final VoteRewardService voteRewardService;
     private final ServerService serverService;
 
+    /**
+     * Constructeur de la classe VoteRewardController.
+     *
+     * @param voteRewardService Le service de gestion des récompenses de vote.
+     * @param serverService     Le service de gestion des serveurs.
+     */
     public VoteRewardController(VoteRewardService voteRewardService, ServerService serverService) {
         this.voteRewardService = voteRewardService;
         this.serverService = serverService;
     }
 
+    /**
+     * Met à jour une récompense de vote existante.
+     *
+     * @param id              L'identifiant de la récompense de vote à mettre à jour.
+     * @param voteRewardForm  Le formulaire contenant les données de la récompense de vote à mettre à jour.
+     * @param bindingResult   Le résultat de la validation des données.
+     * @return Une réponse HTTP indiquant le résultat de la mise à jour de la récompense de vote.
+     */
     @PatchMapping(path = {"/update/{id}"})
     public ResponseEntity<Object> patchAction(
             @PathVariable Long id,
@@ -67,6 +88,13 @@ public class VoteRewardController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre la récompense de vote a jours, veuillez contacter un administrateur."));
     }
 
+    /**
+     * Crée une nouvelle récompense de vote.
+     *
+     * @param voteRewardForm  Le formulaire contenant les données de la nouvelle récompense de vote.
+     * @param bindingResult   Le résultat de la validation des données.
+     * @return Une réponse HTTP indiquant le résultat de la création de la récompense de vote.
+     */
     @PostMapping(path = {"/create"})
     public ResponseEntity<Object> createAction(
             @RequestBody @Valid VoteRewardForm voteRewardForm,
@@ -89,11 +117,23 @@ public class VoteRewardController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de créer la récompense de vote."));
     }
 
+    /**
+     * Récupère la liste de toutes les récompenses de vote.
+     *
+     * @return Une liste de récompenses de vote sous forme de DTO.
+     */
     @GetMapping(path = {"/list"})
     public List<VoteRewardDTO> findAllAction() {
         return this.voteRewardService.getAll().stream().map(VoteRewardDTO::toDTO).toList();
     }
 
+
+    /**
+     * Récupère une récompense de vote par son identifiant.
+     *
+     * @param id L'identifiant de la récompense de vote à récupérer.
+     * @return Une réponse HTTP contenant la récompense de vote recherchée ou un message d'erreur.
+     */
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Object> findByIdAction(@PathVariable Long id) {
         Optional<VoteRewardEntity> newsEntity = this.voteRewardService.getOneById(id);
@@ -103,6 +143,12 @@ public class VoteRewardController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "La récompense de vote avec l'id " + id + " n'existe pas."));
     }
 
+    /**
+     * Supprime une récompense de vote existante par son identifiant.
+     *
+     * @param id L'identifiant de la récompense de vote à supprimer.
+     * @return Une réponse HTTP indiquant le résultat de la suppression de la récompense de vote.
+     */
     @DeleteMapping(path = {"/delete/{id}"})
     public ResponseEntity<Object> deleteByIdAction(@PathVariable Long id) {
         try {

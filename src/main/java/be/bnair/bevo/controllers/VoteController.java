@@ -28,17 +28,39 @@ import jakarta.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Contrôleur pour la gestion des votes.
+ * Ce contrôleur permet de gérer les opérations liées aux votes, telles que la création,
+ * la mise à jour, la suppression, la récupération de la liste des votes et la récupération
+ * des utilisateurs avec le plus grand nombre de votes.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @RestController
 @RequestMapping(path = {"/votes"})
 public class VoteController {
     private final VoteService voteService;
     private final UserService userService;
 
+    /**
+     * Constructeur du contrôleur des votes.
+     *
+     * @param voteService Le service de gestion des votes.
+     * @param userService Le service de gestion des utilisateurs.
+     */
     public VoteController(VoteService voteService, UserService userService) {
         this.voteService = voteService;
         this.userService = userService;
     }
 
+    /**
+     * Met à jour un vote par ID.
+     *
+     * @param id           L'identifiant du vote à mettre à jour.
+     * @param voteForm     Les données du vote à mettre à jour.
+     * @param bindingResult Le résultat de la validation des données de la requête.
+     * @return Une réponse HTTP indiquant le résultat de la mise à jour du vote.
+     */
     @PatchMapping(path = {"/update/{id}"})
     public ResponseEntity<Object> patchAction(
             @PathVariable Long id,
@@ -68,6 +90,13 @@ public class VoteController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre le vote a jours, veuillez contacter un administrateur."));
     }
 
+    /**
+     * Crée un nouveau vote.
+     *
+     * @param voteForm     Les données du vote à créer.
+     * @param bindingResult Le résultat de la validation des données de la requête.
+     * @return Une réponse HTTP indiquant le résultat de la création du vote.
+     */
     @PostMapping(path = {"/create"})
     public ResponseEntity<Object> createAction(
             @RequestBody @Valid VoteForm voteForm,
@@ -87,11 +116,22 @@ public class VoteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "Le vote a bien été créée."));
     }
 
+    /**
+     * Récupère la liste de tous les votes.
+     *
+     * @return Une liste de votes au format DTO.
+     */
     @GetMapping(path = {"/list"})
     public List<VoteDTO> findAllAction() {
         return this.voteService.getAll().stream().map(VoteDTO::toDTO).toList();
     }
 
+
+    /**
+     * Récupère la liste des utilisateurs avec le plus grand nombre de votes.
+     *
+     * @return Une liste des utilisateurs les mieux votés.
+     */
     @GetMapping(path = {"/list/top"})
     public List<VoteTop> findTopAction() {
         Map<Long, Integer> voteCounts = new HashMap<>();
@@ -114,6 +154,12 @@ public class VoteController {
         return topUserVotes;
     }
 
+    /**
+     * Récupère un vote par ID.
+     *
+     * @param id L'identifiant du vote à récupérer.
+     * @return Une réponse HTTP contenant les informations du vote.
+     */
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Object> findByIdAction(@PathVariable Long id) {
         Optional<VoteEntity> vOptional = this.voteService.getOneById(id);
@@ -123,6 +169,12 @@ public class VoteController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Le vote avec l'id " + id + " n'existe pas."));
     }
 
+    /**
+     * Supprime un vote par ID.
+     *
+     * @param id L'identifiant du vote à supprimer.
+     * @return Une réponse HTTP indiquant le résultat de la suppression du vote.
+     */
     @DeleteMapping(path = {"/delete/{id}"})
     public ResponseEntity<Object> deleteByIdAction(@PathVariable Long id) {
         try {

@@ -27,17 +27,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Contrôleur pour la gestion des catégories de boutique (shop categories).
+ * Ce contrôleur permet de gérer les catégories de boutique, y compris la création, la mise à jour, la suppression et la récupération des informations sur les catégories de boutique.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @RestController
 @RequestMapping(path = {"/shop-categories"})
 public class ShopCategoryController {
     private final ShopCategoryService shopCategoryService;
     private final ShopItemService shopItemService;
 
+    /**
+     * Constructeur du contrôleur de catégories de boutique.
+     *
+     * @param shopCategoryService Le service de gestion des catégories de boutique.
+     * @param shopItemService     Le service de gestion des articles de boutique.
+     */
     public ShopCategoryController(ShopCategoryService shopCategoryService, ShopItemService shopItemService) {
         this.shopCategoryService = shopCategoryService;
         this.shopItemService = shopItemService;
     }
 
+    /**
+     * Met à jour les informations d'une catégorie de boutique.
+     *
+     * @param id               L'identifiant de la catégorie de boutique à mettre à jour.
+     * @param shopCategoryForm Les données du formulaire de mise à jour de la catégorie de boutique.
+     * @param bindingResult    Les résultats de la validation du formulaire.
+     * @return Une réponse HTTP indiquant le résultat de la mise à jour de la catégorie de boutique.
+     */
     @PatchMapping(path = {"/update/{id}"})
     public ResponseEntity<Object> patchAction(
             @PathVariable Long id,
@@ -66,6 +86,13 @@ public class ShopCategoryController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre la catégorie du shop a jours, veuillez contacter un administrateur."));
     }
 
+    /**
+     * Crée une nouvelle catégorie de boutique.
+     *
+     * @param shopCategoryForm Les données du formulaire de création de la catégorie de boutique.
+     * @param bindingResult    Les résultats de la validation du formulaire.
+     * @return Une réponse HTTP indiquant le résultat de la création de la catégorie de boutique.
+     */
     @PostMapping(path = {"/create"})
     public ResponseEntity<Object> createAction(
             @RequestBody @Valid ShopCategoryForm shopCategoryForm,
@@ -84,6 +111,11 @@ public class ShopCategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "La catégorie shop a bien été créée."));
     }
 
+    /**
+     * Récupère la liste de toutes les catégories de boutique avec leurs articles associés.
+     *
+     * @return Une liste de DTO de catégories de boutique, chaque DTO contenant également une liste de DTO d'articles de boutique associés.
+     */
     @GetMapping(path = {"/list"})
     public List<ShopCategoryDTO> findAllAction() {
         return this.shopCategoryService.getAll().stream()
@@ -94,6 +126,12 @@ public class ShopCategoryController {
                 .toList();
     }
 
+    /**
+     * Récupère les informations d'une catégorie de boutique par son identifiant avec ses articles associés.
+     *
+     * @param id L'identifiant de la catégorie de boutique à récupérer.
+     * @return Une réponse HTTP contenant les informations de la catégorie de boutique avec ses articles associés ou un message d'erreur si la catégorie de boutique n'existe pas.
+     */
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Object> findByIdAction(@PathVariable Long id) {
         Optional<ShopCategoryEntity> newsEntity = this.shopCategoryService.getOneById(id);
@@ -108,6 +146,12 @@ public class ShopCategoryController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "La catégorie shop avec l'id " + id + " n'existe pas."));
     }
 
+    /**
+     * Supprime une catégorie de boutique par son identifiant.
+     *
+     * @param id L'identifiant de la catégorie de boutique à supprimer.
+     * @return Une réponse HTTP indiquant le résultat de la suppression de la catégorie de boutique.
+     */
     @DeleteMapping(path = {"/delete/{id}"})
     public ResponseEntity<Object> deleteByIdAction(@PathVariable Long id) {
         try {

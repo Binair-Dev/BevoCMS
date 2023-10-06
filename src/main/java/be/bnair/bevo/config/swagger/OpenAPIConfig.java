@@ -8,9 +8,22 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 
+/**
+ * Configuration personnalisée pour la documentation OpenAPI.
+ * Cette configuration définit les détails de sécurité pour l'API.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @Configuration
 public class OpenAPIConfig {
 
+    /**
+     * Configuration personnalisée de la documentation OpenAPI.
+     *
+     * Cette méthode crée une configuration OpenAPI personnalisée pour spécifier les détails de sécurité.
+     *
+     * @return Une instance de OpenAPI configurée.
+     */
     @Bean
     public OpenAPI customizeOpenAPI() {
         final String securitySchemeName = "bearerAuth";
@@ -24,5 +37,4 @@ public class OpenAPIConfig {
                                 .scheme("bearer")
                                 .bearerFormat("JWT")));
     }
-
 }

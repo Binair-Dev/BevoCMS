@@ -15,16 +15,38 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import be.bnair.bevo.config.jwt.JwtFilter;
 
+/**
+ * Configuration de la sécurité de l'application.
+ * Cette configuration définit les règles de sécurité pour l'accès aux ressources et services de l'application.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
+    /**
+     * Configuration du codeur de mot de passe pour le stockage sécurisé des mots de passe.
+     *
+     * @return Un codeur de mot de passe BCrypt.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configuration de la chaîne de filtres de sécurité pour gérer les requêtes HTTP.
+     *
+     * Cette méthode déclare les règles de sécurité pour les différentes URL de l'application,
+     * spécifiant les autorisations requises pour accéder aux ressources.
+     *
+     * @param http      L'objet HttpSecurity pour configurer les règles de sécurité.
+     * @param jwtFilter Le filtre JWT pour l'authentification basée sur les jetons JWT.
+     * @return Une chaîne de filtres de sécurité configurée.
+     * @throws Exception En cas d'erreur de configuration de la sécurité.
+     */
     @Bean
     public SecurityFilterChain httpSecurity(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
         final String adminRank = "ADMINISTRATEUR";

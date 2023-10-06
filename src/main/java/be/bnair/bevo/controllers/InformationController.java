@@ -15,17 +15,34 @@ import be.bnair.bevo.services.UserService;
 
 import java.util.List;
 
+/**
+ * Contrôleur pour la gestion des informations générales.
+ * Ce contrôleur permet de récupérer des informations générales telles que les statistiques des utilisateurs et l'état du serveur.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @RestController
 @RequestMapping(value = "/infos")
 public class InformationController {
     private final UserService userService;
     private final ServerService serverService;
 
+    /**
+     * Constructeur du contrôleur InformationController.
+     *
+     * @param userService   Service utilisateur pour la gestion des utilisateurs.
+     * @param serverService Service de serveur pour la gestion des serveurs.
+     */
     public InformationController(UserService userService, ServerService serverService) {
         this.userService = userService;
         this.serverService = serverService;
     }
 
+    /**
+     * Endpoint pour récupérer des informations générales, y compris les statistiques des utilisateurs et l'état du serveur.
+     *
+     * @return Une réponse contenant les informations générales.
+     */
     @GetMapping(path = {"/stats"})
     public ResponseEntity<Information> getInformations() {
         long staff = this.userService.getAll().stream()

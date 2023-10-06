@@ -26,6 +26,12 @@ import be.bnair.bevo.models.entities.security.UserEntity;
 import be.bnair.bevo.services.UserService;
 import be.bnair.bevo.utils.JwtUtil;
 
+/**
+ * Contrôleur pour la gestion de la sécurité (authentification et autorisation).
+ * Ce contrôleur permet de gérer l'authentification et l'autorisation des utilisateurs, y compris la connexion, l'enregistrement et la vérification du token.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @RestController
 @RequestMapping("/auth")
 public class SecurityController {
@@ -34,6 +40,14 @@ public class SecurityController {
     private final UserService securityService;
     private final RankService rankService;
 
+    /**
+     * Constructeur du contrôleur de sécurité.
+     *
+     * @param utils           L'utilitaire JWT pour la gestion des tokens.
+     * @param passwordEncoder L'encodeur de mots de passe.
+     * @param securityService Le service de gestion de la sécurité.
+     * @param rankService     Le service de gestion des rangs.
+     */
     public SecurityController(JwtUtil utils, PasswordEncoder passwordEncoder, UserService securityService, RankService rankService) {
         this.utils = utils;
         this.passwordEncoder = passwordEncoder;
@@ -41,6 +55,14 @@ public class SecurityController {
         this.rankService = rankService;
     }
 
+    /**
+     * Authentifie un utilisateur en vérifiant les informations de connexion.
+     *
+     * @param request        La requête HTTP.
+     * @param form           Les données du formulaire de connexion.
+     * @param bindingResult  Les résultats de la validation du formulaire.
+     * @return Une réponse HTTP indiquant le résultat de l'authentification.
+     */
     @PostMapping(path = {"/login"})
     public ResponseEntity<Object> loginAction(
             HttpServletRequest request,
@@ -71,6 +93,13 @@ public class SecurityController {
         }
     }
 
+    /**
+     * Enregistre un nouvel utilisateur.
+     *
+     * @param form          Les données du formulaire d'enregistrement.
+     * @param bindingResult Les résultats de la validation du formulaire.
+     * @return Une réponse HTTP indiquant le résultat de l'enregistrement de l'utilisateur.
+     */
     @PostMapping(path = {"/register"})
     public ResponseEntity<Object> registerAction(
             @RequestBody @Valid RegisterForm form,
@@ -100,6 +129,11 @@ public class SecurityController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible d'enregistrer cet utilisateur, rank par défaut introuvable."));
     }
 
+    /**
+     * Vérifie la validité du token d'authentification.
+     *
+     * @return Une réponse HTTP indiquant la validité du token.
+     */
     @GetMapping(path = "/authenticated")
     public ResponseEntity<MessageResponse> checkTokenAction() {
         return ResponseEntity.ok().body(new MessageResponse(HttpStatus.OK.value(), "success"));

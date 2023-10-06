@@ -26,6 +26,12 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Optional;
 
+/**
+ * Contrôleur pour la gestion de l'achat d'articles de boutique.
+ * Ce contrôleur permet aux utilisateurs d'acheter des articles de boutique.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @RestController
 @RequestMapping(path = "/shop")
 public class ShopItemBuyController {
@@ -33,6 +39,15 @@ public class ShopItemBuyController {
     private final ShopItemService shopItemService;
     private final ShopTransactionService shopTransactionService;
     private final JwtUtil jwtUtil;
+
+    /**
+     * Constructeur du contrôleur d'achat d'articles de boutique.
+     *
+     * @param jwtUtil                Le service JWT pour l'authentification des utilisateurs.
+     * @param userService            Le service de gestion des utilisateurs.
+     * @param shopTransactionService Le service de gestion des transactions de boutique.
+     * @param shopItemService        Le service de gestion des articles de boutique.
+     */
     public ShopItemBuyController(JwtUtil jwtUtil, UserService userService, ShopTransactionService shopTransactionService, ShopItemService shopItemService) {
         this.userService = userService;
         this.shopTransactionService = shopTransactionService;
@@ -40,6 +55,14 @@ public class ShopItemBuyController {
         this.shopItemService = shopItemService;
     }
 
+    /**
+     * Permet à un utilisateur d'acheter un article de boutique.
+     *
+     * @param request     La requête HTTP.
+     * @param shopItemId  L'identifiant de l'article de boutique à acheter.
+     * @return Une réponse HTTP indiquant le résultat de l'achat de l'article de boutique.
+     * @throws IOException Une exception en cas d'erreur d'entrée/sortie.
+     */
     @GetMapping("/buy")
     public ResponseEntity<MessageResponse> buyItem(HttpServletRequest request, @RequestParam String shopItemId) throws IOException {
         if(!shopItemId.isEmpty()) {

@@ -20,12 +20,25 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Contrôleur pour gérer l'upload et la récupération d'images liées aux skins des utilisateurs.
+ * Ce contrôleur permet aux utilisateurs d'uploader leurs skins et de récupérer les skins existants.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @RestController
 @RequestMapping(path = {"/skins"})
 public class ImageUploadController {
 
     private final UserService userService;
     private final JwtUtil jwtUtil;
+
+    /**
+     * Constructeur du contrôleur ImageUploadController.
+     *
+     * @param jwtUtil     Utilitaire JWT pour la gestion des jetons.
+     * @param userService Service utilisateur pour la gestion des utilisateurs.
+     */
     public ImageUploadController(JwtUtil jwtUtil, UserService userService) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
@@ -34,6 +47,13 @@ public class ImageUploadController {
     @Value("${upload.dir}")
     private String uploadDirectory;
 
+    /**
+     * Endpoint pour l'upload d'un skin d'utilisateur.
+     *
+     * @param file    Le fichier du skin à télécharger.
+     * @param request La requête HTTP.
+     * @return Une réponse indiquant le succès ou l'échec de l'upload du skin.
+     */
     @PostMapping("/upload")
     public ResponseEntity<MessageResponse> uploadSkin(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         if (file.isEmpty()) {
@@ -59,6 +79,12 @@ public class ImageUploadController {
         }
     }
 
+    /**
+     * Endpoint pour récupérer un skin par son nom de fichier.
+     *
+     * @param fileName Le nom du fichier skin à récupérer.
+     * @return Une réponse contenant le contenu du skin.
+     */
     @GetMapping("/{fileName:.+}")
     public ResponseEntity<ByteArrayResource> getSkin(@PathVariable String fileName) {
         try {

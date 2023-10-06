@@ -23,15 +23,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Contrôleur pour la gestion des offres PayPal.
+ * Ce contrôleur permet de gérer les offres PayPal, y compris la création, la mise à jour,
+ * la suppression et la récupération des offres PayPal.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @RestController
 @RequestMapping(path = {"/paypal-offers"})
 public class PaypalOfferController {
     private final PaypalOfferService paypalOfferService;
 
+    /**
+     * Constructeur de la classe PaypalOfferController.
+     *
+     * @param paypalOfferService Le service gérant les offres PayPal.
+     */
     public PaypalOfferController(PaypalOfferService paypalOfferService) {
         this.paypalOfferService = paypalOfferService;
     }
 
+    /**
+     * Met à jour une offre PayPal existante avec les données fournies.
+     *
+     * @param id              L'ID de l'offre PayPal à mettre à jour.
+     * @param paypalOfferForm Les données de l'offre PayPal à mettre à jour.
+     * @param bindingResult   Résultat de la validation des données.
+     * @return                Réponse HTTP indiquant le statut de la mise à jour.
+     */
     @PatchMapping(path = {"/update/{id}"})
     public ResponseEntity<Object> patchAction(
             @PathVariable Long id,
@@ -63,6 +83,13 @@ public class PaypalOfferController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible de mettre l'offre paypal a jours, veuillez contacter un administrateur."));
     }
 
+    /**
+     * Crée une nouvelle offre PayPal avec les données fournies.
+     *
+     * @param paypalOfferForm Les données de la nouvelle offre PayPal.
+     * @param bindingResult   Résultat de la validation des données.
+     * @return                Réponse HTTP indiquant le statut de la création.
+     */
     @PostMapping(path = {"/create"})
     public ResponseEntity<Object> createAction(
             @RequestBody @Valid PaypalOfferForm paypalOfferForm,
@@ -85,11 +112,22 @@ public class PaypalOfferController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED.value(), "L'offre paypal a bien été créée."));
     }
 
+    /**
+     * Récupère toutes les offres PayPal.
+     *
+     * @return Liste des offres PayPal sous forme d'entités.
+     */
     @GetMapping(path = {"/list"})
     public List<PaypalOfferEntity> findAllAction() {
         return this.paypalOfferService.getAll();
     }
 
+    /**
+     * Récupère une offre PayPal par son ID.
+     *
+     * @param id  L'ID de l'offre PayPal à récupérer.
+     * @return    Réponse HTTP contenant l'offre PayPal sous forme d'entité.
+     */
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Object> findByIdAction(@PathVariable Long id) {
         Optional<PaypalOfferEntity> newsEntity = this.paypalOfferService.getOneById(id);
@@ -99,6 +137,12 @@ public class PaypalOfferController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "L'offre paypal avec l'id " + id + " n'existe pas."));
     }
 
+    /**
+     * Supprime une offre PayPal par son ID.
+     *
+     * @param id  L'ID de l'offre PayPal à supprimer.
+     * @return    Réponse HTTP indiquant le statut de la suppression.
+     */
     @DeleteMapping(path = {"/delete/{id}"})
     public ResponseEntity<Object> deleteByIdAction(@PathVariable Long id) {
         try {
