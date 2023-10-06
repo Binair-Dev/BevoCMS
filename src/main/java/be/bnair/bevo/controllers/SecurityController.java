@@ -1,6 +1,8 @@
 package be.bnair.bevo.controllers;
 
+import be.bnair.bevo.models.entities.RankEntity;
 import be.bnair.bevo.models.forms.RegisterForm;
+import be.bnair.bevo.services.RankService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
@@ -30,11 +32,13 @@ public class SecurityController {
     private final JwtUtil utils;
     private final PasswordEncoder passwordEncoder;
     private final UserService securityService;
+    private final RankService rankService;
 
-    public SecurityController(JwtUtil utils, PasswordEncoder passwordEncoder, UserService securityService) {
+    public SecurityController(JwtUtil utils, PasswordEncoder passwordEncoder, UserService securityService, RankService rankService) {
         this.utils = utils;
         this.passwordEncoder = passwordEncoder;
         this.securityService = securityService;
+        this.rankService = rankService;
     }
 
     @PostMapping(path = {"/login"})
@@ -80,14 +84,20 @@ public class SecurityController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FieldErrorResponse(HttpStatus.BAD_REQUEST.value(), errorList));
         }
 
+        Optional<RankEntity> defaultRank = rankService.getOneById(2L);
         Optional<UserEntity> exist = this.securityService.getOneByUsername(form.getUsername());
         if(exist.isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Le nom d'utilisateur est déjà utilisé."));
         }
 
-        UserEntity entity = form.toEntity();   
-        UserDetails user = this.securityService.create(entity);
-        return ResponseEntity.ok(new AuthResponse(utils.generateToken(user)));
+        if(defaultRank.isPresent()) {
+            UserEntity entity = form.toEntity();
+            entity.setRank(defaultRank.get());
+            UserDetails user = this.securityService.create(entity);
+            return ResponseEntity.ok(new AuthResponse(utils.generateToken(user)));
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(HttpStatus.BAD_REQUEST.value(), "Impossible d'enregistrer cet utilisateur, rank par défaut introuvable."));
     }
 
     @GetMapping(path = "/authenticated")

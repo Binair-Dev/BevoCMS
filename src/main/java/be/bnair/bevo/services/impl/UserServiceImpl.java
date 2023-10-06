@@ -31,10 +31,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails create(UserEntity entity) {
-        Optional<RankEntity> rankEntity = rankRepository.findById(1L);
-        if(entity.getRank() != null && rankEntity.isPresent()) {
-            entity.setRank(rankEntity.get());
-        }
         return this.userRepository.save(entity);
     }
 
