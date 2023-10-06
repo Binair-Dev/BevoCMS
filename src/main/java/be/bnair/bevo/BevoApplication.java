@@ -13,10 +13,21 @@ import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * Classe principale de l'application Bevo.
+ * Cette classe sert de point d'entrée pour l'application Spring Boot.
+ *
+ * Copyright © 2023 Brian Van Bellinghen
+ */
 @SpringBootApplication
-@EnableJpaAuditing
-@EnableConfigurationProperties
+@EnableJpaAuditing // Active l'audition JPA
+@EnableConfigurationProperties // Active la configuration de propriétés personnalisées
 public class BevoApplication {
+
+    /**
+     * Méthode principale qui démarre l'application.
+     * @param args Les arguments de ligne de commande.
+     */
     public static void main(String[] args) {
         SpringApplication.run(BevoApplication.class, args);
     }
