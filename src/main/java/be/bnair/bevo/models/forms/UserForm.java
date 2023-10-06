@@ -13,6 +13,9 @@ public class UserForm {
     @NotEmpty
     @Email(message = "L'adresse email ne peut pas être vide.")
     private String email;
+    @NotEmpty(message = "Le mot de passe ne peut pas être vide.")
+    @Size(min = 8, max = 16, message = "Le mot de passe doit contenir entre 8 et 16 caractères.")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\\w\\d\\s:])([^\\s]){8,}$", message = "Le mot de passe doit contenir au moins une lettre en majuscule, un chiffre et un caractère spécial")
     private String password;
     @Min(value = 0, message = "Le rank donnés ne peut pas être vide")
     private long rank;
@@ -25,8 +28,7 @@ public class UserForm {
         UserEntity userEntity = new UserEntity();
         userEntity.setNickname(username);
         userEntity.setEmail(email);
-        if(password.length() > 0)
-            userEntity.setPassword(password);
+        userEntity.setPassword(password);
         userEntity.setConfirmed(confirmed);
         userEntity.setCredit(credit);
         return userEntity;
