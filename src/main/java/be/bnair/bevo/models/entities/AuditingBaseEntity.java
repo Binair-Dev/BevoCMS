@@ -11,7 +11,7 @@ import java.time.LocalDate;
 /**
  * Cette classe abstraite sert de base pour toutes les entités qui nécessitent un suivi de l'audition des données.
  *
- * Copyright © 2023 Brian Van Bellinghen
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
  */
 @MappedSuperclass
 @Data

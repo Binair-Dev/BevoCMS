@@ -17,7 +17,7 @@ import java.net.Socket;
  * Classe principale de l'application Bevo.
  * Cette classe sert de point d'entrée pour l'application Spring Boot.
  *
- * Copyright © 2023 Brian Van Bellinghen
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
  */
 @SpringBootApplication
 @EnableJpaAuditing // Active l'audition JPA

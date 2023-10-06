@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * Cette classe représente une réponse d'authentification contenant un token.
  *
- * Copyright © 2023 Brian Van Bellinghen
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
  */
 @RequiredArgsConstructor
 public class AuthResponse {

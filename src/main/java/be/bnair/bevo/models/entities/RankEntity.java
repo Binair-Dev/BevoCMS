@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * Cette classe représente une entité pour stocker les rangs des utilisateurs dans le système.
  *
- * Copyright © 2023 Brian Van Bellinghen
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
  */
 @Entity
 @Table(name = "bevo_ranks")

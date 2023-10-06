@@ -8,7 +8,7 @@ import lombok.Data;
 /**
  * Cette classe représente un formulaire pour créer ou mettre à jour une entrée de Wiki.
  *
- * Copyright © 2023 Brian Van Bellinghen
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
  */
 @Data
 public class WikiForm {

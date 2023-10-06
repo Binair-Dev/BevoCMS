@@ -9,7 +9,7 @@ import lombok.Data;
 /**
  * Cette classe représente un formulaire de création de catégorie de boutique.
  *
- * Copyright © 2023 Brian Van Bellinghen
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
  */
 @Data
 public class ShopCategoryForm {

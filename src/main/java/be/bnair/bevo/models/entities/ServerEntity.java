@@ -10,7 +10,7 @@ import lombok.Data;
 /**
  * Cette classe représente une entité pour stocker des informations sur un serveur dans le système.
  *
- * Copyright © 2023 Brian Van Bellinghen
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
  */
 @Entity
 @Table(name = "bevo_servers")

@@ -6,7 +6,7 @@ import lombok.Data;
 /**
  * Cette classe représente les meilleurs votants.
  *
- * Copyright © 2023 Brian Van Bellinghen
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
  */
 @Data
 @Builder

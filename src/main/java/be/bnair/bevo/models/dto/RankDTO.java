@@ -10,7 +10,7 @@ import lombok.Data;
 /**
  * Cette classe représente un objet de transfert de données (DTO) pour les informations sur les rangs.
  *
- * Copyright © 2023 Brian Van Bellinghen
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
  */
 @Data
 @Builder

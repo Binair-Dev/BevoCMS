@@ -11,7 +11,7 @@ import lombok.Data;
 /**
  * Cette classe représente un formulaire de récompense de vote.
  *
- * Copyright © 2023 Brian Van Bellinghen
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
  */
 @Data
 @TypeCheckConstraint(message = "L'un des deux éléments en fonction du type n'est pas bon (Commande/Crédit).")

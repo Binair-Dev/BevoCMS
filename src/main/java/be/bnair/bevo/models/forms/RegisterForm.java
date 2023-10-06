@@ -11,7 +11,7 @@ import lombok.Data;
 /**
  * Cette classe représente un formulaire d'inscription utilisateur.
  *
- * Copyright © 2023 Brian Van Bellinghen
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
  */
 @Data
 @PasswordMatchConstraint(message = "Le mot de passe et la confirmation du mot de passe doivent être identiques.")
