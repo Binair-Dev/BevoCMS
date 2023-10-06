@@ -8,19 +8,54 @@ import be.bnair.bevo.models.entities.security.UserEntity;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * Cette classe représente un objet de transfert de données (DTO) pour les informations sur les transactions.
+ *
+ * Copyright © 2023 Brian Van Bellinghen
+ */
 @Data
 @Builder
 public class TransactionDTO {
+    /**
+     * L'identifiant unique de la transaction.
+     */
     private Long id;
+
+    /**
+     * Le montant de crédit associé à la transaction.
+     */
     private double credit;
+
+    /**
+     * Le prix de la transaction.
+     */
     private double price;
+
+    /**
+     * La date de la transaction.
+     */
     private LocalDate date;
+
+    /**
+     * L'identifiant de l'utilisateur lié à la transaction.
+     */
     private long user_id;
+
+    /**
+     * L'identifiant unique de la transaction.
+     */
     private String identifier;
 
-    public static TransactionDTO toDTO(TransactionEntity entity){
-        if(entity == null)
-            throw  new IllegalArgumentException("Ne peut etre null");
+    /**
+     * Convertit une entité TransactionEntity en un objet TransactionDTO.
+     *
+     * @param entity L'entité TransactionEntity à convertir en DTO.
+     * @return Un objet TransactionDTO correspondant à l'entité.
+     * @throws IllegalArgumentException si l'entité est nulle.
+     */
+    public static TransactionDTO toDTO(TransactionEntity entity) {
+        if (entity == null)
+            throw new IllegalArgumentException("Ne peut être null");
 
         return TransactionDTO.builder()
                 .id(entity.getId())

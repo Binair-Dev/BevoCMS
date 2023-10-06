@@ -11,17 +11,44 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
+/**
+ * Cette classe représente un objet de transfert de données (DTO) pour les informations sur les transactions de la boutique.
+ *
+ * Copyright © 2023 Brian Van Bellinghen
+ */
 @Data
 @Builder
 public class ShopTransactionDTO {
+    /**
+     * L'identifiant unique de la transaction de la boutique.
+     */
     private Long id;
+
+    /**
+     * L'objet ShopItemDTO associé à la transaction.
+     */
     private ShopItemDTO item;
+
+    /**
+     * Le montant de crédit associé à la transaction.
+     */
     private double credit;
+
+    /**
+     * Le nom d'utilisateur de l'utilisateur lié à la transaction.
+     */
     private String user_name;
 
-    public static ShopTransactionDTO toDTO(ShopTransactionEntity entity){
-        if(entity == null)
-            throw  new IllegalArgumentException("Ne peut etre null");
+    /**
+     * Convertit une entité ShopTransactionEntity en un objet ShopTransactionDTO.
+     *
+     * @param entity L'entité ShopTransactionEntity à convertir en DTO.
+     * @return Un objet ShopTransactionDTO correspondant à l'entité.
+     * @throws IllegalArgumentException si l'entité est nulle.
+     */
+    public static ShopTransactionDTO toDTO(ShopTransactionEntity entity) {
+        if (entity == null)
+            throw new IllegalArgumentException("Ne peut être null");
 
         return ShopTransactionDTO.builder()
                 .id(entity.getId())

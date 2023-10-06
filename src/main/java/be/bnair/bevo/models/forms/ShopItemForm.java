@@ -13,30 +13,71 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+/**
+ * Cette classe représente un formulaire de création d'article de boutique.
+ *
+ * Copyright © 2023 Brian Van Bellinghen
+ */
 @Data
 public class ShopItemForm {
+    /**
+     * Le titre de l'article de boutique.
+     */
     @NotEmpty(message = "Le titre ne peut pas être vide.")
     @Size(min = 3, message = "Le titre doit contenir au moins 3 caractères")
     private String title;
+
+    /**
+     * La description de l'article de boutique.
+     */
     @NotEmpty(message = "La description ne peut pas être vide.")
     @Size(min = 3, message = "La description doit contenir au moins 3 caractères")
     private String description;
-    @NotEmpty(message = "L'url de l'image ne peut pas être vide.")
-    @Size(min = 3, message = "L'url de l'image doit contenir au moins 3 caractères")
+
+    /**
+     * L'URL de l'image de l'article de boutique.
+     */
+    @NotEmpty(message = "L'URL de l'image ne peut pas être vide.")
+    @Size(min = 3, message = "L'URL de l'image doit contenir au moins 3 caractères")
     private String image;
-    @NotEmpty(message = "L'url de l'image du contenu ne peut pas être vide.")
-    @Size(min = 3, message = "L'url de l'image du contenu doit contenir au moins 3 caractères")
+
+    /**
+     * L'URL de l'image du contenu de l'article de boutique.
+     */
+    @NotEmpty(message = "L'URL de l'image du contenu ne peut pas être vide.")
+    @Size(min = 3, message = "L'URL de l'image du contenu doit contenir au moins 3 caractères")
     private String contentImage;
-    @Min(value = 1, message = "Les crédits donnés ne peuvent pas être vide")
+
+    /**
+     * Le prix de l'article de boutique.
+     */
+    @Min(value = 1, message = "Le prix ne peut pas être vide ou négatif")
     private double price;
+
+    /**
+     * La commande associée à l'article de boutique.
+     */
     @NotEmpty(message = "La commande ne peut pas être vide.")
     @Size(min = 3, message = "La commande doit contenir au moins 3 caractères")
     private String command;
-    @Min(value = 1, message = "La catégorie du shop ne peuvent pas être vide")
+
+    /**
+     * L'identifiant de la catégorie du shop à laquelle l'article de boutique appartient.
+     */
+    @Min(value = 1, message = "La catégorie du shop ne peut pas être vide")
     private Long shopCategory;
-    @Min(value = 1, message = "Le serveur ne peuvent pas être vide")
+
+    /**
+     * L'identifiant du serveur auquel l'article de boutique est associé.
+     */
+    @Min(value = 1, message = "Le serveur ne peut pas être vide")
     private Long server;
 
+    /**
+     * Convertit le formulaire en une entité ShopItemEntity.
+     *
+     * @return Une instance de ShopItemEntity basée sur les données du formulaire.
+     */
     public ShopItemEntity toEntity() {
         ShopItemEntity shopItemEntity = new ShopItemEntity();
         shopItemEntity.setTitle(title);
@@ -44,7 +85,7 @@ public class ShopItemForm {
         shopItemEntity.setImage(image);
         shopItemEntity.setContentImage(contentImage);
         shopItemEntity.setPrice(price);
-        shopItemEntity.setCommand(command);        
+        shopItemEntity.setCommand(command);
         return shopItemEntity;
     }
 }

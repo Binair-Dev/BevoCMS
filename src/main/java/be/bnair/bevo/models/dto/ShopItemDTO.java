@@ -11,22 +11,69 @@ import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * Cette classe représente un objet de transfert de données (DTO) pour les informations sur les articles de la boutique.
+ *
+ * Copyright © 2023 Brian Van Bellinghen
+ */
 @Data
 @Builder
 public class ShopItemDTO {
+    /**
+     * L'identifiant unique de l'article de la boutique.
+     */
     private Long id;
+
+    /**
+     * Le titre de l'article de la boutique.
+     */
     private String title;
+
+    /**
+     * La description de l'article de la boutique.
+     */
     private String description;
+
+    /**
+     * Le chemin de l'image associée à l'article de la boutique.
+     */
     private String image;
+
+    /**
+     * Le chemin de l'image de contenu associée à l'article de la boutique.
+     */
     private String content_image;
+
+    /**
+     * Le prix de l'article de la boutique.
+     */
     private double price;
+
+    /**
+     * La commande associée à l'article de la boutique.
+     */
     private String command;
+
+    /**
+     * L'identifiant de la catégorie de la boutique à laquelle appartient cet article.
+     */
     private Long shop_category_id;
+
+    /**
+     * Le nom du serveur associé à cet article de la boutique.
+     */
     private String server_name;
 
-    public static ShopItemDTO toDTO(ShopItemEntity entity){
-        if(entity == null)
-            throw  new IllegalArgumentException("Ne peut etre null");
+    /**
+     * Convertit une entité ShopItemEntity en un objet ShopItemDTO.
+     *
+     * @param entity L'entité ShopItemEntity à convertir en DTO.
+     * @return Un objet ShopItemDTO correspondant à l'entité.
+     * @throws IllegalArgumentException si l'entité est nulle.
+     */
+    public static ShopItemDTO toDTO(ShopItemEntity entity) {
+        if (entity == null)
+            throw new IllegalArgumentException("Ne peut être null");
 
         return ShopItemDTO.builder()
                 .id(entity.getId())

@@ -7,16 +7,39 @@ import be.bnair.bevo.models.entities.RankEntity;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * Cette classe représente un objet de transfert de données (DTO) pour les informations sur les rangs.
+ *
+ * Copyright © 2023 Brian Van Bellinghen
+ */
 @Data
 @Builder
 public class RankDTO {
+    /**
+     * L'identifiant unique du rang.
+     */
     private Long id;
+
+    /**
+     * Le titre du rang.
+     */
     private String title;
+
+    /**
+     * La puissance du rang.
+     */
     private Long power;
 
-    public static RankDTO toDTO(RankEntity entity){
-        if(entity == null)
-            throw  new IllegalArgumentException("Ne peut etre null");
+    /**
+     * Convertit une entité RankEntity en un objet RankDTO.
+     *
+     * @param entity L'entité RankEntity à convertir en DTO.
+     * @return Un objet RankDTO correspondant à l'entité.
+     * @throws IllegalArgumentException si l'entité est nulle.
+     */
+    public static RankDTO toDTO(RankEntity entity) {
+        if (entity == null)
+            throw new IllegalArgumentException("Ne peut être null");
 
         return RankDTO.builder()
                 .id(entity.getId())

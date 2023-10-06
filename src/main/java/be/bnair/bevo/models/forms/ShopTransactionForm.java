@@ -5,15 +5,36 @@ import be.bnair.bevo.models.entities.WikiEntity;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
 
+/**
+ * Cette classe représente un formulaire de transaction de boutique.
+ *
+ * Copyright © 2023 Brian Van Bellinghen
+ */
 @Data
 public class ShopTransactionForm {
-    @Min(value = 1, message = "L'item's ne peut pas être vide")
+    /**
+     * L'identifiant de l'article de boutique associé à la transaction.
+     */
+    @Min(value = 1, message = "L'identifiant de l'article ne peut pas être vide")
     private Long item;
+
+    /**
+     * Le montant de crédit de la transaction.
+     */
     @Min(value = 1, message = "Les crédits ne peuvent pas être vide")
     private double credit;
-    @Min(value = 1, message = "L'utilisateur ne peut pas être vide")
+
+    /**
+     * L'identifiant de l'utilisateur effectuant la transaction.
+     */
+    @Min(value = 1, message = "L'identifiant de l'utilisateur ne peut pas être vide")
     private Long user;
 
+    /**
+     * Convertit le formulaire en une entité ShopTransactionEntity.
+     *
+     * @return Une instance de ShopTransactionEntity basée sur les données du formulaire.
+     */
     public ShopTransactionEntity toEntity() {
         ShopTransactionEntity entity = new ShopTransactionEntity();
         entity.setCredit(credit);
