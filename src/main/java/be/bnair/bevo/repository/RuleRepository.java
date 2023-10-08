@@ -5,6 +5,13 @@ import org.springframework.stereotype.Repository;
 
 import be.bnair.bevo.models.entities.RuleEntity;
 
+/**
+ * Interface de repository pour la gestion des entités de règles (RuleEntity).
+ * Cette interface permet d'effectuer des opérations CRUD (Create, Read, Update, Delete)
+ * sur les entités de règles en utilisant Spring Data JPA.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @Repository
 public interface RuleRepository extends JpaRepository<RuleEntity, Long> {
 }
