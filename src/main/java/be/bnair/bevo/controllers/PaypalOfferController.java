@@ -28,7 +28,7 @@ import java.util.Optional;
  * Ce contrôleur permet de gérer les offres PayPal, y compris la création, la mise à jour,
  * la suppression et la récupération des offres PayPal.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RestController
 @RequestMapping(path = {"/paypal-offers"})

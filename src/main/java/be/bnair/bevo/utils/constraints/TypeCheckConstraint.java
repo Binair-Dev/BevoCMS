@@ -13,7 +13,7 @@ import jakarta.validation.Payload;
  * Annotation de contrainte personnalisée pour valider le type d'une classe.
  * Cette annotation peut être utilisée pour vérifier si une classe hérite ou implémente un certain type.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

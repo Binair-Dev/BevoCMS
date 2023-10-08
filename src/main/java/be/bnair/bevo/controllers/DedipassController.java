@@ -24,7 +24,7 @@ import java.time.LocalDate;
  * Contrôleur pour gérer les opérations liées aux codes Dedipass.
  * Ce contrôleur gère la vérification des codes Dedipass, l'ajout de crédits aux comptes utilisateurs, et les redirections.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RestController
 @RequestMapping(value = "/dedipass")

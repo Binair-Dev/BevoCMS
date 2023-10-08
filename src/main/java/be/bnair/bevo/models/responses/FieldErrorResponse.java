@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Cette classe représente une réponse d'erreur de champ contenant un code d'erreur et une liste de messages d'erreur.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RequiredArgsConstructor
 public class FieldErrorResponse {

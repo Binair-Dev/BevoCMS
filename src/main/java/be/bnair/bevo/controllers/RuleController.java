@@ -27,7 +27,7 @@ import java.util.Optional;
  * Contrôleur pour la gestion des règles.
  * Ce contrôleur permet de gérer les règles, y compris la création, la mise à jour, la suppression et la récupération des règles.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RestController
 @RequestMapping(path = {"/rules"})

@@ -19,7 +19,7 @@ import javax.crypto.SecretKey;
  * Configuration pour la gestion des jetons JWT (JSON Web Tokens).
  * Cette classe contient les propriétés de configuration liées aux jetons JWT.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Component
 @ConfigurationProperties(prefix = "jwt")

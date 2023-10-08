@@ -10,7 +10,7 @@ import java.net.Socket;
  * Cette classe permet de tester la connexion à un serveur Minecraft, de vérifier s'il est en ligne,
  * de récupérer le nombre de joueurs connectés et le nombre maximum de joueurs autorisés.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 public class MCUtils {
 

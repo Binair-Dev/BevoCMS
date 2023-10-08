@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * Cette classe représente une entité pour stocker des catégories de produits dans le système de boutique.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Entity
 @Table(name = "bevo_shop_categories")

@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * Cette classe représente des informations statistiques.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Data
 public class Information {

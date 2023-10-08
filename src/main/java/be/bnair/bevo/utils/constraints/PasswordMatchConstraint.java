@@ -13,7 +13,7 @@ import jakarta.validation.Payload;
  * Annotation de contrainte personnalisée pour valider la correspondance entre un champ de mot de passe
  * et un champ de confirmation de mot de passe dans une classe.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

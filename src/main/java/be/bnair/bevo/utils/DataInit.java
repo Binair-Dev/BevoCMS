@@ -36,7 +36,7 @@ import be.bnair.bevo.repository.VoteRewardRepository;
  * Classe d'initialisation des données pour l'application Bevo.
  * Cette classe se charge de créer et d'initialiser les données de base nécessaires au fonctionnement de l'application.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Component
 public class DataInit implements InitializingBean {

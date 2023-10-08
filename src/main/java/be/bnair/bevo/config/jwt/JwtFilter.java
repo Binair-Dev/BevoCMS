@@ -41,7 +41,7 @@ import java.io.IOException;
  * - Un service d'interface {@link UserDetailsService} pour charger les détails de l'utilisateur en fonction du nom d'utilisateur.
  * - Un utilitaire {@link JwtUtil} pour extraire et valider les jetons JWT.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Component
 public class JwtFilter extends OncePerRequestFilter {

@@ -10,7 +10,7 @@ import be.bnair.bevo.models.entities.WikiEntity;
  * Cette interface permet d'effectuer des opérations CRUD (Create, Read, Update, Delete)
  * sur les entités Wiki en utilisant Spring Data JPA.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Repository
 public interface WikiRepository extends JpaRepository<WikiEntity, Long> {

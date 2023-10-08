@@ -3,7 +3,7 @@ package be.bnair.bevo.models.enums;
 /**
  * Cette énumération définit les types de récompense possibles dans l'application.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 public enum EnumRewardType {
     /**

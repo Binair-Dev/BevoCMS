@@ -34,7 +34,7 @@ import java.util.Optional;
  * Contrôleur pour la gestion des rangs des utilisateurs.
  * Ce contrôleur permet de gérer les rangs, y compris la création, la mise à jour, la suppression et la récupération des rangs.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RestController
 @RequestMapping(path = {"/ranks"})

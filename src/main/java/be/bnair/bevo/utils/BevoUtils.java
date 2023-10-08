@@ -3,7 +3,7 @@ package be.bnair.bevo.utils;
 /**
  * Classe utilitaire contenant des utilitaires généraux pour l'application Bevo.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 public class BevoUtils {
 

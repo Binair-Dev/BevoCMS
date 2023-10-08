@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
  * la mise à jour, la suppression, la récupération de la liste des votes et la récupération
  * des utilisateurs avec le plus grand nombre de votes.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RestController
 @RequestMapping(path = {"/votes"})

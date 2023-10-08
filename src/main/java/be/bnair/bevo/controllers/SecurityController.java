@@ -30,7 +30,7 @@ import be.bnair.bevo.utils.JwtUtil;
  * Contrôleur pour la gestion de la sécurité (authentification et autorisation).
  * Ce contrôleur permet de gérer l'authentification et l'autorisation des utilisateurs, y compris la connexion, l'enregistrement et la vérification du token.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RestController
 @RequestMapping("/auth")

@@ -31,7 +31,7 @@ import java.util.Optional;
  * Ce contrôleur permet de gérer les opérations de création de transactions
  * et de récupération de la liste de toutes les transactions.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RestController
 @RequestMapping(path = {"/transactions"})

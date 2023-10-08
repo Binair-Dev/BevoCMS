@@ -9,7 +9,7 @@ import jakarta.validation.ConstraintValidatorContext;
  * Validateur personnalisé pour la contrainte de correspondance des mots de passe.
  * Ce validateur est utilisé pour vérifier si le champ de mot de passe et le champ de confirmation du mot de passe correspondent.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 public class PasswordMatchValidator implements ConstraintValidator<PasswordMatchConstraint, RegisterForm> {
 

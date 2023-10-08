@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
  * Cette interface permet d'effectuer des opérations CRUD (Create, Read, Update, Delete)
  * sur les entités de transactions de boutique en utilisant Spring Data JPA.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Repository
 public interface ShopTransactionRepository extends JpaRepository<ShopTransactionEntity, Long> {}

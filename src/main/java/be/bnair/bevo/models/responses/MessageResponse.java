@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * Cette classe représente une réponse de message contenant un code et un message.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RequiredArgsConstructor
 public class MessageResponse {

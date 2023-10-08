@@ -30,7 +30,7 @@ import java.util.Optional;
  * Contrôleur pour la gestion de l'achat d'articles de boutique.
  * Ce contrôleur permet aux utilisateurs d'acheter des articles de boutique.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RestController
 @RequestMapping(path = "/shop")

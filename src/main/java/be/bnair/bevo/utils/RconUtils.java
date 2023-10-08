@@ -8,7 +8,7 @@ import net.kronos.rkon.core.Rcon;
  * Cette classe permet d'envoyer des commandes à un serveur Minecraft distant en utilisant
  * le protocole RCON.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 public class RconUtils {
 

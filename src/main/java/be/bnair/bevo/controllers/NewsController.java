@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  * Contrôleur pour la gestion des actualités (news).
  * Ce contrôleur permet de gérer les actualités, y compris la création, la mise à jour, la suppression et la récupération des actualités.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RestController
 @RequestMapping(path = {"/news"})

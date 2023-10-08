@@ -6,7 +6,7 @@ import lombok.Data;
 /**
  * Cette classe représente une entité pour stocker des articles de la boutique dans le système.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Entity
 @Table(name = "bevo_shop_items")

@@ -10,7 +10,7 @@ import java.util.Optional;
  * Classe utilitaire pour l'authentification dans l'application Bevo.
  * Cette classe fournit des méthodes pour extraire les détails de l'utilisateur à partir d'un jeton JWT.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 public class AuthUtils {
 

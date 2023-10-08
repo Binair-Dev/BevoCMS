@@ -31,7 +31,7 @@ import java.util.Optional;
  * Contrôleur pour la gestion des catégories de boutique (shop categories).
  * Ce contrôleur permet de gérer les catégories de boutique, y compris la création, la mise à jour, la suppression et la récupération des informations sur les catégories de boutique.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RestController
 @RequestMapping(path = {"/shop-categories"})

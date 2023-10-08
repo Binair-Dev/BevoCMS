@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Cette classe représente une réponse contenant une liste d'images.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RequiredArgsConstructor
 public class ImageResponse {

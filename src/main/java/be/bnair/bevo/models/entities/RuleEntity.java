@@ -10,7 +10,7 @@ import lombok.Data;
 /**
  * Cette classe représente une entité pour stocker les règles dans le système.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Entity
 @Table(name = "bevo_ruless")

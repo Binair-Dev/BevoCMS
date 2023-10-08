@@ -30,7 +30,7 @@ import java.util.List;
  * Contrôleur pour gérer l'upload, la récupération et la suppression d'images par l'administrateur.
  * Ce contrôleur gère les opérations liées aux images, y compris l'upload, la récupération et la suppression.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RestController
 @RequestMapping(path = {"/images"})

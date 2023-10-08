@@ -10,7 +10,7 @@ import be.bnair.bevo.models.entities.TransactionEntity;
  * Cette interface permet d'effectuer des opérations CRUD (Create, Read, Update, Delete)
  * sur les entités de transactions en utilisant Spring Data JPA.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Repository
 public interface TransactionRepository extends JpaRepository<TransactionEntity, Long> {

@@ -24,7 +24,7 @@ import java.nio.file.Paths;
  * Contrôleur pour gérer l'upload et la récupération d'images liées aux skins des utilisateurs.
  * Ce contrôleur permet aux utilisateurs d'uploader leurs skins et de récupérer les skins existants.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RestController
 @RequestMapping(path = {"/skins"})

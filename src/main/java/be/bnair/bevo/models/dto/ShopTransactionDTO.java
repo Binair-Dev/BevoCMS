@@ -14,7 +14,7 @@ import java.time.LocalDate;
 /**
  * Cette classe représente un objet de transfert de données (DTO) pour les informations sur les transactions de la boutique.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Data
 @Builder

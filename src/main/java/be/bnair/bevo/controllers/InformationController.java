@@ -19,7 +19,7 @@ import java.util.List;
  * Contrôleur pour la gestion des informations générales.
  * Ce contrôleur permet de récupérer des informations générales telles que les statistiques des utilisateurs et l'état du serveur.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RestController
 @RequestMapping(value = "/infos")

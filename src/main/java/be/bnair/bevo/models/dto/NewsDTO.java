@@ -9,7 +9,7 @@ import lombok.Data;
 /**
  * Cette classe représente un objet de transfert de données (DTO) pour les informations sur les actualités.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Data
 @Builder

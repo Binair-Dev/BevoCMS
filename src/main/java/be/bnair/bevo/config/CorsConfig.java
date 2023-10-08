@@ -10,7 +10,7 @@ import org.springframework.web.filter.CorsFilter;
  * Configuration pour activer la prise en charge de CORS (Cross-Origin Resource Sharing).
  * Cette configuration permet à l'application d'accepter les requêtes provenant de domaines différents.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Configuration
 public class CorsConfig {

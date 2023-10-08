@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * Cette classe représente une entité utilisateur dans le système.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Entity(name = "User")
 @Table(name = "bevo_users")

@@ -19,7 +19,7 @@ import be.bnair.bevo.config.jwt.JwtFilter;
  * Configuration de la sécurité de l'application.
  * Cette configuration définit les règles de sécurité pour l'accès aux ressources et services de l'application.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Configuration
 @EnableWebSecurity

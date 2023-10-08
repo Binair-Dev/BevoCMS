@@ -12,7 +12,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
  * Configuration personnalisée pour la documentation OpenAPI.
  * Cette configuration définit les détails de sécurité pour l'API.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Configuration
 public class OpenAPIConfig {

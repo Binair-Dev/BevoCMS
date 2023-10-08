@@ -10,7 +10,7 @@ import be.bnair.bevo.models.entities.RuleEntity;
  * Cette interface permet d'effectuer des opérations CRUD (Create, Read, Update, Delete)
  * sur les entités de règles en utilisant Spring Data JPA.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Repository
 public interface RuleRepository extends JpaRepository<RuleEntity, Long> {

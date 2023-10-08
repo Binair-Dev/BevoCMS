@@ -14,7 +14,7 @@ import java.util.Optional;
  * Cette interface permet d'effectuer des opérations CRUD (Create, Read, Update, Delete)
  * sur les entités utilisateur en utilisant Spring Data JPA.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {

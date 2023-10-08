@@ -32,7 +32,7 @@ import java.util.Optional;
  * Ce contrôleur permet de gérer les opérations CRUD (Create, Read, Update, Delete)
  * sur les récompenses de vote.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RestController
 @RequestMapping(path = {"/vote-rewards"})

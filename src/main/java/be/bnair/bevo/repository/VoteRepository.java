@@ -10,7 +10,7 @@ import be.bnair.bevo.models.entities.VoteEntity;
  * Cette interface permet d'effectuer des opérations CRUD (Create, Read, Update, Delete)
  * sur les entités de vote en utilisant Spring Data JPA.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Repository
 public interface VoteRepository extends JpaRepository<VoteEntity, Long> {

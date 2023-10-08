@@ -16,7 +16,7 @@ import lombok.Data;
 /**
  * Cette classe représente un formulaire de création d'article de boutique.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Data
 public class ShopItemForm {

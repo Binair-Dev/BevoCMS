@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
  * des informations de l'utilisateur, la mise à jour du mot de passe, la récupération de la liste
  * des utilisateurs, la récupération d'un utilisateur par ID, et la suppression d'un utilisateur.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RestController
 @RequestMapping(path = {"/users"})

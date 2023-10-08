@@ -11,7 +11,7 @@ import lombok.Data;
 /**
  * Cette classe représente un formulaire de mise à jour du mot de passe de l'utilisateur.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Data
 public class UserUpdatePasswordForm {

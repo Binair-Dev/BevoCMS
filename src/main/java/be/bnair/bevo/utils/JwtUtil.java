@@ -23,7 +23,7 @@ import java.util.function.Function;
  * Utilitaire pour la gestion des tokens JWT (JSON Web Token).
  * Cette classe permet de générer, valider et extraire des informations à partir de tokens JWT.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @Component
 public class JwtUtil {

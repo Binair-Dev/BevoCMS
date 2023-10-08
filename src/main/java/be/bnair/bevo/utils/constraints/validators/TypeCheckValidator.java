@@ -10,7 +10,7 @@ import jakarta.validation.ConstraintValidatorContext;
  * Validateur personnalisé pour la contrainte de type de récompense.
  * Ce validateur est utilisé pour vérifier si le type de récompense et ses valeurs associées sont valides.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 public class TypeCheckValidator implements ConstraintValidator<TypeCheckConstraint, VoteRewardForm> {
 

@@ -31,7 +31,7 @@ import java.util.Optional;
  * Ce contrôleur permet de gérer les opérations de création et de récupération
  * des transactions de boutique ainsi que l'historique des transactions pour un utilisateur.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RestController
 @RequestMapping(path = {"/shop-transactions"})

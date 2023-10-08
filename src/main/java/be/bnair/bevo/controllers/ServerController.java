@@ -28,7 +28,7 @@ import java.util.Optional;
  * Contrôleur pour la gestion des serveurs.
  * Ce contrôleur permet de gérer les serveurs, y compris la création, la mise à jour, la suppression et la récupération des informations sur les serveurs.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RestController
 @RequestMapping(path = {"/servers"})

@@ -33,7 +33,7 @@ import java.util.Optional;
  * Ce contrôleur permet de gérer les opérations CRUD (Créer, Lire, Mettre à jour, Supprimer)
  * sur les articles de boutique.
  *
- * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ * @author Brian Van Bellinghen
  */
 @RestController
 @RequestMapping(path = {"/shop-items"})
