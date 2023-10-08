@@ -5,8 +5,21 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * Utilitaire pour la gestion de connexions à un serveur Minecraft et la récupération d'informations.
+ * Cette classe permet de tester la connexion à un serveur Minecraft, de vérifier s'il est en ligne,
+ * de récupérer le nombre de joueurs connectés et le nombre maximum de joueurs autorisés.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 public class MCUtils {
 
+    /**
+     * Teste la connexion à un serveur Minecraft.
+     *
+     * @param ip   L'adresse IP du serveur Minecraft.
+     * @param port Le port du serveur Minecraft.
+     */
     public static void test(String ip, int port)
     {
         try {
@@ -32,6 +45,14 @@ public class MCUtils {
 
         } catch (IOException e) {}
     }
+
+    /**
+     * Vérifie si un serveur Minecraft est en ligne.
+     *
+     * @param ip   L'adresse IP du serveur Minecraft.
+     * @param port Le port du serveur Minecraft.
+     * @return True si le serveur est en ligne, False sinon.
+     */
     public static boolean isOnline(String ip, int port)
     {
         try {
@@ -57,6 +78,14 @@ public class MCUtils {
             return false;
         }
     }
+
+    /**
+     * Récupère le nombre de joueurs connectés à un serveur Minecraft.
+     *
+     * @param ip   L'adresse IP du serveur Minecraft.
+     * @param port Le port du serveur Minecraft.
+     * @return Le nombre de joueurs connectés ou 0 en cas d'erreur.
+     */
     public static Integer getConnected(String ip, int port)
     {
         try {
@@ -84,6 +113,13 @@ public class MCUtils {
         }
     }
 
+    /**
+     * Récupère le nombre maximum de joueurs autorisés sur un serveur Minecraft.
+     *
+     * @param ip   L'adresse IP du serveur Minecraft.
+     * @param port Le port du serveur Minecraft.
+     * @return Le nombre maximum de joueurs autorisés ou 0 en cas d'erreur.
+     */
     public static Integer getMaxPlayer(String ip, int port)
     {
         try {

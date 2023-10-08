@@ -32,6 +32,12 @@ import be.bnair.bevo.repository.UserRepository;
 import be.bnair.bevo.repository.VoteRepository;
 import be.bnair.bevo.repository.VoteRewardRepository;
 
+/**
+ * Classe d'initialisation des données pour l'application Bevo.
+ * Cette classe se charge de créer et d'initialiser les données de base nécessaires au fonctionnement de l'application.
+ *
+ * © 2023 Brian Van Bellinghen. Tous droits réservés.
+ */
 @Component
 public class DataInit implements InitializingBean {
 
@@ -48,6 +54,22 @@ public class DataInit implements InitializingBean {
     private final ShopCategoryRepository shopCategoryRepository;
     private final ShopItemRepository shopItemRepository;
 
+    /**
+     * Constructeur de la classe DataInit.
+     *
+     * @param userRepository       Le référentiel des utilisateurs.
+     * @param rankRepository       Le référentiel des rangs.
+     * @param wikiRepository       Le référentiel des pages Wiki.
+     * @param newsRepository       Le référentiel des actualités.
+     * @param paypalOfferRepository Le référentiel des offres Paypal.
+     * @param ruleRepository       Le référentiel des règles.
+     * @param voteRewardRepository Le référentiel des récompenses de vote.
+     * @param serverRepository     Le référentiel des serveurs.
+     * @param passwordEncoder      L'encodeur de mots de passe.
+     * @param voteRepository       Le référentiel des votes.
+     * @param shopCategoryRepository Le référentiel des catégories de la boutique.
+     * @param shopItemRepository   Le référentiel des articles de la boutique.
+     */
     public DataInit(UserRepository userRepository, RankRepository rankRepository, WikiRepository wikiRepository,
     NewsRepository newsRepository, PaypalOfferRepository paypalOfferRepository, RuleRepository ruleRepository, VoteRewardRepository voteRewardRepository,
                    ServerRepository serverRepository, PasswordEncoder passwordEncoder, VoteRepository voteRepository, ShopCategoryRepository shopCategoryRepository,
@@ -66,6 +88,11 @@ public class DataInit implements InitializingBean {
         this.shopItemRepository = shopItemRepository;
     }
 
+    /**
+     * Méthode d'initialisation des données appelée après l'injection de dépendances.
+     *
+     * @throws Exception En cas d'erreur lors de l'initialisation des données.
+     */
     @Override
     public void afterPropertiesSet() throws Exception {
         //region Création des Rangs
