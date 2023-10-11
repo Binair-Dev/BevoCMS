@@ -1,8 +1,6 @@
 package be.bnair.bevo.utils.tests;
 
-import be.bnair.bevo.models.entities.NewsEntity;
-import be.bnair.bevo.models.entities.RankEntity;
-import be.bnair.bevo.models.entities.ShopCategoryEntity;
+import be.bnair.bevo.models.entities.*;
 import be.bnair.bevo.models.entities.security.UserEntity;
 
 import java.time.LocalDate;
@@ -47,5 +45,34 @@ public class TestUtils {
         news.setPublished(true);
         news.setAuthor(author);
         return news;
+    }
+
+    public static PaypalOfferEntity getPaypalOfferEntity(long id, String name) {
+        PaypalOfferEntity offer = new PaypalOfferEntity();
+        offer.setId(id);
+        offer.setTitle(name);
+        offer.setDescription("Test");
+        offer.setPrice(1);
+        offer.setCredit(10);
+        return offer;
+    }
+
+    public static RuleEntity getRuleEntity(long id, String name) {
+        RuleEntity rule = new RuleEntity();
+        rule.setId(id);
+        rule.setTitle(name);
+        rule.setDescription("Test");
+        return rule;
+    }
+
+    public static ServerEntity getServerEntity(long id, String name) {
+        ServerEntity server = new ServerEntity();
+        server.setId(id);
+        server.setTitle(name);
+        server.setServerIp("localhost");
+        server.setServerPort(25565);
+        server.setRconPort(25566);
+        server.setRconPassword("Test");
+        return server;
     }
 }

@@ -132,7 +132,6 @@ public class JwtUtil {
     }
 
     private String generateToken(Map<String, Object> claims, String subject) {
-        SecretKey key = this.config.secretKey;
         return builder
                 .setClaims(claims)
                 .setSubject(subject)
