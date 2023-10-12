@@ -135,6 +135,6 @@ public class UserEntity extends AuditingBaseEntity implements UserDetails {
     @Transient
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 }

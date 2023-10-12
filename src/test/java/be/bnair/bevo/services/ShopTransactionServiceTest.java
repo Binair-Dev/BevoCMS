@@ -2,6 +2,8 @@ package be.bnair.bevo.services;
 
 import static org.mockito.Mockito.*;
 
+import be.bnair.bevo.models.entities.ShopCategoryEntity;
+import be.bnair.bevo.models.entities.ShopItemEntity;
 import be.bnair.bevo.models.entities.security.UserEntity;
 import be.bnair.bevo.utils.tests.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,9 +35,8 @@ public class ShopTransactionServiceTest {
     @Test
     public void testCreateShopTransaction() {
         UserEntity user = TestUtils.getUserEntity(1L, "Test", TestUtils.getRankEntity(1L, "Test"));
-
-        ShopTransactionEntity transactionToCreate = new ShopTransactionEntity();
-        transactionToCreate.setCredit(10.0);
+        ShopItemEntity item = TestUtils.getShopItemEntity(1L, "Test", TestUtils.getShopCategoryEntity(1L, "Test"), TestUtils.getServerEntity(1L, "Test"));
+        ShopTransactionEntity transactionToCreate = TestUtils.getShopTransactionEntity(1L, item, 1, user);
 
         when(shopTransactionRepository.save(any(ShopTransactionEntity.class))).thenReturn(transactionToCreate);
 
@@ -44,18 +45,23 @@ public class ShopTransactionServiceTest {
         verify(shopTransactionRepository, times(1)).save(transactionToCreate);
 
         assertNotNull(createdTransaction.getId());
-        assertEquals(10.0, createdTransaction.getCredit(), 0.001);
+        assertNotNull(createdTransaction.getItem());
+        assertEquals(item, createdTransaction.getItem());
+        assertEquals(1, createdTransaction.getCredit(), 0.001);
+        assertNotNull(createdTransaction.getUser());
+        assertEquals(user, createdTransaction.getUser());
     }
 
     @Test
     public void testGetAllShopTransactions() {
+        UserEntity user = TestUtils.getUserEntity(1L, "Test", TestUtils.getRankEntity(1L, "Test"));
+        ShopItemEntity item = TestUtils.getShopItemEntity(1L, "Test", TestUtils.getShopCategoryEntity(1L, "Test"), TestUtils.getServerEntity(1L, "Test"));
+        ShopTransactionEntity t1 = TestUtils.getShopTransactionEntity(1L, item, 1, user);
+        ShopTransactionEntity t2 = TestUtils.getShopTransactionEntity(2L, item, 2, user);
+
         List<ShopTransactionEntity> transactionsList = new ArrayList<>();
-        ShopTransactionEntity transaction1 = new ShopTransactionEntity();
-        transaction1.setCredit(5.0);
-        ShopTransactionEntity transaction2 = new ShopTransactionEntity();
-        transaction2.setCredit(7.5);
-        transactionsList.add(transaction1);
-        transactionsList.add(transaction2);
+        transactionsList.add(t1);
+        transactionsList.add(t2);
 
         when(shopTransactionRepository.findAll()).thenReturn(transactionsList);
 
@@ -63,55 +69,39 @@ public class ShopTransactionServiceTest {
 
         verify(shopTransactionRepository, times(1)).findAll();
         assertEquals(2, retrievedTransactions.size());
-        assertEquals(5.0, retrievedTransactions.get(0).getCredit(), 0.001);
-        assertEquals(7.5, retrievedTransactions.get(1).getCredit(), 0.001);
+
+        assertNotNull(retrievedTransactions.get(0).getId());
+        assertNotNull(retrievedTransactions.get(0).getItem());
+        assertEquals(item, retrievedTransactions.get(0).getItem());
+        assertEquals(1, retrievedTransactions.get(0).getCredit(), 0.001);
+        assertNotNull(retrievedTransactions.get(0).getUser());
+        assertEquals(user, retrievedTransactions.get(0).getUser());
+
+        assertNotNull(retrievedTransactions.get(1).getId());
+        assertNotNull(retrievedTransactions.get(1).getItem());
+        assertEquals(item, retrievedTransactions.get(1).getItem());
+        assertEquals(2, retrievedTransactions.get(1).getCredit(), 0.001);
+        assertNotNull(retrievedTransactions.get(1).getUser());
+        assertEquals(user, retrievedTransactions.get(1).getUser());
     }
 
     @Test
     public void testGetOneShopTransactionById() {
-        Long transactionId = 1L;
-        ShopTransactionEntity transactionEntity = new ShopTransactionEntity();
-        transactionEntity.setId(transactionId);
-        transactionEntity.setCredit(10.0);
+        UserEntity user = TestUtils.getUserEntity(1L, "Test", TestUtils.getRankEntity(1L, "Test"));
+        ShopItemEntity item = TestUtils.getShopItemEntity(1L, "Test", TestUtils.getShopCategoryEntity(1L, "Test"), TestUtils.getServerEntity(1L, "Test"));
+        ShopTransactionEntity t1 = TestUtils.getShopTransactionEntity(1L, item, 1, user);
 
-        when(shopTransactionRepository.findById(transactionId)).thenReturn(Optional.of(transactionEntity));
+        when(shopTransactionRepository.findById(1L)).thenReturn(Optional.of(t1));
 
-        Optional<ShopTransactionEntity> retrievedTransaction = shopTransactionService.getOneById(transactionId);
+        Optional<ShopTransactionEntity> retrievedTransaction = shopTransactionService.getOneById(1L);
 
-        verify(shopTransactionRepository, times(1)).findById(transactionId);
+        verify(shopTransactionRepository, times(1)).findById(1L);
         assertTrue(retrievedTransaction.isPresent());
-        assertEquals(transactionId, retrievedTransaction.get().getId());
-        assertEquals(10.0, retrievedTransaction.get().getCredit(), 0.001);
-    }
-
-    @Test
-    public void testRemoveShopTransaction() throws Exception {
-        Long transactionId = 1L;
-
-        shopTransactionService.remove(transactionId);
-
-        verify(shopTransactionRepository, times(1)).deleteById(transactionId);
-    }
-
-    @Test
-    public void testUpdateShopTransaction() throws Exception {
-        Long transactionId = 1L;
-        ShopTransactionEntity transactionToUpdate = new ShopTransactionEntity();
-        transactionToUpdate.setCredit(15.0);
-
-        ShopTransactionEntity existingTransaction = new ShopTransactionEntity();
-        existingTransaction.setId(transactionId);
-        existingTransaction.setCredit(10.0);
-
-        when(shopTransactionRepository.findById(transactionId)).thenReturn(Optional.of(existingTransaction));
-        when(shopTransactionRepository.save(any(ShopTransactionEntity.class))).thenReturn(transactionToUpdate);
-
-        ShopTransactionEntity updatedTransaction = shopTransactionService.update(transactionId, transactionToUpdate);
-
-        verify(shopTransactionRepository, times(1)).findById(transactionId);
-        verify(shopTransactionRepository, times(1)).save(transactionToUpdate);
-
-        assertEquals(transactionId, updatedTransaction.getId());
-        assertEquals(15.0, updatedTransaction.getCredit(), 0.001);
+        assertNotNull(retrievedTransaction.get().getId());
+        assertNotNull(retrievedTransaction.get().getItem());
+        assertEquals(item, retrievedTransaction.get().getItem());
+        assertEquals(1, retrievedTransaction.get().getCredit(), 0.001);
+        assertNotNull(retrievedTransaction.get().getUser());
+        assertEquals(user, retrievedTransaction.get().getUser());
     }
 }

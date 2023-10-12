@@ -78,12 +78,7 @@ public class VoteServiceImpl implements VoteService {
      */
     @Override
     public void deleteAllByUserId(Long userId) {
-        List<VoteEntity> votes = repository.findAll();
-        for (VoteEntity vote : votes) {
-            if (vote.getUser().getId() == userId) {
-                repository.delete(vote);
-            }
-        }
+        repository.deleteAllByUserId(userId);
     }
 
     /**

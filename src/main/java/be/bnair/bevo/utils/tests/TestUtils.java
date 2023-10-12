@@ -2,9 +2,11 @@ package be.bnair.bevo.utils.tests;
 
 import be.bnair.bevo.models.entities.*;
 import be.bnair.bevo.models.entities.security.UserEntity;
+import be.bnair.bevo.models.enums.EnumRewardType;
 import org.apache.catalina.Server;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 public class TestUtils {
     public static UserEntity getUserEntity(long id, String name, RankEntity rank) {
@@ -17,6 +19,23 @@ public class TestUtils {
         author.setEnabled(true);
         author.setCredit(100.0);
         author.setRank(rank);
+        author.setCreatedAt(LocalDate.now());
+        author.setUpdatedAt(LocalDate.now());
+        return author;
+    }
+
+    public static UserEntity getDisabledUserEntity(long id, String name, RankEntity rank) {
+        UserEntity author = new UserEntity();
+        author.setId(id);
+        author.setNickname(name);
+        author.setEmail("Test");
+        author.setPassword("Test");
+        author.setConfirmed(true);
+        author.setEnabled(false);
+        author.setCredit(100.0);
+        author.setRank(rank);
+        author.setCreatedAt(LocalDate.now());
+        author.setUpdatedAt(LocalDate.now());
         return author;
     }
 
@@ -98,5 +117,45 @@ public class TestUtils {
         shopTransactionEntity.setCredit(credit);
         shopTransactionEntity.setUser(user);
         return shopTransactionEntity;
+    }
+
+    public static TransactionEntity getTransactionEntity(long id, String name, UserEntity user) {
+        TransactionEntity transaction = new TransactionEntity();
+        transaction.setId(id);
+        transaction.setCredit(1);
+        transaction.setPrice(1);
+        transaction.setDate(LocalDate.now());
+        transaction.setUser(user);
+        transaction.setIdentifier(name);
+        return transaction;
+    }
+
+    public static VoteRewardEntity getVoteRewardEntity(long id, String name, ServerEntity server) {
+        VoteRewardEntity voteReward = new VoteRewardEntity();
+        voteReward.setId(id);
+        voteReward.setTitle(name);
+        voteReward.setPercent(1);
+        voteReward.setRewardType(EnumRewardType.CREDIT);
+        voteReward.setCommand("Test");
+        voteReward.setCredit(1);
+        voteReward.setServer(server);
+        return voteReward;
+    }
+
+    public static VoteEntity getVoteEntity(long id, UserEntity user) {
+        VoteEntity vote = new VoteEntity();
+        vote.setId(id);
+        vote.setDate(LocalDate.now());
+        vote.setUser(user);
+        return vote;
+    }
+
+    public static WikiEntity getWikiEntity(long id, String name) {
+        WikiEntity wikiEntity = new WikiEntity();
+        wikiEntity.setId(id);
+        wikiEntity.setTitle(name);
+        wikiEntity.setDescription("Test");
+        wikiEntity.setImage("Test");
+        return wikiEntity;
     }
 }
