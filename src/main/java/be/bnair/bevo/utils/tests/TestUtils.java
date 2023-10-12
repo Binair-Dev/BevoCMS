@@ -2,6 +2,7 @@ package be.bnair.bevo.utils.tests;
 
 import be.bnair.bevo.models.entities.*;
 import be.bnair.bevo.models.entities.security.UserEntity;
+import org.apache.catalina.Server;
 
 import java.time.LocalDate;
 
@@ -32,7 +33,7 @@ public class TestUtils {
         shopCategory.setId(id);
         shopCategory.setTitle(shopCategoryName);
         shopCategory.setDisplayOrder(1);
-        return null;
+        return shopCategory;
     }
 
     public static NewsEntity getNewsEntity(long id, String name, UserEntity author){
@@ -74,5 +75,28 @@ public class TestUtils {
         server.setRconPort(25566);
         server.setRconPassword("Test");
         return server;
+    }
+
+    public static ShopItemEntity getShopItemEntity(long id, String name, ShopCategoryEntity shopCategory, ServerEntity server) {
+        ShopItemEntity shopItemEntity = new ShopItemEntity();
+        shopItemEntity.setId(id);
+        shopItemEntity.setTitle(name);
+        shopItemEntity.setDescription("Test");
+        shopItemEntity.setImage("Test");
+        shopItemEntity.setContentImage("Test");
+        shopItemEntity.setPrice(1);
+        shopItemEntity.setCommand("Test");
+        shopItemEntity.setShopCategory(shopCategory);
+        shopItemEntity.setServer(server);
+        return shopItemEntity;
+    }
+
+    public static ShopTransactionEntity getShopTransactionEntity(long id, ShopItemEntity shopItemEntity, double credit, UserEntity user) {
+        ShopTransactionEntity shopTransactionEntity = new ShopTransactionEntity();
+        shopTransactionEntity.setId(id);
+        shopTransactionEntity.setItem(shopItemEntity);
+        shopTransactionEntity.setCredit(credit);
+        shopTransactionEntity.setUser(user);
+        return shopTransactionEntity;
     }
 }
