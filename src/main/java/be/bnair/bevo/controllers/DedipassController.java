@@ -9,9 +9,9 @@ import be.bnair.bevo.utils.AuthUtils;
 import be.bnair.bevo.utils.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +52,9 @@ public class DedipassController {
     @Value("${dedipass.privateKey}")
     private String privateKey;
 
+    @Value("${dedipass.redirecturl}")
+    private String redirecturl;
+
     /**
      * Endpoint pour rediriger vers une URL externe avec un code Dedipass.
      *
@@ -61,8 +64,7 @@ public class DedipassController {
      */
     @PostMapping("/check")
     public void redirectToAngular(HttpServletResponse response, @RequestParam String code) throws IOException {
-        System.out.println("REIDRECTIND TO SQOPJDI UPQSHND FQSIKOD N?JKS");
-        response.sendRedirect("http://localhost:4200/status-code?code=" + code);
+        response.sendRedirect(redirecturl + code);
     }
 
     /**

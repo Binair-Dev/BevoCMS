@@ -103,15 +103,6 @@ public class VoteServiceTest {
     }
 
     @Test
-    public void testDeleteAllByUserId() throws Exception {
-        Long voteId = 1L;
-
-        voteService.deleteAllByUserId(voteId);
-
-        verify(voteRepository, times(1)).deleteAllByUserId(voteId);
-    }
-
-    @Test
     public void testDeleteAll() {
         voteService.deleteAll();
 

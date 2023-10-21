@@ -111,7 +111,7 @@ public class DataInit implements InitializingBean {
         UserEntity b_nair = new UserEntity();
         b_nair.setNickname("B_nair");
         b_nair.setEmail("van.bellinghen.brian@gmail.com");
-        b_nair.setPassword(passwordEncoder.encode("test1234@"));
+        b_nair.setPassword(passwordEncoder.encode("Test1234@"));
         b_nair.setConfirmed(true);
         b_nair.setEnabled(true);
         b_nair.setRank(admin);
@@ -121,7 +121,7 @@ public class DataInit implements InitializingBean {
         UserEntity julie = new UserEntity();
         julie.setNickname("B_test");
         julie.setEmail("B_test@gmail.com");
-        julie.setPassword(passwordEncoder.encode("test1234@"));
+        julie.setPassword(passwordEncoder.encode("Test1234@"));
         julie.setConfirmed(true);
         julie.setEnabled(true);
         julie.setRank(member);
