@@ -72,16 +72,6 @@ public class VoteServiceImpl implements VoteService {
     }
 
     /**
-     * Supprime tous les votes associés à un utilisateur par son identifiant d'utilisateur.
-     *
-     * @param userId L'identifiant de l'utilisateur dont les votes doivent être supprimés.
-     */
-    @Override
-    public void deleteAllByUserId(Long userId) {
-        repository.deleteAllByUserId(userId);
-    }
-
-    /**
      * Supprime tous les votes.
      */
     @Override

@@ -2,6 +2,7 @@ package be.bnair.bevo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import be.bnair.bevo.models.entities.VoteEntity;
@@ -15,6 +16,5 @@ import be.bnair.bevo.models.entities.VoteEntity;
  */
 @Repository
 public interface VoteRepository extends JpaRepository<VoteEntity, Long> {
-    @Query(value = "DELETE FROM Vote v WHERE v.user.id = :id")
-    void deleteAllByUserId(long id);
+
 }
