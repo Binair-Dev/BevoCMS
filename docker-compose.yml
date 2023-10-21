@@ -1,0 +1,49 @@
+version: "2.1"
+
+services:
+  backend:
+    container_name: "backend"
+    image: "bevocms-back"
+    mem_limit: 1024m
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./.env
+    environment:
+      SPRING_DATASOURCE_URL: $SPRING_DATASOURCE_URL
+      SPRING_DATASOURCE_USERNAME: $SPRING_DATASOURCE_USERNAME
+      SPRING_DATASOURCE_PASSWORD: $SPRING_DATASOURCE_PASSWORD
+      DEDIPASS_PUBLICKEY: $DEDIPASS_PUBLICKEY
+      DEDIPASS_PRIVATEKEY: $DEDIPASS_PRIVATEKEY
+      DEDIPASS_REDIRECTURL: $DEDIPASS_REDIRECTURL
+      UPLOAD_URL: $UPLOAD_URL
+      UPLOAD_ADMIN_DIR: $UPLOAD_ADMIN_DIR
+      UPLOAD_DIR: $UPLOAD_DIR
+    networks:
+      - bevo_network
+  postgres:
+    container_name: database
+    image: postgres:latest
+    mem_limit: 1024m
+    env_file:
+      - ./.env
+    environment:
+      POSTGRES_ROOT_PASSWORD: $POSTGRES_ROOT_PASSWORD
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    networks:
+      - bevo_network
+    volumes:
+      - ./create_db.sql:/docker-entrypoint-initdb.d/create_tables.sql
+  frontend:
+    container_name: "frontend"
+    image: "bevocms-front"
+    mem_limit: 1024m
+    ports:
+      - "80:80"
+    networks:
+      - bevo_network
+
+networks:
+  bevo_network:
+    driver: bridge
